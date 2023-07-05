@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Group Scope</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/сurrent-subject.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/navigation-menu.css">
+    <link rel="stylesheet" href="css/drop-down-menu.css">
+</head>
+
+<body>
+
+
+    <div class="overlay" id="menu-overlay"></div>
+
+    <main class="main">
+        <div class="container">
+
+            <div class="add-study-assignment">
+                <h2>Додати завдання</h2>
+            </div>
+
+            <div class="dropdown-menu">
+                <div class="dropdown-menu-btn">
+                    <svg width="15" height="15" viewBox="0 0 19 19">
+                        <polygon points="0,0 19,0 9.5,19">
+                    </svg>
+                    <h2>Всі роботи</h2>
+                    <svg width="15" height="15" viewBox="0 0 19 19">
+                        <polygon points="0,0 19,0 9.5,19">
+                    </svg>
+                </div>
+                <div class="dropdown-menu-elements">
+                    <ul>
+                        <li>Лабораторні роботи</li>
+                        <li>Практичні роботи</li>
+                        <li>Контрольні роботи</li>
+                        <li>Тести</li>
+                    </ul>
+                </div>
+            </div>
+
+
+            <ul class="homework-list">
+                <li class="homework-card">
+                    <h3> ПРАКТИЧНЕ ЗАНЯТТЯ №1</h3>
+                    <div class="homework-text">
+                        <span>
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero debitis ducimus ipsa
+                            praesentium. Molestias corporis accusantium maxime! Nesciunt nobis voluptate facere
+                            adipisci repellat consequuntur ea sunt similique, incidunt pariatur, ipsum quas est!
+                            Veritatis minus sequi, dignissimos fuga obcaecati hic, fugiat architecto asperiores
+                            corrupti corporis aut. Repellat suscipit sunt, tenetur aut maxime unde culpa numquam
+                            harum rerum delectus voluptas. Modi porro quisquam ipsam ad animi dignissimos eligendi.
+                            Ea velit, architecto consequatur nam excepturi iste reprehenderit magnam sint
+                            repellendus vel amet dolor recusandae nostrum assumenda eum officiis perferendis quas
+                            nulla molestiae veritatis accusamus eligendi repellat exercitationem eveniet.
+                            Reprehenderit laboriosam, blanditiis officiis dolores, itaque a tenetur sunt pariatur
+                            nobis ratione praesentium adipisci, perferendis repudiandae iusto enim vero iste iure
+                            ipsa ad. Magnam ut iure iste ratione tenetur qui sint aperiam, ullam expedita temporibus
+                            quam similique odio omnis voluptates dignissimos inventore harum repudiandae explicabo.
+                            Tenetur eos doloremque, corporis molestiae laboriosam voluptates nisi omnis eius aut
+                            provident recusandae praesentium iusto similique quasi rerum excepturi perspiciatis,
+                            itaque ab perferendis adipisci voluptas porro impedit? Consequatur soluta nemo porro
+                            quia nam saepe? Eligendi tempore, est libero quia quam pariatur accusantium optio fugit
+                            corporis delectus aperiam possimus illo harum enim placeat deleniti. Assumenda, id eos.
+                            Repellendus nihil iste adipisci?
+                        </span>
+                    </div>
+                </li>
+            </ul>
+
+        </div>
+
+        <div class="popup-overlay">
+            <div class="popup">
+                <div class="popup__conten">
+                    <div class="popup__header">
+                        <h2>Додаємо нове завдання</h2>
+                    </div>
+                    <div class="popup__body">
+                        <ul class="popup__list">
+                            <li class="popup__list-item">
+                                <h3>Оберіть тип завдання:</h3>
+                                <div class="popup__list-item-menu-btn">
+                                    <h4>пз</h4>
+                                    <svg width="10" height="10" viewBox="0 0 13 13">
+                                        <polygon points="0,0 13,0 6.5,13">
+                                    </svg>
+                                </div>
+                            </li>
+                            <li class="popup__list-item">
+                                <h3>Оберіть номер завдання:</h3>
+                                <div class="popup__list-item-menu-btn">
+                                    <h4>2</h4>
+                                    <svg width="10" height="10" viewBox="0 0 13 13">
+                                        <polygon points="0,0 13,0 6.5,13">
+                                    </svg>
+                                </div>
+                            </li>
+                            <li class="popup__list-item">
+                                <h3>ДАТА ОСТАНЬОЇ ЗДАЧИ:</h3>
+                                <div class="popup__list-item-menu-btn">
+                                    <h4>10.03.23</h4>
+                                    <svg width="10" height="10" viewBox="0 0 13 13">
+                                        <polygon points="0,0 13,0 6.5,13">
+                                    </svg>
+                                </div>
+                            </li>
+                            <li class="popup__list-item">
+                                <h3>Напишить завдання:</h3>
+                            </li>
+                        </ul>
+
+
+                        <textarea class="popup__task-input"></textarea>
+                        
+                        <div class="popup__btns">
+                            <div class="popup__close-btn">Скасувати</div>
+                            <div class="popup__save-btn">Зберегти</div>
+                        </div>
+                        
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>
