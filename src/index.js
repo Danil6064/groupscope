@@ -1,5 +1,9 @@
 import React from 'react';
+<<<<<<< HEAD
 import ReactDOM from 'react-dom/client';
+=======
+import ReactDOM from 'react-dom';
+>>>>>>> 9c66d1cf54a1d5acc5699260c428742d2f684960
 import reportWebVitals from './reportWebVitals';
 import './main.css';
 
@@ -19,6 +23,7 @@ const rootElement = document.getElementById('root');
 
 const root = ReactDOM.createRoot(rootElement);
 
+<<<<<<< HEAD
 root.render(
   <BrowserRouter>
     <AuthProvider>
@@ -54,6 +59,27 @@ root.render(
         </Routes>
       </StudentProvider>
     </AuthProvider>
+=======
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Home from './pages/home/Home';
+import Header from './components/header/Header';
+import { createRoot } from 'react-dom/client';
+import TaskPage from './pages/tasksPage/TaskPage';
+import SuccessfulStunent from './pages/successfulStudent/SuccessfulStudent';
+import SuccessfulGroup from './pages/successfulGroup/SuccessfulGroup';
+
+const rootElement = document.getElementById('root');
+
+createRoot(rootElement).render(
+  <BrowserRouter>
+    <Header />
+    <Routes>
+      <Route path="/" element={<Home />}/>
+      <Route path="/subject/:id" element={<TaskPage />}/>
+      <Route path="/successfulStudent" element={<SuccessfulStunent />}/>
+      <Route path="/successfulGroup" element={<SuccessfulGroup />}/>
+    </Routes>
+>>>>>>> 9c66d1cf54a1d5acc5699260c428742d2f684960
   </BrowserRouter>
 );
 
@@ -61,6 +87,7 @@ reportWebVitals();
 
 
 
+<<<<<<< HEAD
 // import React from 'react';
 // import ReactDOM from 'react-dom';
 // import reportWebVitals from './reportWebVitals';
@@ -141,6 +168,8 @@ reportWebVitals();
 
 
 
+=======
+>>>>>>> 9c66d1cf54a1d5acc5699260c428742d2f684960
 // const root = ReactDOM.createRoot(document.getElementById('root'));
 // root.render(
 //   <React.StrictMode>

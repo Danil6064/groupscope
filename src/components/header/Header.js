@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './header.css';
@@ -44,3 +45,25 @@ export default Header;
 // }
 
 // export default Header;
+=======
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import './header.css';
+import './../headerMenu/navigation-menu.css';
+import HeaderMemu from '../headerMenu/HeaderMenu.js';
+
+function Header() {
+
+  return (
+    <header className="header">
+
+      <div className="header-title">
+        <h1>КБІКС-21-6</h1>
+      </div>
+      <HeaderMemu />
+    </header>
+  );
+}
+
+export default Header;
+>>>>>>> 9c66d1cf54a1d5acc5699260c428742d2f684960
