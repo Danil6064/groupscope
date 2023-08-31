@@ -1,0 +1,74 @@
+
+.burger-menu {
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 70px;
+    height: 70px;
+}
+
+.sidebar {
+    display: block;
+    background-color: #F2F2F2;
+    position: fixed;
+    left: -100%;
+    transition: left 0.2s ease;
+    width: 335px;
+    height: 100vh;
+    z-index: 3;
+}
+
+.sidebar.open {
+    left: 0;
+}
+
+.sidebar-header {
+    width: 100%;
+    height: 70px;
+    background-color: #303030;
+}
+
+.close-sidebar {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    width: 70px;
+    height: 70px;
+}
+
+.menu-list {
+    position: fixed;
+    height: 100%;
+    padding-left: 25px;
+    padding-top: 25px;
+    /* overflow-y: auto; */
+}
+
+.menu-list li {
+    margin-bottom: 20px;
+    font-family: 'Sofia Sans';
+    font-style: normal;
+    font-weight: 300;
+    font-size: 27px;
+    line-height: 32px;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+

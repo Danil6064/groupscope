@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Sofia+Sans:wght@300&display=swap');
+
+
+.container_successfulStudent{
+    width: 1190px;
+    margin: 40px 20px 0 20px;
+}
+
+.main_successfulStudent {
+    background-color: #F2F2F2;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding-top: 70px;
+}
+
+.successfulness-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.successfulness-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    min-height: 66px;
+    padding: 10px 8% 10px 20px;
+    background: #F2F2F2;
+    border: 2px solid #303030;
+    border-radius: 15px;
+}
+
+.successfulness-card h3 {
+    width: 300px;
+    font-size: 25px;
+    line-height: 30px;
+    text-transform: uppercase;
+}
+
+.successfulness-card-task-done {
+    display: flex;
+    width: 180px;
+    min-height: 32px;
+    justify-content: center;
+    align-items: center;
+    background: #F2F2F2;
+    border: 2px solid #303030;
+    border-radius: 50px;
+    font-size: 20px;
+    line-height: 24px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.successfulness-card-task-done:hover{
+    background: #303030;
+    color: #ffffff;
+}
+
+/*Активировать при нажатии на кнопку */
+.successfulness-card-task-done.active {
+    background: #303030;
+    color: #ffffff;
+}
+
+.successfulness-card input::placeholder {
+    color: #3030306B;
+    text-transform: uppercase;
+}
+
+.successfulness-card input {
+    display: flex;
+    width: 180px;
+    min-height: 28px;
+    text-align: center;
+    border: 2px solid #303030;
+    border-radius: 7px;
+    color: #303030;
+    font-size: 20px;
+    line-height: 24px;
+}
+
+.successfulness-card-assess {
+    font-size: 20px;
+    line-height: 24px;
+    color: #30303033;
+    text-transform: uppercase;
+}
+
+.successfulness-card-assess.active {
+    color: #303030;
+}
