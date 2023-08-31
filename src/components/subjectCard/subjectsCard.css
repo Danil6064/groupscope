@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 .subject-card {
     padding: 5px;
     border: 2px solid #303030;
@@ -25,31 +25,3 @@
     background: #303030;
     color: #ffffff;
 }
-=======
-.subject-card {
-    padding: 5px;
-    border: 2px solid #303030;
-    color: #303030;
-    border-radius: 30px;
-    width: 280px;
-    height: 228px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: .3s ease;
-}
-
-.subject-card h2 {
-    text-transform: uppercase;
-    text-align: center;
-    font-weight: 300;
-    font-size: 30px;
-    line-height: 36px;
-    word-break: break-word
-}
-
-.subject-card:hover {
-    background: #303030;
-    color: #ffffff;
-}
->>>>>>> 9c66d1cf54a1d5acc5699260c428742d2f684960
