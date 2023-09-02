@@ -34,13 +34,13 @@ root.render(
             </PrivateRoute>
           }/>
 
-          <Route path="/subject/:id" element={
-            <PrivateRoute roles={['HEADMAN', 'STUDENT']}>
-              <TaskPage />
-            </PrivateRoute>
+          <Route path="/subject/:subjectName" element={
+<PrivateRoute roles={['HEADMAN', 'STUDENT']}>
+            <TaskPage />
+          </PrivateRoute>
           }/>
 
-          <Route path="/successfulStudent" element={
+          <Route path="/successfulStudent/:subjectName" element={
             <PrivateRoute roles={['HEADMAN', 'STUDENT']}>
               <SuccessfulStudent />
             </PrivateRoute>

@@ -8,7 +8,7 @@ function Quest() {
   // Define the fetchStudentDataFromServer function
   const fetchStudentDataFromServer = () => {
     // Replace this with your actual API call to fetch the student's data
-    return fetch('http://localhost:8080/student', {
+    return fetch('http://localhost:8080/api/student', {
       headers: {
         Authorization: `Bearer ${jwtToken}` // Attach JWT token to the request
       }

@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 import SubjectCard from '../components/subjectCard/SubjectCard';
 import RenderTaskCard from './RenderTaskCard';
-
 import AddTaskPopup from '../components/addTask/AddTaskPopup';
-
-
 
 function RenderSubjectCards() {
   const [subjectList, setSubjectList] = useState([]);
@@ -13,7 +11,6 @@ function RenderSubjectCards() {
 
   useEffect(() => {
     const fetchSubjectList = 'http://localhost:8080/api/subject/all';
-
     const jwtToken = localStorage.getItem('jwtToken');
     
     axios.get(fetchSubjectList, {
@@ -25,6 +22,9 @@ function RenderSubjectCards() {
     })
       .then((res) => {
         setSubjectList(res.data);
+        // Save subject names to cookies
+        const subjectNames = res.data.map(subject => subject.name);
+        Cookies.set('subjectNames', JSON.stringify(subjectNames));
       })
       .catch((error) => {
         console.log(error);
@@ -38,7 +38,7 @@ function RenderSubjectCards() {
   return (
     <>
       {subjectList.map((subject) => (
-        <div  key={subject.id}>
+        <div key={subject.id}>
           <SubjectCard
             name={subject.name}
             id={subject.id}

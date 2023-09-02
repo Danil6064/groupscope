@@ -1,46 +1,46 @@
-
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import TaskCardSuccessful from '../taskCard/taskCardSuccessful/TaskCardSuccessful';
+import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
 
-function ChoseSubjectMenu() {
+function ChoseSubjectMenu({ setSelectedSubject }) {
   const [subjects, setSubjects] = useState([]);
-  const [selectedSubject, setSelectedSubject] = useState(null);
-  const [isOpen, setIsOpen] = useState(false); // Add isOpen state variable
+  const [selected, setSelected] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchSubjects = async () => {
-      try {
-        const response = await axios.get('http://localhost:8080/getSubjects');
-        setSubjects(response.data);
-        if (response.data.length > 0) {
-          setSelectedSubject(response.data[0]); // Select first subject by default
-        }
-      } catch (error) {
-        console.error("Error fetching data from server", error);
-      }
-    };
-    fetchSubjects();
-  }, []);
-
+    const subjectsFromCookies = JSON.parse(Cookies.get('subjectNames'));
+    setSubjects(subjectsFromCookies);
+    if (subjectsFromCookies.length > 0) {
+      const firstSubject = subjectsFromCookies[0];
+      setSelected(firstSubject);
+      setSelectedSubject(firstSubject);
+    }
+  }, [setSelectedSubject]);
+  
+  useEffect(() => {
+    if (selected) {
+      navigate(`/successfulStudent/${selected}`);
+    }
+  }, [selected, navigate]);
+  
   const handleClick = (subject) => {
+    setSelected(subject);
     setSelectedSubject(subject);
+    navigate(`/successfulStudent/${subject}`);
+    setIsOpen(false);
   };
-
-  const availableSubjects = subjects.filter(
-    (s) => s.id !== (selectedSubject && selectedSubject.id)
-  );
 
   return (
     <div className="dropdown-menu">
       <div
         className="dropdown-menu-btn"
-        onClick={() => setIsOpen(!isOpen)} // Toggle isOpen state on click
+        onClick={() => setIsOpen(!isOpen)}
       >
         <svg width="15" height="15" viewBox="0 0 19 19">
           <polygon points="0,0 19,0 9.5,19" />
         </svg>
-        <h2>{selectedSubject && selectedSubject.name}</h2> {/* Access name from object */}
+        <h2>{selected}</h2>
         <svg width="15" height="15" viewBox="0 0 19 19">
           <polygon points="0,0 19,0 9.5,19" />
         </svg>
@@ -50,23 +50,18 @@ function ChoseSubjectMenu() {
         style={{ display: isOpen ? 'block' : 'none' }}
       >
         <ul>
-          {availableSubjects.map((subject) => (
-            <li key={subject.id} onClick={() => handleClick(subject)}>
-              {subject.name}
+          {subjects.map((subject, index) => (
+            <li key={index} onClick={() => handleClick(subject)}>
+              {subject}
             </li>
           ))}
         </ul>
       </div>
-      {selectedSubject && (
-        <TaskCardSuccessful selectedSubject={selectedSubject} /> // Передайте selectedSubject
-      )}
     </div>
   );
 }
 
 export default ChoseSubjectMenu;
-
-
 
 
 

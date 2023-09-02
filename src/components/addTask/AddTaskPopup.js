@@ -108,18 +108,18 @@ function AddTaskPopup({ onClose, subjectName }) {
       "ЛБ": { name: "Лабораторна робота", type: "LABORATORY" },
       "ТЕСТ": { name: "Тест", type: "TEST" }
     };
-
-    const taskName = `${taskTypeMap[taskType].name} №${taskNumber}`;
-
+  
+   const taskName = `${taskTypeMap[taskType].name} №${taskNumber}`;
+  
     const requestBody = {
       name: taskName,
       type: taskTypeMap[taskType].type,
       info: taskDescription,
       deadline: dueDate.split('-').reverse().join('/')
     };
-
+  
     const jwtToken = localStorage.getItem('jwtToken');
-
+  
     axios.post(`http://localhost:8080/api/subject/${subjectName}/task/add`, requestBody, {
       headers: {
         'Content-Type': 'application/json',
@@ -129,11 +129,13 @@ function AddTaskPopup({ onClose, subjectName }) {
     })
       .then(response => {
         console.log(response.data);
+        onClose(); // закрити спливаюче вікно після успішного відправлення запиту
       })
       .catch(error => {
         console.error('Error:', error);
       });
   };
+  
 
   return (
     <div className="popup-overlay">

@@ -2,150 +2,67 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 function TaskCardSuccessful({ selectedSubject }) {
-  const [tasks, setTasks] = useState([]);
-  const [inputMarks, setInputMarks] = useState({});
+  const [grades, setGrades] = useState([]);
+  const jwtToken = localStorage.getItem('jwtToken');
 
-  const fetchTasks = async () => {
-    if (selectedSubject) {
+  const fetchGrades = async () => {
+    if (selectedSubject && jwtToken) {
       try {
-        const response = await axios.get(`http://localhost:8080/getTasksOfSubject/${selectedSubject.id}`);
-        await new Promise(resolve => {
-          setTasks(response.data);
-          resolve();
+        const response = await axios.get(`http://localhost:8080/api/subject/${selectedSubject}/grade/all`, {
+          headers: {
+            'Authorization': 'Bearer ' + jwtToken,
+          },
         });
+        setGrades(response.data);
       } catch (error) {
-        console.error("Error fetching data from server", error);
+        console.error('Error fetching student grades', error);
       }
     }
   };
 
-  const fetchStudentGrades = async () => {
-    if(tasks.length){
-      try {
-        const response = await axios.get('http://localhost:8080/getStudent/2');
-        const studentGrades = response.data.grades;
-        const updatedInputMarks = {};
-        const updatedTasks = [...tasks];
-        studentGrades.forEach(grade => {
-          const taskName = grade.taskName;
-          const subjectName = grade.subjectName;
-          const mark = grade.mark;
-          const completion = grade.completion;
-          if (subjectName === selectedSubject.name) {
-            const task = updatedTasks.find(task => task.name === taskName);
-            if (task) {
-                updatedInputMarks[task.id] = mark ? mark.toString() : '';
-
-              task.completion = completion;
-            }
-          }
-        });
-        setInputMarks(updatedInputMarks);
-        setTasks(updatedTasks);
-      } catch (error) {
-        console.error("Error fetching student grades", error);
-      }
-    }
-  };
-
-useEffect(() => {
-  fetchTasks();
-}, [selectedSubject]);
-
-useEffect(() => {
-  fetchStudentGrades();
-}, [tasks, selectedSubject]);
-
-  const handleKeyPress = (event, task) => {
-    if (event.key === 'Enter') {
-      const url = 'http://localhost:8080/updateGrade/2';
-      const data = {
-        subjectName: selectedSubject.name,
-        taskName: task.name,
-        completion: inputMarks[task.id] > 0 ? 'true' : 'false',
-        mark: event.target.value.toString()
-      };
-      axios.post(url, data)
-        .then(res => {
-          console.log(res);
-          fetchStudentGrades();
-        })
-        .catch(err => console.log(err));
-    }
-  };
-
-  const handleInputMarkChange = (event, task) => {
-    setInputMarks(prevInputMarks => ({
-      ...prevInputMarks,
-      [task.id]: event.target.value
-    }));
-  
-    const url = 'http://localhost:8080/updateGrade/2';
+  const handleInputMarkChange = (event, taskName) => {
+    const url = 'http://localhost:8080/api/grade';
+    const mark = parseInt(event.target.value, 10);
+    const completion = mark > 0;
     const data = {
-      subjectName: selectedSubject.name,
-      taskName: task.name,
-      completion: event.target.value > 0 ? 'true' : 'false',
-      mark: event.target.value.toString()
+      subjectName: selectedSubject,
+      taskName: taskName,
+      completion: completion,
+      mark: mark,
     };
-    axios.post(url, data)
-      .then(res => {
-        console.log(res);
-        fetchStudentGrades();
+    axios
+      .post(url, data, {
+        headers: {
+          'Authorization': 'Bearer ' + jwtToken,
+        },
       })
-      .catch(err => console.log(err));
+      .then((res) => {
+        console.log(res);
+        fetchGrades();
+      })
+      .catch((err) => console.log(err));
   };
-  
 
+  useEffect(() => {
+    fetchGrades();
+  }, [selectedSubject]);
 
-
-
-  const toggleTaskCompletion = (task) => {
-    const url = 'http://localhost:8080/updateGrade/2';
-    const data = {
-      subjectName: selectedSubject.name,
-      taskName: task.name,
-      completion: task.completion ? 'false' : 'true',
-      mark: inputMarks[task.id]
-    };
-    axios.post(url, data)
-      .then(res => {
-        console.log(res);
-        fetchStudentGrades();
-      })
-      .catch(err => console.log(err));
-  }
-  
   return (
-    <ul className='successfulness-list'>
-      {tasks.map(task => (
-        <li key={task.id} className="successfulness-card">
-          <h3>{task.name}</h3>
-          <div 
-            className={`successfulness-card-task-done ${task.completion ? 'active' : ''}`} 
-            onClick={() => toggleTaskCompletion(task)}
-          >
-            {task.completion ? 'зроблено' : 'не зроблено'}
+    <ul className="successfulness-list">
+      {grades.map((grade, index) => (
+        <li key={index} className="successfulness-card">
+          <h3>{grade.taskName}</h3>
+          <div className={`successfulness-card-task-done ${grade.completion ? 'active' : ''}`}>
+            {grade.completion ? 'зроблено' : 'не зроблено'}
           </div>
-          <input
-            placeholder="Введіть оцінку"
-            value={inputMarks[task.id] || ''}
-            onChange={(e) => handleInputMarkChange(e, task)}
-            onKeyPress={(e) => handleKeyPress(e, task)}
-          />
-          <span className={`successfulness-card-assess ${inputMarks[task.id] > 0 ? 'active' : ''}`}>
-            Оцінено
-          </span>
+          <input placeholder="Введіть оцінку" defaultValue={grade.mark} onBlur={(e) => handleInputMarkChange(e, grade.taskName)} />
+          <span className={`successfulness-card-assess ${grade.mark > 0 ? 'active' : ''}`}>Оцінено</span>
         </li>
       ))}
     </ul>
   );
-  
 }
-
 export default TaskCardSuccessful;
-
-
-
 
 
 
