@@ -28,10 +28,11 @@ function ChoseSubjectMenu({ setSelectedSubject, currentSubject }) {
     }, [selected, navigate]);
 
     const handleClick = (subject) => {
-        setSelected(subject);
-        setSelectedSubject(subject);
-    };
-
+      setSelected(subject);
+      setSelectedSubject(subject);
+      setIsOpen(false);
+  };
+  
     return (
         <div className="dropdown-menu">
             <div className="dropdown-menu-btn" onClick={() => setIsOpen(!isOpen)}>

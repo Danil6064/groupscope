@@ -1,12 +1,13 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './../header/header.css';
 import './navigation-menu.css';
-import { useAuth } from '../../pages/auth/AuthContext';  // додайте цей рядок
+import { useAuth } from '../../pages/auth/AuthContext'; 
 
 function HeaderMemu() {
   const [isOpen, setIsOpen] = useState(false);
+  
+  const { logout } = useAuth();
 
   const handleOpenMenu = () => {
     setIsOpen(true);
@@ -15,7 +16,14 @@ function HeaderMemu() {
   const handleCloseMenu = () => {
     setIsOpen(false);
   };
-  const { logout } = useAuth();  // додайте цей рядок
+
+  // Обгортка для пунктів меню
+  const MenuItem = ({ to, children }) => (
+    <li onClick={handleCloseMenu}>
+        <Link to={to}>{children}</Link>
+    </li>
+  );
+
   return (
     <header className="header">
       <button className="burger-menu" id="open-btn" onClick={handleOpenMenu}>
@@ -38,14 +46,14 @@ function HeaderMemu() {
           </button>
         </div>
         <ul className="menu-list">
-    <li><Link to="/">Головне меню</Link></li>
-    <li><Link to="#">Новини</Link></li>
-    <li><Link to="/successfulStudent">Успішність</Link></li>
-    <li><Link to="/successfulGroup">Успішність групи</Link></li>
-  </ul>
+            <MenuItem to="/">Головне меню</MenuItem>
+            <MenuItem to="#">Новини</MenuItem>
+            <MenuItem to="/successfulStudent">Успішність</MenuItem>
+            <MenuItem to="/successfulGroup">Успішність групи</MenuItem>
+        </ul>
       </nav>
       <div className={`overlay ${isOpen ? 'active' : ''}`} id="menu-overlay"></div>
-      <button onClick={logout}>Вийти</button> {/* додайте цей рядок */}
+      <button onClick={logout}>Вийти</button>
     </header>
   );
 }
