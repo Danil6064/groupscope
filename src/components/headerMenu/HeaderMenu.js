@@ -38,11 +38,11 @@ function HeaderMemu() {
           </button>
         </div>
         <ul className="menu-list">
-          <li><a href="/">Головне меню</a></li>
-          <li><a href="#">Новини</a></li>
-          <li><a href="successfulStudent">Успішність</a></li>
-          <li><a href="successfulGroup">Успішність групи</a></li>
-        </ul>
+    <li><Link to="/">Головне меню</Link></li>
+    <li><Link to="#">Новини</Link></li>
+    <li><Link to="/successfulStudent">Успішність</Link></li>
+    <li><Link to="/successfulGroup">Успішність групи</Link></li>
+  </ul>
       </nav>
       <div className={`overlay ${isOpen ? 'active' : ''}`} id="menu-overlay"></div>
       <button onClick={logout}>Вийти</button> {/* додайте цей рядок */}

@@ -25,6 +25,7 @@ function RenderSubjectCards() {
         // Save subject names to cookies
         const subjectNames = res.data.map(subject => subject.name);
         Cookies.set('subjectNames', JSON.stringify(subjectNames));
+        console.log("Subjects updated and cookies set!");
       })
       .catch((error) => {
         console.log(error);

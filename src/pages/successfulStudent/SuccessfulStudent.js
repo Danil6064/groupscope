@@ -5,25 +5,28 @@ import TaskCardSuccessful from '../../components/taskCard/taskCardSuccessful/Tas
 import { useParams } from 'react-router-dom';
 
 function SuccessfulStudent() {
-  const { subjectName } = useParams();
-  const decodedSubjectName = decodeURIComponent(subjectName);
-  const [selectedSubject, setSelectedSubject] = useState(decodedSubjectName);
+    const { subjectName } = useParams();
+    const [selectedSubject, setSelectedSubject] = useState(localStorage.getItem('selectedSubject') || "");
 
-  useEffect(() => {
-    setSelectedSubject(decodedSubjectName);
-  }, [decodedSubjectName]);
+    useEffect(() => {
+        if (subjectName) {
+            const decodedSubjectName = decodeURIComponent(subjectName);
+            setSelectedSubject(decodedSubjectName);
+        }
+    }, [subjectName]);
 
-  return (
-    <main className="main_successfulStudent">
-      <div className="container_successfulStudent">
-        <ChoseSubjectMenu setSelectedSubject={setSelectedSubject} />
-        {selectedSubject && <TaskCardSuccessful selectedSubject={selectedSubject} />}
-      </div>
-    </main>
-  );
+    return (
+        <main className="main_successfulStudent">
+            <div className="container_successfulStudent">
+                <ChoseSubjectMenu setSelectedSubject={setSelectedSubject} currentSubject={selectedSubject} />
+                {selectedSubject && <TaskCardSuccessful selectedSubject={selectedSubject} />}
+            </div>
+        </main>
+    );
 }
 
 export default SuccessfulStudent;
+
 
 
 
