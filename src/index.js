@@ -46,7 +46,7 @@ root.render(
             </PrivateRoute>
           }/>
 
-          <Route path="/successfulGroup" element={
+          <Route path="/successfulGroup/:subjectName?" element={
             <PrivateRoute roles={['HEADMAN']}>
               <SuccessfulGroup />
             </PrivateRoute>

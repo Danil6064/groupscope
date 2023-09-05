@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 
-function ChoseSubjectMenu({ setSelectedSubject, currentSubject }) {
+function ChoseSubjectMenu({ setSelectedSubject, currentSubject, redirectTo }) {
     const [subjects, setSubjects] = useState([]);
     const [selected, setSelected] = useState(localStorage.getItem('selectedSubject') || currentSubject || "");
     const [isOpen, setIsOpen] = useState(false);
@@ -23,9 +23,9 @@ function ChoseSubjectMenu({ setSelectedSubject, currentSubject }) {
     useEffect(() => {
         if (selected) {
             localStorage.setItem('selectedSubject', selected);
-            navigate(`/successfulStudent/${selected}`);
+            navigate(`${redirectTo}/${selected}`);
         }
-    }, [selected, navigate]);
+    }, [selected, navigate, redirectTo]);
 
     const handleClick = (subject) => {
       setSelected(subject);

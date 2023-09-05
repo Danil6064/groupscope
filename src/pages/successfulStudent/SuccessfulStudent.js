@@ -18,7 +18,7 @@ function SuccessfulStudent() {
     return (
         <main className="main_successfulStudent">
             <div className="container_successfulStudent">
-                <ChoseSubjectMenu setSelectedSubject={setSelectedSubject} currentSubject={selectedSubject} />
+            <ChoseSubjectMenu setSelectedSubject={setSelectedSubject} currentSubject={selectedSubject} redirectTo="/successfulStudent" />
                 {selectedSubject && <TaskCardSuccessful selectedSubject={selectedSubject} />}
             </div>
         </main>

@@ -59,12 +59,13 @@
 
 .table-header-row__headings {
     display: flex;
-    justify-content: space-around;
-    width: 880px;
+    /* justify-content: space-around; */
+    width: 840px;
     height: 49px;
     padding: 0 20px;
     border: 2px solid #303030;
     border-radius: 10px 10px 20px 20px;
+    margin-left: 20px;
 }
 
 .table-header-row__task-type {
@@ -123,13 +124,14 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 260px;
+    width: 320px;
 }
 
 .table-row__marks {
     display: flex;
-    justify-content: space-around;
+    /* justify-content: space-around; */
     width: 840px;
+    margin-left: 10px;
 }
 
 .table-row__mark {
