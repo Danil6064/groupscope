@@ -15,46 +15,47 @@ import { AuthProvider } from './pages/auth/AuthContext';
 import { StudentProvider } from '../src/helpers/StudentContext';
 import PrivateRoute from './pages/auth/PrivateRoute';
 
+
+// import { GoogleLogin } from '@react-oauth/google'; // Додавання GoogleLogin 
+import { GoogleOAuthProvider } from '@react-oauth/google';
 const rootElement = document.getElementById('root');
 
 const root = ReactDOM.createRoot(rootElement);
 
 root.render(
-  <BrowserRouter>
-    <AuthProvider>
-      <StudentProvider>
-        <Header />
-        <Routes>
-          <Route path='/auth' element={<Auth />} />
-          <Route path='/guest' element={<Guest />} />
-
-          <Route path="/" element={
-            <PrivateRoute roles={['HEADMAN', 'STUDENT']}>
-              <Home />
-            </PrivateRoute>
-          }/>
-
-          <Route path="/subject/:subjectName" element={
-<PrivateRoute roles={['HEADMAN', 'STUDENT']}>
-            <TaskPage />
-          </PrivateRoute>
-          }/>
-
-          <Route path="/successfulStudent/:subjectName?" element={
-            <PrivateRoute roles={['HEADMAN', 'STUDENT']}>
-              <SuccessfulStudent />
-            </PrivateRoute>
-          }/>
-
-          <Route path="/successfulGroup/:subjectName?" element={
-            <PrivateRoute roles={['HEADMAN']}>
-              <SuccessfulGroup />
-            </PrivateRoute>
-          }/>
-        </Routes>
-      </StudentProvider>
-    </AuthProvider>
-  </BrowserRouter>
+    <BrowserRouter>
+        <AuthProvider>
+            <StudentProvider>
+              <GoogleOAuthProvider clientId="170308750708-atmmob9kjjesg9s4286k76at7ha8mgpt.apps.googleusercontent.com">
+                <Header />
+                <Routes>
+                    <Route path='/auth' element={<Auth />} />
+                    <Route path='/guest' element={<Guest />} />
+                    <Route path="/" element={
+                        <PrivateRoute roles={['HEADMAN', 'STUDENT']}>
+                            <Home />
+                        </PrivateRoute>
+                    } />
+                    <Route path="/subject/:subjectName" element={
+                        <PrivateRoute roles={['HEADMAN', 'STUDENT']}>
+                            <TaskPage />
+                        </PrivateRoute>
+                    } />
+                    <Route path="/successfulStudent/:subjectName?" element={
+                        <PrivateRoute roles={['HEADMAN', 'STUDENT']}>
+                            <SuccessfulStudent />
+                        </PrivateRoute>
+                    } />
+                    <Route path="/successfulGroup/:subjectName?" element={
+                        <PrivateRoute roles={['HEADMAN']}>
+                            <SuccessfulGroup />
+                        </PrivateRoute>
+                    } />
+                </Routes>
+                </GoogleOAuthProvider>
+            </StudentProvider>
+        </AuthProvider>
+    </BrowserRouter>
 );
 
 reportWebVitals();
