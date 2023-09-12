@@ -23,12 +23,21 @@ export const AuthProvider = ({ children }) => {
   };
   
 
-  const logout = () => {
-    localStorage.removeItem('jwtToken');
-    localStorage.removeItem('userRole');
-    setJwtToken(null);
-    setUserRole(null);
-  };
+const logout = () => {
+  // Видалення токенів та ролей користувача
+  localStorage.removeItem('jwtToken');
+  localStorage.removeItem('userRole');
+  
+  // Видалення додаткових даних
+  localStorage.removeItem('userPicture');
+  localStorage.removeItem('selectedSubject');
+  localStorage.removeItem('learningGroup');
+
+  // Оновлення стану
+  setJwtToken(null);
+  setUserRole(null);
+};
+
 
   const updateUserRole = (newRole) => {
     localStorage.setItem('userRole', newRole);

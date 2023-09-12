@@ -22,6 +22,15 @@ function Auth() {
     const learnerName = decoded.given_name;
     const learnerLastname = decoded.family_name;
 
+// Візьміть URL картинки з розкодованого токена
+const pictureUrl = decoded.picture;
+
+// Збережіть цей URL у localStorage
+localStorage.setItem('userPicture', pictureUrl);
+
+// ... [решта вашого коду]
+
+
     const requestOptions = {
         method: 'POST',
         headers: {
@@ -71,11 +80,16 @@ function Auth() {
             const studentData = await res.json();
             console.log('Received student data:', studentData);
 
-            if (studentData.learningGroup) {
+
+            const { learningGroup, role: newRole } = studentData;
+            localStorage.setItem('learningGroup', learningGroup);
+            localStorage.setItem('userRole', newRole);
+            if (learningGroup) {
                 navigate('/'); 
             } else {
                 navigate('/guest'); 
             }
+            
 
         } else {
             console.error('JWT token not found');

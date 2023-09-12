@@ -1,26 +1,33 @@
-
 import React from 'react';
-import { Link } from 'react-router-dom';
 import './header.css';
-import './../headerMenu/navigation-menu.css';
 import HeaderMenu from '../headerMenu/HeaderMenu.js';
-import { useAuth } from '../../pages/auth/AuthContext';  // додайте цей рядок
+import { useLocation } from 'react-router-dom'; 
+import { useAuth } from '../../pages/auth/AuthContext';
 
 function Header() {
-  const { logout } = useAuth();  // додайте цей рядок
+  const { logout } = useAuth();
+  const location = useLocation(); 
+  const currentPath = location.pathname;
+
+  let groupName;
+  if (currentPath === '/auth' || currentPath === '/guest') {
+    groupName = "Group Scope";
+  } else {
+    groupName = localStorage.getItem('learningGroup');
+  }
 
   return (
     <header className="header">
       <div className="header-title">
-        <h1>КБІКС-21-6</h1>
+        <h1>{groupName}</h1>
       </div>
-      <HeaderMenu />
-      <button onClick={logout}>Вийти</button> {/* додайте цей рядок */}
+      {currentPath !== '/auth' && currentPath !== '/guest' && <HeaderMenu />}
     </header>
   );
 }
 
 export default Header;
+
 
 
 

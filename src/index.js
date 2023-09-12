@@ -26,7 +26,7 @@ root.render(
     <BrowserRouter>
         <AuthProvider>
             <StudentProvider>
-              <GoogleOAuthProvider clientId="170308750708-atmmob9kjjesg9s4286k76at7ha8mgpt.apps.googleusercontent.com">
+            <GoogleOAuthProvider clientId="170308750708-atmmob9kjjesg9s4286k76at7ha8mgpt.apps.googleusercontent.com">
                 <Header />
                 <Routes>
                     <Route path='/auth' element={<Auth />} />

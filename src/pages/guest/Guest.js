@@ -1,51 +1,101 @@
-import React, { useEffect, useState } from 'react';
-import { useStudentContext } from '../../helpers/StudentContext';
+import React, { useState } from 'react';
 
-function Quest() {
-  const { studentData, setStudentData } = useStudentContext();
-  const [jwtToken, setJwtToken] = useState('');
+function Guest() {
+  const [action, setAction] = useState(null);
+  const [groupName, setGroupName] = useState('');
+  const [inviteCode, setInviteCode] = useState('');
 
-  // Define the fetchStudentDataFromServer function
-  const fetchStudentDataFromServer = () => {
-    // Replace this with your actual API call to fetch the student's data
-    return fetch('http://localhost:8080/api/student', {
+  const jwtToken = localStorage.getItem('jwtToken');
+
+  const handleCreateGroup = () => {
+    const requestBody = {
+      name: groupName
+    };
+
+    fetch('http://localhost:8080/api/group/create', {
+      method: 'POST',
       headers: {
-        Authorization: `Bearer ${jwtToken}` // Attach JWT token to the request
-      }
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + jwtToken
+      },
+      body: JSON.stringify(requestBody)
     })
-      .then((response) => response.json())
-      .catch((error) => {
-        console.error('Error fetching student data:', error);
-        throw error;
+      .then(response => {
+        if (response.headers.get('content-length') === '0' || !response.ok) {
+          throw new Error('Empty response or response not OK');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Group created:', data);
+        // Handle the response or show a success message
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        // Handle the error or show a message to the user
       });
   };
 
-  useEffect(() => {
-    // Load the JWT token from localStorage
-    const token = localStorage.getItem('jwtToken');
-    if (token) {
-      setJwtToken(token);
-    }
-  }, []); // This effect runs only once to initialize the jwtToken
+  const handleJoinGroup = () => {
+    const requestBody = {
+      inviteCode: inviteCode
+    };
 
-  useEffect(() => {
-    // Fetch student's data from the server and set it in the context
-    fetchStudentDataFromServer()
-      .then((data) => setStudentData(data))
-      .catch((error) => console.error('Error fetching student data:', error));
-  }, [jwtToken]); // Include jwtToken as a dependency of the effect
+    fetch('http://localhost:8080/api/group/join', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + jwtToken
+      },
+      body: JSON.stringify(requestBody)
+    })
+      .then(response => {
+        if (response.headers.get('content-length') === '0' || !response.ok) {
+          throw new Error('Empty response or response not OK');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Joined group:', data);
+        // Handle the response or show a success message
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        // Handle the error or show a message to the user
+      });
+  };
 
   return (
     <div className="main">
       <h2>Кімната очікування</h2>
-      {studentData && (
+      <button onClick={() => setAction('create')}>Створити групу</button>
+      <button onClick={() => setAction('join')}>Приєднатись до групи</button>
+
+      {action === 'create' && (
         <div>
-          <p>Welcome, {studentData.login}!</p>
-          <p>А ось тут ми вставляємо токен: {jwtToken}</p>
+          <label>Виберіть групу:</label>
+          <select onChange={e => setGroupName(e.target.value)}>
+            <option value="КБІКС-21-1">КБІКС-21-1</option>
+            <option value="КБІКС-21-2">КБІКС-21-2</option>
+            {/* You can add other group options here */}
+          </select>
+          <button onClick={handleCreateGroup}>Створити</button>
+        </div>
+      )}
+
+      {action === 'join' && (
+        <div>
+          <label>Введіть код групи:</label>
+          <input 
+            type="text"
+            value={inviteCode}
+            onChange={e => setInviteCode(e.target.value)}
+          />
+          <button onClick={handleJoinGroup}>Приєднатись</button>
         </div>
       )}
     </div>
   );
 }
 
-export default Quest;
+export default Guest;
