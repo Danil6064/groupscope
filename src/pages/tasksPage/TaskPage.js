@@ -24,20 +24,26 @@ const TaskPage = () => {
     setShowPopup(false);
   };
 
+  const userRole = localStorage.getItem('userRole');
+
   return (
     <main className="main_taskPage">
       <div className="container_taskPage">
 
+        {userRole === 'HEADMAN' && (
         <div className="add-study-assignment" onClick={handleAddTaskClick}>
           <h2>Додати завдання</h2>
         </div>
+        )}
+
 
         {showPopup && <AddTaskPopup onClose={handleClosePopup} subjectName={subjectName} />}
 
         <ChoseTypeTask onTypeChange={handleTaskTypeChange} />
 
-        <ul className="homework-list">
-            <RenderTaskCard subjectName={subjectName} currentTaskType={currentTaskType} />
+
+      <ul className="homework-list">
+        <RenderTaskCard subjectName={subjectName} currentTaskType={currentTaskType} />
         </ul>
       </div>
     </main>

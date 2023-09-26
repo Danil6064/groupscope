@@ -32,7 +32,9 @@ const logout = () => {
   localStorage.removeItem('userPicture');
   localStorage.removeItem('selectedSubject');
   localStorage.removeItem('learningGroup');
-
+  localStorage.removeItem('inviteCode');
+  localStorage.removeItem('reloadCalled');
+  
   // Оновлення стану
   setJwtToken(null);
   setUserRole(null);

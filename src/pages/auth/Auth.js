@@ -9,96 +9,85 @@ function Auth() {
     const { login } = useAuth();
 
     const handleGoogleSuccess = async (response) => {
-    console.log('Full Google Sign In response:', JSON.stringify(response, null, 2));
-    
-    const googleToken = response.credential;
+        try {
+            console.log('Full Google Sign In response:', JSON.stringify(response, null, 2));
 
-    console.log('Received Google Token:', googleToken);
-    
-      // Декодуємо токен
-    const decoded = jwt_decode(googleToken);
-    console.log('Decoded Google Token:', decoded);
+            const googleToken = response.credential;
+            console.log('Received Google Token:', googleToken);
 
-    const learnerName = decoded.given_name;
-    const learnerLastname = decoded.family_name;
+            const decoded = jwt_decode(googleToken);
+            console.log('Decoded Google Token:', decoded);
 
-// Візьміть URL картинки з розкодованого токена
-const pictureUrl = decoded.picture;
+            const learnerName = decoded.given_name;
+            const learnerLastname = decoded.family_name;
+            const pictureUrl = decoded.picture;
+            localStorage.setItem('userPicture', pictureUrl);
 
-// Збережіть цей URL у localStorage
-localStorage.setItem('userPicture', pictureUrl);
-
-// ... [решта вашого коду]
-
-
-    const requestOptions = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Cache-Control': 'no-cache',
-        },
-        body: JSON.stringify({
-            idToken: googleToken,
-            learnerName: learnerName,
-            learnerLastname: learnerLastname
-        }),
-    };
-    console.log('Sending request to server with options:', requestOptions);
-
-    try {
-        let res = await fetch('http://localhost:8080/oauth2', requestOptions);
-        
-          // Additional logging for the response
-        console.log('Server Response:', res);
-        console.log('Server Response Status:', res.status);
-        console.log('Server Response Headers:', [...res.headers.entries()]);
-
-        if (!res.ok) {
-              // Log response text to get error details from the server
-            console.error('Server Error Response:', await res.text());
-            return;
-        }
-
-        const data = await res.json();
-        console.log('Received data from server after auth:', data);
-
-        if (data.jwtToken) {
-            const jwtToken = data.jwtToken;
-            localStorage.setItem('jwtToken', jwtToken);
-            login(jwtToken);
-            console.log("Отриманий JWT токен:", jwtToken);
-
-            res = await fetch('http://localhost:8080/api/student', {
-                method: 'GET',
+            const requestOptions = {
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Cache-Control': 'no-cache',
-                    'Authorization': 'Bearer ' + jwtToken
-                }
-            });
+                },
+                body: JSON.stringify({
+                    idToken: googleToken,
+                    learnerName: learnerName,
+                    learnerLastname: learnerLastname
+                }),
+            };
 
-            const studentData = await res.json();
-            console.log('Received student data:', studentData);
-
-
-            const { learningGroup, role: newRole } = studentData;
-            localStorage.setItem('learningGroup', learningGroup);
-            localStorage.setItem('userRole', newRole);
-            if (learningGroup) {
-                navigate('/'); 
-            } else {
-                navigate('/guest'); 
-            }
+            console.log('Sending request to server with options:', requestOptions);
             
+            let res = await fetch('http://localhost:8080/oauth2', requestOptions);
+            console.log('Server Response:', res);
 
-        } else {
-            console.error('JWT token not found');
+            if (!res.ok) {
+                console.error('Server Error Response:', await res.text());
+                return;
+            }
+
+            const data = await res.json();
+            console.log('Received data from server after auth:', data);
+
+            if (data.jwtToken) {
+                const jwtToken = data.jwtToken;
+                localStorage.setItem('jwtToken', jwtToken);
+                login(jwtToken);
+                console.log("Отриманий JWT токен:", jwtToken);
+
+                res = await fetch('http://localhost:8080/api/student', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Cache-Control': 'no-cache',
+                        'Authorization': 'Bearer ' + jwtToken
+                    }
+                });
+
+                const studentData = await res.json();
+                console.log('Received student data:', studentData);
+
+                const { learningGroup, role: newRole } = studentData;
+                localStorage.setItem('learningGroup', learningGroup);
+                localStorage.setItem('userRole', newRole);
+
+                if (learningGroup) {
+                    const newWindow = window.open('/', '_blank'); 
+                    if (newWindow) newWindow.opener = null;
+                    window.close();
+                } else {
+                    const newWindow = window.open('/guest', '_blank'); 
+                    if (newWindow) newWindow.opener = null;
+                    window.close();
+                }
+                
+            } else {
+                console.error('JWT token not found');
+            }
+        } catch (error) {
+            console.error('Error while communicating with server:', error);
         }
-
-    } catch (error) {
-        console.error('Error while communicating with server:', error);
-    }
-};
+    };
 
     const handleGoogleFailure = (response) => {
         console.error('Google Sign In was unsuccessful:', response);
@@ -118,6 +107,234 @@ localStorage.setItem('userPicture', pictureUrl);
 }
 
 export default Auth;
+
+
+
+
+// import React from 'react';
+// import { useNavigate } from 'react-router-dom';
+// import { useAuth } from './AuthContext';
+// import { GoogleLogin } from '@react-oauth/google';
+// import jwt_decode from "jwt-decode";
+
+// function Auth() {
+//     const navigate = useNavigate();
+//     const { login } = useAuth();
+
+//     const handleGoogleSuccess = async (response) => {
+//         console.log('Full Google Sign In response:', JSON.stringify(response, null, 2));
+    
+//         const googleToken = response.credential;
+//         console.log('Received Google Token:', googleToken);
+
+//         const decoded = jwt_decode(googleToken);
+//         console.log('Decoded Google Token:', decoded);
+  
+//         const learnerName = decoded.given_name;
+//         const learnerLastname = decoded.family_name;
+
+//         const requestOptions = {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//                 'Cache-Control': 'no-cache',
+//             },
+//             body: JSON.stringify({
+//                 idToken: googleToken,
+//                 learnerName: learnerName,
+//                 learnerLastname: learnerLastname
+//             }),
+//         };
+
+//         console.log('Sending request to server with options:', requestOptions);
+        
+//         try {
+//             let res = await fetch('http://localhost:8080/oauth2', requestOptions);
+//             console.log('Server Response:', res);
+//             console.log('Server Response Status:', res.status);
+//             console.log('Server Response Headers:', [...res.headers.entries()]);
+            
+//             if (!res.ok) {
+//                 console.error('Server Error Response:', await res.text());
+//                 return;
+//             }
+
+//             const data = await res.json();
+//             console.log('Received data from server after auth:', data);
+
+//             if (data.jwtToken) {
+//                 const jwtToken = data.jwtToken;
+//                 localStorage.setItem('jwtToken', jwtToken);
+//                 login(jwtToken);
+//                 console.log("Отриманий JWT токен:", jwtToken);
+
+//                 res = await fetch('http://localhost:8080/api/student', {
+//                     method: 'GET',
+//                     headers: {
+//                         'Content-Type': 'application/json',
+//                         'Cache-Control': 'no-cache',
+//                         'Authorization': 'Bearer ' + jwtToken
+//                     }
+//                 });
+                
+//                 const studentData = await res.json();
+//                 console.log('Received student data:', studentData);
+                
+//                 if (studentData.learningGroup) {
+//                     navigate('/'); 
+//                 } else {
+//                     navigate('/guest'); 
+//                 }
+//             } else {
+//                 console.error('JWT token not found');
+//             }
+//         } catch (error) {
+//             console.error('Error while communicating with server:', error);
+//         }
+//     };
+
+//     const handleGoogleFailure = (response) => {
+//         console.error('Google Sign In was unsuccessful:', response);
+//     };
+
+//     return (
+//         <div className="main">
+//             <h2>Авторизація через Google</h2>
+//             <GoogleLogin
+//                 clientId="170308750708-atmmob9kjjesg9s4286k76at7ha8mgpt.apps.googleusercontent.com"
+//                 buttonText="Увійти через Google"
+//                 onSuccess={handleGoogleSuccess}
+//                 onFailure={handleGoogleFailure}
+//             />
+//         </div>
+//     );
+// }
+
+// export default Auth;
+
+
+
+
+// import React from 'react';
+// import { useNavigate } from 'react-router-dom';
+// import { useAuth } from './AuthContext';
+// import { GoogleLogin } from '@react-oauth/google';
+// import jwt_decode from "jwt-decode";
+
+// function Auth() {
+//     const navigate = useNavigate();
+//     const { login } = useAuth();
+
+//     const handleGoogleSuccess = async (response) => {
+//     console.log('Full Google Sign In response:', JSON.stringify(response, null, 2));
+    
+//     const googleToken = response.credential;
+
+//     console.log('Received Google Token:', googleToken);
+    
+//       // Декодуємо токен
+//     const decoded = jwt_decode(googleToken);
+//     console.log('Decoded Google Token:', decoded);
+
+//     const learnerName = decoded.given_name;
+//     const learnerLastname = decoded.family_name;
+
+// // Візьміть URL картинки з розкодованого токена
+// const pictureUrl = decoded.picture;
+
+// // Збережіть цей URL у localStorage
+// localStorage.setItem('userPicture', pictureUrl);
+
+// // ... [решта вашого коду]
+
+
+//     const requestOptions = {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json',
+//             'Cache-Control': 'no-cache',
+//         },
+//         body: JSON.stringify({
+//             idToken: googleToken,
+//             learnerName: learnerName,
+//             learnerLastname: learnerLastname
+//         }),
+//     };
+//     console.log('Sending request to server with options:', requestOptions);
+
+//     try {
+//         let res = await fetch('http://localhost:8080/oauth2', requestOptions);
+        
+//           // Additional logging for the response
+//         console.log('Server Response:', res);
+//         console.log('Server Response Status:', res.status);
+//         console.log('Server Response Headers:', [...res.headers.entries()]);
+
+//         if (!res.ok) {
+//               // Log response text to get error details from the server
+//             console.error('Server Error Response:', await res.text());
+//             return;
+//         }
+
+//         const data = await res.json();
+//         console.log('Received data from server after auth:', data);
+
+//         if (data.jwtToken) {
+//             const jwtToken = data.jwtToken;
+//             localStorage.setItem('jwtToken', jwtToken);
+//             login(jwtToken);
+//             console.log("Отриманий JWT токен:", jwtToken);
+
+//             res = await fetch('http://localhost:8080/api/student', {
+//                 method: 'GET',
+//                 headers: {
+//                     'Content-Type': 'application/json',
+//                     'Cache-Control': 'no-cache',
+//                     'Authorization': 'Bearer ' + jwtToken
+//                 }
+//             });
+
+//             const studentData = await res.json();
+//             console.log('Received student data:', studentData);
+
+
+//             const { learningGroup, role: newRole } = studentData;
+//             localStorage.setItem('learningGroup', learningGroup);
+//             localStorage.setItem('userRole', newRole);
+//             if (learningGroup) {
+//                 navigate('/'); 
+//             } else {
+//                 navigate('/guest'); 
+//             }
+            
+
+//         } else {
+//             console.error('JWT token not found');
+//         }
+
+//     } catch (error) {
+//         console.error('Error while communicating with server:', error);
+//     }
+// };
+
+//     const handleGoogleFailure = (response) => {
+//         console.error('Google Sign In was unsuccessful:', response);
+//     };
+
+//     return (
+//         <div className="main">
+//             <h2>Авторизація через Google</h2>
+//             <GoogleLogin
+//                 clientId="170308750708-atmmob9kjjesg9s4286k76at7ha8mgpt.apps.googleusercontent.com"
+//                 buttonText="Увійти через Google"
+//                 onSuccess={handleGoogleSuccess}
+//                 onFailure={handleGoogleFailure}
+//             />
+//         </div>
+//     );
+// }
+
+// export default Auth;
 
 
 
