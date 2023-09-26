@@ -78,7 +78,7 @@ function HeaderMenu() {
         {avatarUrl && (
           <img src={avatarUrl} alt="Аватар користувача" className="user-avatar" />
         )}
-        {/* <button onClick={logout}>Вийти</button> */}
+        <button onClick={logout}>Вийти</button>
       </div>
     </>
   );
