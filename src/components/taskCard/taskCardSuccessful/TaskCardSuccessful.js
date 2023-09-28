@@ -25,11 +25,9 @@ export default function TaskCardSuccessful({ selectedSubject }) {
     }
   };
 
-  const handleInputMarkChange = (event, taskName) => {
-    console.log("Handling input change for task:", taskName);
+  const handleDataChange = (taskName, completion, mark) => {
     const url = "http://localhost:8080/api/grade";
-    const mark = parseInt(event.target.value, 10);
-    const completion = mark > 0;
+    if (mark > 0) completion = true    
     const data = {
       subjectName: selectedSubject,
       taskName: taskName,
@@ -66,18 +64,25 @@ export default function TaskCardSuccessful({ selectedSubject }) {
         >
           {/* <li key={index} className="successfulness-card"> */}
           <h3>{grade.taskName}</h3>
-          <div
+
+          <button
             className={`successfulness-card-task-done ${
               grade.completion ? "active" : ""
             }`}
+            onClick={() =>
+              handleDataChange(grade.taskName, !grade.completion, 0)
+            }
           >
             {grade.completion ? "зроблено" : "не зроблено"}
-          </div>
+          </button>
+
           <input
+            type="number"
             placeholder="Введіть оцінку"
-            defaultValue={grade.mark}
-            onBlur={(e) => handleInputMarkChange(e, grade.taskName)}
+            defaultValue={grade.mark ? grade.mark : ""}
+            onBlur={(e) => handleDataChange(grade.taskName, grade.completion, e.target.value)}
           />
+
           <span
             className={`successfulness-card-assess ${
               grade.mark > 0 ? "active" : ""

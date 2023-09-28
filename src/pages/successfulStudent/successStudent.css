@@ -36,7 +36,8 @@
 }
 
 .successfulness-card h3 {
-    width: 300px;
+    display: flex;
+    width: 350px;
     font-size: 25px;
     line-height: 30px;
     text-transform: uppercase;
