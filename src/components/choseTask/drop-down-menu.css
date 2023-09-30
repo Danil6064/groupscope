@@ -32,7 +32,6 @@
 
 .dropdown-menu-elements {
     display: none;
-    /* display: flex; */
     margin-top: 4px;
     position: absolute;
     justify-content: center;
@@ -54,8 +53,5 @@
     margin: 15px 5px;
     font-size: 25px;
     line-height: 30px;
-}
-
-.dropdown-menu-elements ul li {
     cursor: pointer;
 }

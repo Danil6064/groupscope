@@ -1,27 +1,40 @@
-import React, { useState } from 'react'; 
-import './choseTypeTask.css';
+import React, { useState, useEffect } from "react";
 import "./drop-down-menu.css";
 
-function ChoseTypeTask({ onTypeChange }) {
+export default function ChoseTypeTask({ onTypeChange }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedTaskType, setSelectedTaskType] = useState('Всі роботи');
+  const [selectedTaskType, setSelectedTaskType] = useState("Всі роботи");
 
   const taskTypeMap = {
-    'LABORATORY': 'Лабораторні роботи',
-    'PRACTICAL': 'Практичні роботи',
-    'TEST': 'Тести',
-    'ALL': 'Всі роботи'
+    LABORATORY: "Лабораторні роботи",
+    PRACTICAL: "Практичні роботи",
+    TEST: "Тести",
+    ALL: "Всі роботи",
   };
 
   const handleClick = (type) => {
     setIsOpen(!isOpen);
     setSelectedTaskType(taskTypeMap[type]);
-    if(onTypeChange) {
+    if (onTypeChange) {
       onTypeChange(type);
     }
   };
 
-  const availableTaskTypes = Object.keys(taskTypeMap).filter(taskType => taskTypeMap[taskType] !== selectedTaskType);
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (isOpen && !event.target.closest(".dropdown-menu")) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("click", handleOutsideClick);
+    return () => {
+      document.removeEventListener("click", handleOutsideClick);
+    };
+  }, [isOpen]);
+
+  const availableTaskTypes = Object.keys(taskTypeMap).filter(
+    (taskType) => taskTypeMap[taskType] !== selectedTaskType
+  );
 
   return (
     <div className="dropdown-menu">
@@ -34,10 +47,15 @@ function ChoseTypeTask({ onTypeChange }) {
           <polygon points="0,0 19,0 9.5,19" />
         </svg>
       </div>
-      <div className="dropdown-menu-elements" style={{ display: isOpen ? 'flex' : 'none' }}>
+      <div
+        className="dropdown-menu-elements"
+        style={{ display: isOpen ? "flex" : "none" }}
+      >
         <ul>
-          {availableTaskTypes.map(taskType => (
-            <li key={taskType} onClick={() => handleClick(taskType)}>{taskTypeMap[taskType]}</li>
+          {availableTaskTypes.map((taskType) => (
+            <li key={taskType} onClick={() => handleClick(taskType)}>
+              {taskTypeMap[taskType]}
+            </li>
           ))}
         </ul>
       </div>
@@ -45,15 +63,7 @@ function ChoseTypeTask({ onTypeChange }) {
   );
 }
 
-export default ChoseTypeTask;
-
-
-
-
-
-
-
-// import React, { useState } from 'react'; 
+// import React, { useState } from 'react';
 // import './choseTypeTask.css';
 // import "./drop-down-menu.css";
 
@@ -101,12 +111,7 @@ export default ChoseTypeTask;
 
 // export default ChoseTypeTask;
 
-
-
-
-
-
-// import React, { useState } from 'react'; 
+// import React, { useState } from 'react';
 // import './choseTypeTask.css'
 // import "./drop-down-menu.css";
 
