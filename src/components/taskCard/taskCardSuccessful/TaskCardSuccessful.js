@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 export default function TaskCardSuccessful({ selectedSubject }) {
-  const [grades, setGrades] = useState([]);
+  const [grades, setGrades] = useState(Array());
   const jwtToken = localStorage.getItem("jwtToken");
 
   const fetchGrades = async () => {
@@ -25,9 +25,10 @@ export default function TaskCardSuccessful({ selectedSubject }) {
     }
   };
 
-  const handleDataChange = (taskName, completion, mark) => {
+  const handleDataChange = ({ taskName, completion, mark }) => {
     const url = "http://localhost:8080/api/grade";
-    if (mark > 0) completion = true    
+    if (!mark) mark = 0;
+    if (mark > 0) completion = true;
     const data = {
       subjectName: selectedSubject,
       taskName: taskName,
@@ -55,43 +56,102 @@ export default function TaskCardSuccessful({ selectedSubject }) {
     fetchGrades();
   }, [selectedSubject]);
 
-  return (
-    <ul className="successfulness-list">
-      {grades.map((grade, index) => (
-        <li
-          key={`${grade.subjectName}-${grade.taskName}`}
-          className="successfulness-card"
+  const taskCards = grades.map((grade) => {
+    return (
+      <li
+        className="successfulness-card"
+        key={`${grade.subjectName}-${grade.taskName}`}
+      >
+        <h3>{grade.taskName}</h3>
+
+        <button
+          className={`successfulness-card-task-done ${
+            grade.completion ? "active" : ""
+          }`}
+          onClick={() =>
+            handleDataChange({
+              taskName: grade.taskName,
+              completion: !grade.completion,
+              mark: 0,
+            })
+          }
         >
-          {/* <li key={index} className="successfulness-card"> */}
-          <h3>{grade.taskName}</h3>
+          {grade.completion ? "зроблено" : "не зроблено"}
+        </button>
 
-          <button
-            className={`successfulness-card-task-done ${
-              grade.completion ? "active" : ""
-            }`}
-            onClick={() =>
-              handleDataChange(grade.taskName, !grade.completion, 0)
-            }
-          >
-            {grade.completion ? "зроблено" : "не зроблено"}
-          </button>
+        <input
+          type="number"
+          placeholder="Введіть оцінку"
+          defaultValue={grade.mark || ""}
+          onBlur={(e) =>
+            handleDataChange({
+              taskName: grade.taskName,
+              completion: grade.completion,
+              mark: e.target.value,
+            })
+          }
+        />
 
-          <input
-            type="number"
-            placeholder="Введіть оцінку"
-            defaultValue={grade.mark ? grade.mark : ""}
-            onBlur={(e) => handleDataChange(grade.taskName, grade.completion, e.target.value)}
-          />
+        <span
+          className={`successfulness-card-assess ${
+            grade.mark > 0 ? "active" : ""
+          }`}
+        >
+          Оцінено
+        </span>
+      </li>
+    );
+  });
 
-          <span
-            className={`successfulness-card-assess ${
-              grade.mark > 0 ? "active" : ""
-            }`}
-          >
-            Оцінено
-          </span>
-        </li>
-      ))}
-    </ul>
-  );
+  return <ul className="successfulness-list">{taskCards}</ul>;
+
+  // return (
+  //   <ul className="successfulness-list">
+  //     {grades.map((grade) => (
+  //       <li
+  //         key={`${grade.subjectName}-${grade.taskName}`}
+  //         className="successfulness-card"
+  //       >
+  //         {/* <li key={index} className="successfulness-card"> */}
+  //         <h3>{grade.taskName}</h3>
+
+  //         <button
+  //           className={`successfulness-card-task-done ${
+  //             grade.completion ? "active" : ""
+  //           }`}
+  //           onClick={() =>
+  //             handleDataChange({
+  //               taskName: grade.taskName,
+  //               completion: !grade.completion,
+  //               mark: 0,
+  //             })
+  //           }
+  //         >
+  //           {grade.completion ? "зроблено" : "не зроблено"}
+  //         </button>
+
+  //         <input
+  //           type="number"
+  //           placeholder="Введіть оцінку"
+  //           defaultValue={grade.mark || ""}
+  //           onBlur={(e) =>
+  //             handleDataChange({
+  //               taskName: grade.taskName,
+  //               completion: grade.completion,
+  //               mark: e.target.value,
+  //             })
+  //           }
+  //         />
+
+  //         <span
+  //           className={`successfulness-card-assess ${
+  //             grade.mark > 0 ? "active" : ""
+  //           }`}
+  //         >
+  //           Оцінено
+  //         </span>
+  //       </li>
+  //     ))}
+  //   </ul>
+  // );
 }

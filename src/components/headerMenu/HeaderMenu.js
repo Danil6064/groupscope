@@ -1,82 +1,100 @@
-import React, { useState, useEffect } from 'react';
-import './navigation-menu.css';
-import { Link } from 'react-router-dom';
-import { useAuth } from '../../pages/auth/AuthContext'; 
+import React, { useState, useEffect } from "react";
+import "./navigation-menu.css";
+import { Link } from "react-router-dom";
+import { useAuth } from "../../pages/auth/AuthContext";
 
-function HeaderMenu() {
+export default function HeaderMenu() {
   const [isOpen, setIsOpen] = useState(false);
-  const [avatarUrl, setAvatarUrl] = useState(null); 
+  const [avatarUrl, setAvatarUrl] = useState(null);
   const { logout } = useAuth();
 
   useEffect(() => {
-    const savedPictureUrl = localStorage.getItem('userPicture');
+    const savedPictureUrl = localStorage.getItem("userPicture");
     if (savedPictureUrl) {
       setAvatarUrl(savedPictureUrl);
     }
   }, []);
 
-  const handleOpenMenu = () => {
-    setIsOpen(true);
-  };
-
-  const handleCloseMenu = () => {
-    setIsOpen(false);
+  const setOpenedState = () => {
+    const reverseOpend = !isOpen;
+    setIsOpen(reverseOpend);
   };
 
   const openInNewTabAndCloseCurrent = (url) => {
-    const newTab = window.open(url, '_blank');
+    const newTab = window.open(url, "_blank");
     if (newTab) {
-        newTab.focus();
+      newTab.focus();
     }
     window.close();
-  }
+  };
 
   const MenuItem = ({ to, children, isExternal }) => (
-    <li 
+    <li
       onClick={() => {
-        handleCloseMenu();
+        setIsOpen(false);
         if (isExternal) openInNewTabAndCloseCurrent(to);
       }}
     >
-        <Link to={isExternal ? "#" : to}>{children}</Link>
+      <Link to={isExternal ? "#" : to}>{children}</Link>
     </li>
   );
-  const userRole = localStorage.getItem('userRole');
-  
+  const userRole = localStorage.getItem("userRole");
+
   return (
     <>
-      <button className="burger-menu" id="open-btn" onClick={handleOpenMenu}>
+      <button className="burger-menu" onClick={() => setOpenedState()}>
         {/* Іконка меню */}
-        <svg stroke="white" strokeWidth="2" width="36" height="36" viewBox="0 0 24 24">
+        <svg
+          stroke="white"
+          strokeWidth="2"
+          width="36"
+          height="36"
+          viewBox="0 0 24 24"
+        >
           <line x1="3" y1="6" x2="21" y2="6" />
           <line x1="3" y1="12" x2="21" y2="12" />
           <line x1="3" y1="18" x2="21" y2="18" />
         </svg>
       </button>
 
-      <nav className={`sidebar ${isOpen ? 'open' : ''}`} id="menu">
+      <nav className={`sidebar ${isOpen ? "open" : ""}`} id="menu">
         <div className="sidebar-header">
-          <button className="close-sidebar" id="close-btn" onClick={handleCloseMenu}>
-            <svg stroke="white" strokeWidth="2" width="36" height="36" viewBox="0 0 24 24">
+          <button className="close-sidebar" onClick={() => setOpenedState()}>
+            <svg
+              stroke="white"
+              strokeWidth="2"
+              width="36"
+              height="36"
+              viewBox="0 0 24 24"
+            >
               <line x1="18" y1="6" x2="6" y2="18"></line>
               <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
           </button>
         </div>
         <ul className="menu-list">
-            <MenuItem to="/">Головне меню</MenuItem>
-            <MenuItem to="#">Новини</MenuItem>
-            <MenuItem to="/successfulStudent">Успішність</MenuItem>
-            {userRole === 'HEADMAN' && (
-            <MenuItem to="/successfulGroup" isExternal={true}>Успішність групи</MenuItem>
-            )}
+          <MenuItem to="/">Головне меню</MenuItem>
+          <MenuItem to="#">Новини</MenuItem>
+          <MenuItem to="/successfulStudent">Успішність</MenuItem>
+          {userRole === "HEADMAN" && (
+            <MenuItem to="/successfulGroup" isExternal={true}>
+              Успішність групи
+            </MenuItem>
+          )}
         </ul>
       </nav>
 
-      <div className={`overlay ${isOpen ? 'active' : ''}`} id="menu-overlay"></div>
-      <div> 
+      <div
+        className={`overlay ${isOpen ? "active" : ""}`}
+        onClick={() => setOpenedState()}
+      ></div>
+      <div>
         {avatarUrl && (
-          <img src={avatarUrl} alt="Аватар користувача" className="user-avatar" />
+          <img
+            src={avatarUrl}
+            alt="Аватар користувача"
+            className="user-avatar"
+          />
         )}
         <button onClick={logout}>Вийти</button>
       </div>
@@ -84,19 +102,14 @@ function HeaderMenu() {
   );
 }
 
-export default HeaderMenu;
-
-
-
-
 // import React, { useState, useEffect } from 'react';
 // import './navigation-menu.css';
 // import { Link } from 'react-router-dom';
-// import { useAuth } from '../../pages/auth/AuthContext'; 
+// import { useAuth } from '../../pages/auth/AuthContext';
 
 // function HeaderMenu() {
 //   const [isOpen, setIsOpen] = useState(false);
-//   const [avatarUrl, setAvatarUrl] = useState(null); 
+//   const [avatarUrl, setAvatarUrl] = useState(null);
 //   const { logout } = useAuth();
 
 //   useEffect(() => {
@@ -150,7 +163,7 @@ export default HeaderMenu;
 //       </nav>
 
 //       <div className={`overlay ${isOpen ? 'active' : ''}`} id="menu-overlay"></div>
-//       <div> 
+//       <div>
 //         {avatarUrl && (
 //           <img src={avatarUrl} alt="Аватар користувача" className="user-avatar" />
 //         )}
@@ -161,5 +174,3 @@ export default HeaderMenu;
 // }
 
 // export default HeaderMenu;
-
-

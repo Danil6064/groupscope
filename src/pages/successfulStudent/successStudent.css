@@ -56,11 +56,11 @@
     line-height: 24px;
     text-transform: uppercase;
     cursor: pointer;
-    transition: background 0.3s ease, color 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .successfulness-card-task-done:hover{
-    background: #303030;
+    background-color: #303030;
     color: #ffffff;
 }
 
