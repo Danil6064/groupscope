@@ -4,7 +4,7 @@ import HeaderMenu from '../headerMenu/HeaderMenu.js';
 import { useLocation } from 'react-router-dom'; 
 import { useAuth } from '../../pages/auth/AuthContext';
 
-function Header() {
+export default function Header() {
   const { logout } = useAuth();
   const location = useLocation(); 
   const currentPath = location.pathname;
@@ -25,10 +25,6 @@ function Header() {
     </header>
   );
 }
-
-export default Header;
-
-
 
 
 // import React, { useState } from 'react';
