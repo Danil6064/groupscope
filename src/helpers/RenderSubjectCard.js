@@ -4,6 +4,7 @@ import Cookies from 'js-cookie'; // Додайте цей рядок
 import SubjectCard from '../components/subjectCard/SubjectCard';
 import RenderTaskCard from './RenderTaskCard';
 import AddTaskPopup from '../components/addTask/AddTaskPopup';
+import {apiUrl} from '../helpers/MainConstants'
 
 function RenderSubjectCards() {
   const [subjectList, setSubjectList] = useState([]);
@@ -11,7 +12,7 @@ function RenderSubjectCards() {
   const [selectedSubjects, setSelectedSubjects] = useState([]);
 
   useEffect(() => {
-    const fetchSubjectList = 'http://localhost:8080/api/subject/all';
+    const fetchSubjectList = `${apiUrl}/subject/all`;
     const jwtToken = localStorage.getItem('jwtToken');
 
     axios.get(fetchSubjectList, {
@@ -45,7 +46,7 @@ function RenderSubjectCards() {
     try {
       const jwtToken = localStorage.getItem('jwtToken');
       for (const subject of selectedSubjects) {
-        const response = await fetch('http://localhost:8080/api/subject/add', {
+        const response = await fetch(`${apiUrl}/subject/add`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

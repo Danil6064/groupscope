@@ -17,12 +17,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 
 function RootComponent() {
 
-    useEffect(() => {
-    if (window.location.href === "http://localhost:3000/" && !localStorage.getItem('reloadCalled')) {
-        localStorage.setItem('reloadCalled', 'true'); // Зберігаємо інформацію в localStorage
-        window.location.reload();
-    }
-    }, []);
+
 
     
     return (

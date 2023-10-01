@@ -2,13 +2,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import TaskCard from '../components/taskCard/TaskCard';
-
+import {apiUrl} from '../helpers/MainConstants'
 function RenderTaskCard({ subjectName, currentTaskType }) {
   const [taskList, setTaskList] = useState([]);
 
   useEffect(() => {
     const jwtToken = localStorage.getItem('jwtToken');
-    axios.get(`http://localhost:8080/api/subject/${encodeURIComponent(subjectName)}/task/all`, {
+    axios.get(`${apiUrl}/subject/${encodeURIComponent(subjectName)}/task/all`, {
       headers: {
         'Content-Type': 'application/json',
         'Cache-Control': 'no-cache',
@@ -45,41 +45,3 @@ function RenderTaskCard({ subjectName, currentTaskType }) {
 }
 
 export default RenderTaskCard;
-
-
-
-
-
-// import React, { useState, useEffect } from 'react';
-// import axios from 'axios';
-// import TaskCard from '../components/taskCard/TaskCard'
-
-// function RenderTaskCard({ subjectId }) {
-//   const [taskList, setTaskList] = useState([]);
-
-//   useEffect(() => {
-//     const fetchTaskList = `http://localhost:8080/getTasksOfSubject/${subjectId}`;
-
-//     axios.get(fetchTaskList)
-//       .then((res) => {
-//         setTaskList(res.data);
-//       })
-//       .catch((error) => {
-//         console.log(error);
-//       });
-//   }, []);
-
-//   return (
-//     <>
-//       {taskList.map((task) => {
-//         return (
-//           <TaskCard
-//             key={task.id}
-//             name={task.name}
-//             info={task.info}
-//           />
-//         );
-//       })}
-//     </>
-//   );
-// }

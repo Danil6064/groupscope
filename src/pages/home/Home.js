@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import RenderSubjectCards from '../../helpers/RenderSubjectCard';
 import './home.css';
+import {apiUrl} from '../../helpers/MainConstants'
 
 function Home() {
   const [inviteCode, setInviteCode] = useState('');
@@ -11,7 +12,7 @@ function Home() {
       const requestHeaders = new Headers();
       requestHeaders.append('Authorization', 'Bearer ' + jwtToken);
 
-      const response = await fetch('http://localhost:8080/api/group', {
+      const response = await fetch(`${apiUrl}/group`, {
         method: 'GET',
         headers: requestHeaders
       });
@@ -29,7 +30,7 @@ function Home() {
     <div className="main">
       <div className="subjects container">
         <RenderSubjectCards />
-        <div className="invite-code">
+        <div>
           <h3>Інвайт-код:</h3>
           <p>{inviteCode}</p>
         </div>
@@ -39,22 +40,3 @@ function Home() {
 }
 
 export default Home;
-
-
-
-
-// import React from 'react';
-// import RenderSubjectCards from '../../helpers/RenderSubjectCard';
-// import './home.css';
-
-// function Home() {
-//   return (
-//     <div className="main">
-//       <div className="subjects container">
-//         <RenderSubjectCards />
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default Home;
