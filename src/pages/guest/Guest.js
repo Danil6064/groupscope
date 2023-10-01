@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './guest.css';
 import { useNavigate } from 'react-router-dom';
+import {apiUrl} from '../../helpers/MainConstants'
 
 function Guest() {
   const [action, setAction] = useState(null);
@@ -16,7 +17,7 @@ function Guest() {
       name: groupName
     };
 
-    const response = await fetch('http://localhost:8080/api/group/create', {
+    const response = await fetch(`${apiUrl}/group/create`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -37,7 +38,7 @@ function Guest() {
       inviteCode: inviteCode
     };
 
-    const response = await fetch('http://localhost:8080/api/group/join', {
+    const response = await fetch(`${apiUrl}/group/join`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
