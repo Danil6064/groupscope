@@ -29,7 +29,7 @@ function Home() {
     <div className="main">
       <div className="subjects container">
         <RenderSubjectCards />
-        <div className="invite-code">
+        <div>
           <h3>Інвайт-код:</h3>
           <p>{inviteCode}</p>
         </div>

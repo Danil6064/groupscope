@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 import { GoogleLogin } from '@react-oauth/google';
 import jwt_decode from "jwt-decode";
+import {apiUrl, url} from '../../helpers/MainConstants'
 
 function Auth() {
     const navigate = useNavigate();
@@ -38,7 +39,7 @@ function Auth() {
 
             console.log('Sending request to server with options:', requestOptions);
             
-            let res = await fetch('http://localhost:8080/oauth2', requestOptions);
+            let res = await fetch(`${url}/oauth2`, requestOptions);
             console.log('Server Response:', res);
 
             if (!res.ok) {
@@ -55,7 +56,7 @@ function Auth() {
                 login(jwtToken);
                 console.log("Отриманий JWT токен:", jwtToken);
 
-                res = await fetch('http://localhost:8080/api/student', {
+                res = await fetch(`${apiUrl}/student`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -81,6 +82,14 @@ function Auth() {
                     window.close();
                 }
                 
+
+                // if(learningGroup) {
+                    //           navigate('/'); 
+                    //         } else {
+                    //           navigate('/guest'); 
+                    //         }
+
+
             } else {
                 console.error('JWT token not found');
             }
