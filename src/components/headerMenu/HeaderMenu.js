@@ -35,7 +35,7 @@ export default function HeaderMenu() {
         if (isExternal) openInNewTabAndCloseCurrent(to);
       }}
     >
-      <Link to={isExternal ? "#" : to}>{children}</Link>
+      <Link className="menu-item" to={isExternal ? "#" : to}>{children}</Link>
     </li>
   );
   const userRole = localStorage.getItem("userRole");
