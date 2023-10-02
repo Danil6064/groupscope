@@ -35,7 +35,7 @@ export default function HeaderMenu() {
         if (isExternal) openInNewTabAndCloseCurrent(to);
       }}
     >
-      <Link to={isExternal ? "#" : to}>{children}</Link>
+      <Link className="menu-item" to={isExternal ? "#" : to}>{children}</Link>
     </li>
   );
   const userRole = localStorage.getItem("userRole");
@@ -57,7 +57,7 @@ export default function HeaderMenu() {
         </svg>
       </button>
 
-      <nav className={`sidebar ${isOpen ? "open" : ""}`} id="menu">
+      <nav className={`sidebar ${isOpen ? "open" : ""}`}>
         <div className="sidebar-header">
           <button className="close-sidebar" onClick={() => setOpenedState()}>
             <svg
