@@ -42,7 +42,7 @@ export default function HeaderMenu() {
 
   return (
     <>
-      <button className="burger-menu" onClick={() => setOpenedState()}>
+      <button className="bm-open-btn" onClick={() => setOpenedState()}>
         {/* Іконка меню */}
         <svg
           stroke="white"
@@ -59,7 +59,7 @@ export default function HeaderMenu() {
 
       <nav className={`sidebar ${isOpen ? "open" : ""}`}>
         <div className="sidebar-header">
-          <button className="close-sidebar" onClick={() => setOpenedState()}>
+          <button className="bm-close-btn" onClick={() => setOpenedState()}>
             <svg
               stroke="white"
               strokeWidth="2"

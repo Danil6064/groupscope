@@ -1,9 +1,15 @@
-.burger-menu {
-  background: none;
+.bm-open-btn, .bm-close-btn {
+  background-color: var(--dark-bg-color);
   border: none;
+  border-radius: 15%;
   cursor: pointer;
   width: 70px;
   height: 70px;
+  transition: filter 0.3s;
+}
+
+.bm-open-btn:hover, .bm-close-btn:hover{
+  filter: brightness(1.2);
 }
 
 .sidebar {
@@ -14,7 +20,7 @@
   transform: translateX(-100%);
   transition: transform 0.2s ease;
   width: 335px;
-  height: 100vh;
+  height: 100%;
   z-index: 3;
 }
 
@@ -28,15 +34,6 @@
   background-color: var(--dark-bg-color);
 }
 
-.close-sidebar {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  width: 70px;
-  height: 70px;
-}
-
 .menu-list {
   width: 100%;
   height: 100%;
@@ -46,6 +43,7 @@
 
 .menu-item {
   color: var(--dark-text-color);
+  background-color: var(--light-bg-color);
   padding-left: 25px;
   min-height: 62px;
   width: 100%;
@@ -55,11 +53,11 @@
   font-weight: 300;
   font-size: 27px;
   line-height: 32px;
-  transition: background-color 0.3s ease-in-out;
+  transition: filter 0.3s ease-in-out;
 }
 
 .menu-item:hover {
-  background-color: #cfcfcf;
+  filter: brightness(0.9);
 }
 
 .overlay {
