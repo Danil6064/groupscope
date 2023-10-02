@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
-import './main.css';
+import './index.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Auth from './pages/auth/Auth';
 import Guest from './pages/guest/Guest';
