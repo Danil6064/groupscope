@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie"; // Додайте цей рядок
-// import SubjectCard from '../components/subjectCard/SubjectCard';
 import RenderTaskCard from "./RenderTaskCard";
 import AddTaskPopup from "../components/addTask/AddTaskPopup";
 import { apiUrl } from "../helpers/MainConstants";
@@ -10,6 +9,7 @@ import { apiUrl } from "../helpers/MainConstants";
 function SubjectCard({ name, id, onClick }) {
   return (
     <NavLink
+      key={id}
       to={`/subject/${encodeURIComponent(name)}`}
       className="subject-card"
       onClick={() => onClick(id)}
@@ -91,19 +91,19 @@ export default function RenderSubjectCards() {
   return (
     <>
       {subjectList.map((subject) => (
-        <div key={subject.id}>
-          <SubjectCard
-            name={subject.name}
-            id={subject.id}
-            onClick={() => handleSubjectClick(subject.id)}
-          />
-          {selectedSubjectId === subject.id && (
+        // <div key={subject.id}>
+        <SubjectCard
+          name={subject.name}
+          id={subject.id}
+          onClick={() => handleSubjectClick(subject.id)}
+        />
+        /* {selectedSubjectId === subject.id && (     // eto tochno rabotaet????????
             <>
               <RenderTaskCard subjectId={subject.id} />
               <AddTaskPopup subjectId={subject.id} />
             </>
           )}
-        </div>
+          </div> */
       ))}
 
       {userRole === "HEADMAN" && (

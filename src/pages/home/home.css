@@ -1,78 +1,71 @@
-
-@import url('https://fonts.googleapis.com/css2?family=Sofia+Sans:wght@300&display=swap');
-
-
+@import url("https://fonts.googleapis.com/css2?family=Sofia+Sans:wght@300&display=swap");
 
 .main {
-    background-color: #F2F2F2;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-top: 70px;
+  background-color: #f2f2f2;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 70px;
 }
 
 .container {
-    width: 1190px;
-}
-
-.subjects div {
-    display: flex;
+  width: 1190px;
 }
 
 .subjects {
-    box-sizing: border-box;
-    margin: auto;
-    padding: 5px;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 20px;
+  box-sizing: border-box;
+  margin: 20px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
-/* @media (max-width: 480px) {
-    .subjects {
-        
-        gap: 20px;
-    }
-} */
-
 .subject-card {
-    padding: 5px;
-    border: 2px solid #303030;
-    color: #303030;
-    border-radius: 30px;
-    width: 280px;
-    height: 228px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: .3s ease;
+  padding: 5px;
+  border: 2px solid #303030;
+  color: #303030;
+  border-radius: 30px;
+  width: 280px;
+  height: 228px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .subject-card h2 {
-    text-transform: uppercase;
-    text-align: center;
-    font-weight: 300;
-    font-size: 30px;
-    line-height: 36px;
-    word-break: break-word
+  text-transform: uppercase;
+  text-align: center;
+  font-weight: 300;
+  font-size: 30px;
+  line-height: 36px;
+  word-break: break-word;
 }
 
 .subject-card:hover {
-    background: #303030;
-    color: #ffffff;
+  background-color: #303030;
+  color: #ffffff;
 }
 
 @media (max-width: 480px) {
-    .subject-card {
-        width: 100%;
-        height: auto;
-    }
+  .main {
+    align-items: baseline;
+    padding-top: 50px;
+  }
+  
+  .subjects {
+    margin: 10px;
+    gap: 10px;
+  }
+
+  .subject-card {
+    width: 100%;
+    height: auto;
+  }
+
+  .subject-card h2 {
+    font-size: 20px;
+  }
 }
-
-
-
-
-
-
