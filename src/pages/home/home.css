@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Sofia+Sans:wght@300&display=swap");
 
 .main {
-  background-color: #f2f2f2;
+  background-color: var(--light-bg-color);
   min-height: 100vh;
   display: flex;
   justify-content: center;
@@ -24,8 +24,8 @@
 
 .subject-card {
   padding: 5px;
-  border: 2px solid #303030;
-  color: #303030;
+  border: var(--border);
+  color: var(--dark-text-color);
   border-radius: 30px;
   width: 280px;
   height: 228px;
@@ -45,8 +45,8 @@
 }
 
 .subject-card:hover {
-  background-color: #303030;
-  color: #ffffff;
+  background-color: var(--dark-bg-color);
+  color: var(--light-text-color);
 }
 
 @media (max-width: 480px) {
