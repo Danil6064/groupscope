@@ -6,11 +6,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-top: 70px;
+  padding-top: var(--header-hight);
 }
 
 .container {
-  width: 1190px;
+  /* width: 1180px; */
+  width: 1180px;
 }
 
 .subjects {

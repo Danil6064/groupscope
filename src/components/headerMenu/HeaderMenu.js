@@ -98,7 +98,7 @@ export default function HeaderMenu() {
       </nav>
 
       <div className="user-avatar">
-        <button className="user-avatar-btn" onClick={logout}>
+        <button className="user-avatar-btn" onClick={logout}> 
           {avatarUrl && (
             <img
               src={avatarUrl}
