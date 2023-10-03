@@ -52,7 +52,6 @@ export default function HeaderMenu() {
   return (
     <>
       <button className="bm-open-btn" onClick={() => setOpenedState()}>
-        {/* Іконка меню */}
         <svg
           stroke="white"
           strokeWidth="2"
@@ -98,15 +97,16 @@ export default function HeaderMenu() {
         </ul>
       </nav>
 
-      <div>
-        {avatarUrl && (
-          <img
-            src={avatarUrl}
-            alt="Аватар користувача"
-            className="user-avatar"
-          />
-        )}
-        <button onClick={logout}>Вийти</button>
+      <div className="user-avatar">
+        <button className="user-avatar-btn" onClick={logout}>
+          {avatarUrl && (
+            <img
+              src={avatarUrl}
+              alt="Аватар користувача"
+              className="user-avatar-img"
+            />
+          )}
+        </button>
       </div>
     </>
   );
