@@ -1,5 +1,7 @@
 .homework-list {
-  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .homework-card {
@@ -7,9 +9,7 @@
   color: var( --dark-text-color);
   border: var(--border);
   border-radius: 15px;
-  width: 100%;
   padding: 15px 30px;
-  margin-bottom: 18px;
 }
 
 .homework-card h3 {
@@ -24,4 +24,5 @@
   font-weight: 300;
   font-size: 20px;
   line-height: 24px;
+  word-break: break-word;
 }
