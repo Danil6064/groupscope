@@ -16,9 +16,16 @@ export default function HeaderMenu() {
   }, []);
 
   const setOpenedState = () => {
-    const reverseOpend = !isOpen;
-    setIsOpen(reverseOpend);
+    setIsOpen(!isOpen);
   };
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add("menu-open");
+    } else {
+      document.body.classList.remove("menu-open");
+    }
+  }, [isOpen]);
 
   const openInNewTabAndCloseCurrent = (url) => {
     const newTab = window.open(url, "_blank");
@@ -35,7 +42,9 @@ export default function HeaderMenu() {
         if (isExternal) openInNewTabAndCloseCurrent(to);
       }}
     >
-      <Link className="menu-item" to={isExternal ? "#" : to}>{children}</Link>
+      <Link className="menu-item" to={isExternal ? "#" : to}>
+        {children}
+      </Link>
     </li>
   );
   const userRole = localStorage.getItem("userRole");
@@ -56,6 +65,11 @@ export default function HeaderMenu() {
           <line x1="3" y1="18" x2="21" y2="18" />
         </svg>
       </button>
+
+      <div
+        className={`overlay ${isOpen ? "active" : ""}`}
+        onClick={() => setOpenedState()}
+      ></div>
 
       <nav className={`sidebar ${isOpen ? "open" : ""}`}>
         <div className="sidebar-header">
@@ -84,10 +98,6 @@ export default function HeaderMenu() {
         </ul>
       </nav>
 
-      <div
-        className={`overlay ${isOpen ? "active" : ""}`}
-        onClick={() => setOpenedState()}
-      ></div>
       <div>
         {avatarUrl && (
           <img
