@@ -18,6 +18,7 @@
 }
 
 .dropdown-menu-btn h2 {
+  word-break: break-word;
   text-transform: uppercase;
   text-align: center;
   font-size: 30px;
