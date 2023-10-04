@@ -12,7 +12,7 @@
   border: var(--border);
   border-radius: 30px;
   min-height: 62px;
-  padding: 10px 6%;
+  padding: 5px 5%;
   transition: background-color 0.3s ease, color 0.3s ease, fill 0.3s ease;
 }
 
@@ -56,4 +56,14 @@
   font-size: 25px;
   line-height: 30px;
   cursor: pointer;
+}
+
+@media (max-width: 480px) {
+  .dropdown-menu-btn {
+    min-height: auto;
+  }
+
+  .dropdown-menu-btn h2 {
+    font-size: 20px;
+  }
 }
