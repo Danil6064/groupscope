@@ -13,7 +13,7 @@
 }
 
 body.menu-open {
-  overflow: hidden;
+  overflow-y: hidden;
 }
 
 .sidebar {
