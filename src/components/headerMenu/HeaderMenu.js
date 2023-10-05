@@ -16,9 +16,9 @@ export default function HeaderMenu() {
     }
   }, []);
 
-  const setOpenedState = () => {
+  function setOpenedState() {
     setIsOpen(!isOpen);
-  };
+  }
 
   useEffect(() => {
     if (isOpen) {
@@ -36,10 +36,10 @@ export default function HeaderMenu() {
     window.close();
   };
 
-  const MenuItem = ({ to, children, isExternal }) => (
+  const MenuItem = ({ to, children }) => (
     <li
       onClick={() => {
-        setIsOpen(false);
+        setOpenedState();
       }}
     >
       <Link className="menu-item" to={to}>

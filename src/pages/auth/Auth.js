@@ -1,12 +1,12 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import { GoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
 import { apiUrl, url } from "../../helpers/MainConstants";
 import "./auth.css";
 
-function Auth() {
+export default function Auth() {
   const navigate = useNavigate();
   const { login } = useAuth();
 
@@ -106,16 +106,15 @@ function Auth() {
   return (
     <div className="auth-container">
       <GoogleLogin
-        clientId="170308750708-atmmob9kjjesg9s4286k76at7ha8mgpt.apps.googleusercontent.com"
-        buttonText="Увійти через Google"
+        // buttonText="Увійти через Google"
+        // ux_mode="redirect"
         onSuccess={handleGoogleSuccess}
+        // onSuccess={redirect("/")}
         onFailure={handleGoogleFailure}
       />
     </div>
   );
 }
-
-export default Auth;
 
 // import React from 'react';
 // import { useNavigate } from 'react-router-dom';
