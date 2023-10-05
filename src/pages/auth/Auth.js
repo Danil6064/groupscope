@@ -58,6 +58,7 @@ function Auth() {
 
                 res = await fetch(`${apiUrl}/student`, {
                     method: 'GET',
+                    referrerPolicy: "unsafe_url",
                     headers: {
                         'Content-Type': 'application/json',
                         'Cache-Control': 'no-cache',
