@@ -158,6 +158,7 @@
 .popup__btns {
   display: flex;
   justify-content: space-between;
+  gap: 10px;
 }
 
 .popup__close-btn {
