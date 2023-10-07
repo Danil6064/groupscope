@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useMediaQuery } from "react-responsive";
 import Cookies from "js-cookie";
 import "./successfulGroup.css";
 import ChoseSubjectMenu from "../../components/choseSubject/ChoseSubjectMenu";
@@ -10,6 +11,7 @@ export default function SuccessfulGroup() {
     localStorage.getItem("selectedSubject") || ""
   );
   const [studentsData, setStudentsData] = useState([]);
+  const isAdaptive = useMediaQuery( {query: "max-width: 1220px"});
 
   useEffect(() => {
     const fetchSubjects = async () => {
@@ -42,13 +44,30 @@ export default function SuccessfulGroup() {
       );
       const data = await response.json();
       setStudentsData(data);
+      console.log("StudentsData: " + response.data);
     };
 
     if (selectedSubject) {
       fetchStudentsData();
     }
-  }, [selectedSubject]);
+  }, [selectedSubject]);  
 
+  return (
+    <main className="main_successfulGroup">
+      <div className="container_successfulGroup">
+        <ChoseSubjectMenu
+          subjects={subjects}
+          setSelectedSubject={setSelectedSubject}
+          currentSubject={selectedSubject}
+          redirectTo="/successfulGroup"
+        />
+        {isAdaptive? <DesktopTable studentsData={studentsData}/> : null}
+      </div>
+    </main>
+  );
+}
+
+function DesktopTable({studentsData}) {
   const abbreviateTaskName = (name) => {
     if (name.includes("Практичне Завдання")) return "ПЗ";
     if (name.includes("Лабораторна робота")) return "ЛБ";
@@ -63,8 +82,22 @@ export default function SuccessfulGroup() {
     ),
   ];
 
-  const conclusionClass =
-    taskNames.length % 2 === 0 ? "table__odd-column" : "table__even-column";
+  const headerRow = taskNames.map((taskName, index) => {
+    let isOdd = index % 2 === 0;
+    return (
+      <li
+        key={taskName}
+        className={`table-header-row__task-type ${
+          isOdd ? "table__odd-column" : "table__even-column"
+        }`}
+      >
+        <span>{abbreviateTaskName(taskName.split(" №")[0])}</span>
+        <span>№{taskName.split(" №")[1]}</span>
+      </li>
+    );
+  });
+  
+  
 
   const studentRows = studentsData.map((student) => (
     <div className="table__row" key={student.id}>
@@ -95,59 +128,46 @@ export default function SuccessfulGroup() {
             </li>
           );
         })}
-        <li className={`table-row__conclusion ${conclusionClass}`}>
+        <li
+          className={`table-row__conclusion ${
+            taskNames.length % 2 === 0
+              ? "table__odd-column"
+              : "table__even-column"
+          }`}
+        >
           <div className="table__gradient-conclusion"></div>
         </li>
       </ul>
     </div>
   ));
 
-  const headerRow = taskNames.map((taskName, index) => {
-    let isOdd = index % 2 === 0;
-    return (
-      <li
-        key={taskName}
-        className={`table-header-row__task-type ${
-          isOdd ? "table__odd-column" : "table__even-column"
-        }`}
-      >
-        <span>{abbreviateTaskName(taskName.split(" №")[0])}</span>
-        <span>№{taskName.split(" №")[1]}</span>
-      </li>
-    );
-  });
-
   return (
-    <main className="main_successfulGroup">
-      <div className="container_successfulGroup">
-        <ChoseSubjectMenu
-          subjects={subjects}
-          setSelectedSubject={setSelectedSubject}
-          currentSubject={selectedSubject}
-          redirectTo="/successfulGroup"
-        />
-        <div className="table">
-          <div className="table__header-row">
-            <div className="table-header-row__designation">
-              <div className="table__center-container">
-                <div className="table__red-circle"></div>
-                <span>Не зроблено</span>
-              </div>
-              <div className="table__center-container">
-                <div className="table__yellow-circle"></div>
-                <span>Зроблено</span>
-              </div>
-            </div>
-            <ul className="table-header-row__headings">
-              {headerRow}
-              <li className={`table-header-row__conclusion ${conclusionClass}`}>
-                <span>Висновок</span>
-              </li>
-            </ul>
+    <div className="table">
+      <div className="table__header-row">
+        <div className="table-header-row__designation">
+          <div className="table__center-container">
+            <div className="table__red-circle"></div>
+            <span>Не зроблено</span>
           </div>
-          {studentRows}
+          <div className="table__center-container">
+            <div className="table__yellow-circle"></div>
+            <span>Зроблено</span>
+          </div>
         </div>
+        <ul className="table-header-row__headings">
+          {headerRow}
+          <li
+            className={`table-header-row__conclusion ${
+              taskNames.length % 2 === 0
+                ? "table__odd-column"
+                : "table__even-column"
+            }`}
+          >
+            <span>Висновок</span>
+          </li>
+        </ul>
       </div>
-    </main>
+      {studentRows}
+    </div>
   );
 }

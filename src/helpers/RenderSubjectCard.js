@@ -107,20 +107,33 @@ export default function RenderSubjectCards() {
       ))}
 
       {/* Временный функционал добавление предмета */}
-      {/* {userRole === "HEADMAN" && (      
+      {userRole === "HEADMAN" && (
         <>
           <select multiple={true} onChange={handleSubjectChange}>
-            <option value="Програмування">Програмування</option>
-            <option value="Іноземна мова">Іноземна мова</option>
-            <option value="Філософія">Філософія</option>
-            <option value="Архітектура комп'ютерних систем">Архітектура комп'ютерних систем</option>
-            <option value="Електрорадіовимірювання">Електрорадіовимірювання</option>
+            <option value="Бази даних">Бази даних</option>
+            <option value="Soft skills">Soft skills</option>
+            <option value="WEB-програмування">WEB-програмування</option>
+            <option value="Захист від технічних розвідок">
+              Захист від технічних розвідок
+            </option>
+            <option value="Інформаційно-комунікаційні системи">
+              Інформаційно-комунікаційні системи
+            </option>
+            <option value="Комплексні системи захисту інформації">
+              Комплексні системи захисту інформації
+            </option>
+            <option value="Нормативно-правове забезпечення інформаційної безпеки">
+              Інформаційно-комунікаційні системи
+            </option>
+            <option value="Психологія управління">Психологія управління</option>
+            <option value="Соціальна психологія та конфліктологія">
+              Соціальна психологія та конфліктологія
+            </option>
+            <option value="Фізичне виховання">Фізичне виховання</option>
           </select>
-
           <button onClick={handleAddSubjects}>Додати</button>
         </>
-      )} */}
+      )}
     </>
   );
 }
-

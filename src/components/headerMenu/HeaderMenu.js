@@ -84,7 +84,7 @@ export default function HeaderMenu() {
         </div>
         <ul className="menu-list">
           <MenuItem to="/">Головне меню</MenuItem>
-          <MenuItem to="#">Новини</MenuItem>
+          {/* <MenuItem to="#">Новини</MenuItem> */}
           <MenuItem to="/successfulStudent">Успішність</MenuItem>
           {userRole === "HEADMAN" && (
             <MenuItem to="/successfulGroup">Успішність групи</MenuItem>

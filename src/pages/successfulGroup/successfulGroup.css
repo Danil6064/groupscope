@@ -20,7 +20,9 @@
 .table {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
     padding: 25px 20px;
+    width: 100%;
     border: var(--border);
     border-radius: 20px;
 }
@@ -28,15 +30,15 @@
 .table__header-row {
     display: flex;
     flex-wrap: nowrap;
-    /* justify-content: space-between; */
     gap: 20px;
 }
 
 .table-header-row__designation {
+    width: 280px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 280px;
+    flex-wrap: wrap;
     height: 50px;
     padding: 0px 18px;
     border: var(--border);
@@ -74,13 +76,10 @@
 
 .table-header-row__headings {
     display: flex;
-    /* justify-content: space-around; */
     max-width: 840px;
-    height: 50px;
     padding: 0 20px;
     border: 2px solid #303030;
     border-radius: 10px 10px 20px 20px;
-    /* margin-left: 20px; */
 }
 
 .table-header-row__task-type {
@@ -126,10 +125,6 @@
 
 .table__row:last-child {
     border-bottom: none;
-}
-
-.table__row.table__first-row {
-    border-top: 1px solid #303030;
 }
 
 .table-row__student-name {
@@ -196,4 +191,14 @@
 .table-header-row__headings.bottom-headings {
     border-radius: 20px 20px 10px 10px;
     align-self: flex-end;
+}
+
+
+
+
+@media (max-width: 480px) {
+    .container_successfulGroup {
+        margin: 20px 10px;
+    }
+
 }
