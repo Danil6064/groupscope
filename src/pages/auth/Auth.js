@@ -88,6 +88,7 @@ export default function Auth() {
 
         if(learningGroup) {
                   navigate('/');
+
                 } else {
                   navigate('/guest');
                 }

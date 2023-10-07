@@ -14,6 +14,7 @@ function Home() {
 
       const response = await fetch(`${apiUrl}/group`, {
         method: 'GET',
+        referrerPolicy: "unsafe_url",
         headers: requestHeaders
       });
 
