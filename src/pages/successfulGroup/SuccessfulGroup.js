@@ -62,6 +62,7 @@ export default function SuccessfulGroup() {
       )
     ),
   ];
+
   const conclusionClass =
     taskNames.length % 2 === 0 ? "table__odd-column" : "table__even-column";
 
@@ -144,7 +145,7 @@ export default function SuccessfulGroup() {
               </li>
             </ul>
           </div>
-          {/* {studentRows} */}
+          {studentRows}
         </div>
       </div>
     </main>

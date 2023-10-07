@@ -19,10 +19,9 @@
 
 .table {
     display: flex;
-    flex-wrap: wrap;
     flex-direction: column;
     padding: 25px 20px;
-    border: 2px solid #303030;
+    border: var(--border);
     border-radius: 20px;
 }
 
@@ -38,7 +37,7 @@
     align-items: center;
     justify-content: space-between;
     width: 280px;
-    min-height: 50px;
+    height: 50px;
     padding: 0px 18px;
     border: var(--border);
     border-radius: 10px 10px 20px 20px;
@@ -77,7 +76,7 @@
     display: flex;
     /* justify-content: space-around; */
     max-width: 840px;
-    height: 49px;
+    height: 50px;
     padding: 0 20px;
     border: 2px solid #303030;
     border-radius: 10px 10px 20px 20px;
@@ -101,17 +100,17 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 117px;
+    width: 115px;
     font-size: 16px;
     text-transform: uppercase;
 }
 
 .table__odd-column {
-    background: rgba(203, 203, 203, 0.5);
+    background-color: #D7D7D7;
 }
 
 .table__even-column {
-    background: rgba(229, 229, 229, 0.8);
+    background-color: #E5E5E5;
 }
 
 
@@ -121,9 +120,12 @@
 
 .table__row {
     display: flex;
-    justify-content: space-between;
-    height: 38px;
+    gap: 20px;
     border-bottom: 1px solid #303030;
+}
+
+.table__row:last-child {
+    border-bottom: none;
 }
 
 .table__row.table__first-row {
@@ -134,14 +136,19 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 320px;
+    padding: 0 20px;
+    width: 280px;
+    height: 38px;
+    font-size: 20px;
 }
 
 .table-row__marks {
     display: flex;
-    /* justify-content: space-around; */
-    width: 840px;
-    margin-left: 10px;
+    max-width: 840px;
+    height: 38px;
+    padding: 0 20px;
+    border-left: 2px solid transparent;
+    border-right: 2px solid transparent;
 }
 
 .table-row__mark {
@@ -155,28 +162,31 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 117px;
+    width: 115px;
 }
 
 .table__red-conclusion {
-    width: 91px;
+    width: 90px;
     height: 23px;
     background: rgba(255, 0, 0, 0.7);
     border-radius: 50px;
+    border: var(--border);
 }
 
 .table__yellow-conclusion {
-    width: 91px;
+    width: 90px;
     height: 23px;
     background: rgba(250, 255, 0, 0.7);
     border-radius: 50px;
+    border: var(--border);
 }
 
 .table__gradient-conclusion {
-    width: 91px;
+    width: 90px;
     height: 23px;
     background: linear-gradient(90deg, rgba(248, 70, 70, 0.7) 42.19%, rgba(245, 248, 70, 0.7) 60.42%);
     border-radius: 50px;
+    border: var(--border);
 }
 
 .table-header-row__designation.bottom-designation {
