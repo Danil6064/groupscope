@@ -1,16 +1,19 @@
 @import url("https://fonts.googleapis.com/css2?family=Sofia+Sans:wght@300&display=swap");
 
-.container_taskPage {
-  width: 1180px;
-  margin: 40px 20px 0 20px;
-}
-
 .main_taskPage {
   background-color: var(--light-bg-color);
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  padding-top: 70px;
+  padding-top: var(--header-hight);
+}
+
+.container_taskPage {
+  width: 1180px;
+  margin: 40px 20px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .add-study-assignment {
@@ -23,11 +26,12 @@
   border: var(--border);
   border-radius: 30px;
   min-height: 62px;
-  margin-bottom: 20px;
+  padding: 5px;  
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .add-study-assignment h2 {
+  word-break: break-word;
   text-transform: uppercase;
   text-align: center;
   font-weight: 300;
@@ -108,7 +112,7 @@
 }
 
 .popup__list-item h3 {
-    color: var(--dark-text-color);
+  color: var(--dark-text-color);
   text-transform: uppercase;
 }
 
@@ -200,4 +204,23 @@
 .popup__save-btn:hover {
   color: var(--dark-text-color);
   background-color: var(--light-bg-color);
+}
+
+@media (max-width: 480px) {
+  .main_taskPage {
+    padding-top: 50px;
+  }
+
+  .container_taskPage {
+    margin: 20px 10px;
+    gap: 15px;
+  }
+
+  .add-study-assignment {
+    min-height: auto;
+  }
+
+  .add-study-assignment h2 {
+    font-size: 20px;
+  }
 }

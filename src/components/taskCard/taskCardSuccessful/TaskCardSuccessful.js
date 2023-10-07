@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import {apiUrl} from '../../../helpers/MainConstants'
+import { apiUrl } from "../../../helpers/MainConstants";
 
 export default function TaskCardSuccessful({ selectedSubject }) {
   const [grades, setGrades] = useState(Array());
   const jwtToken = localStorage.getItem("jwtToken");
+
+  const assessClassName = (mark) => {
+    return `successfulness-card-assess ${mark > 0 ? "active" : null}`;
+  };
 
   const fetchGrades = async () => {
     console.log("Fetching grades for subject:", selectedSubject);
@@ -19,6 +23,9 @@ export default function TaskCardSuccessful({ selectedSubject }) {
           }
         );
         console.log("Received data from server:", response.data); // Додано цей рядок
+        // setGrades(response.data.map(data => { // TODO for rerendering
+
+        // }));
         setGrades(response.data);
       } catch (error) {
         console.error("Error fetching student grades", error);
@@ -64,27 +71,19 @@ export default function TaskCardSuccessful({ selectedSubject }) {
         key={`${grade.subjectName}-${grade.taskName}`}
       >
         <h3>{grade.taskName}</h3>
-
-        <button
-          className={`successfulness-card-task-done ${
-            grade.completion ? "active" : ""
-          }`}
-          onClick={() =>
+        <TaskCompletionButton
+          completion={grade.completion}
+          onTaskCompletionButtonClick={() =>
             handleDataChange({
               taskName: grade.taskName,
               completion: !grade.completion,
               mark: 0,
             })
           }
-        >
-          {grade.completion ? "зроблено" : "не зроблено"}
-        </button>
-
-        <input
-          type="number"
-          placeholder="Введіть оцінку"
-          defaultValue={grade.mark || ""}
-          onBlur={(e) =>
+        />
+        <MarkInputField
+          mark={grade.mark}
+          onChangeMarkInputField={(e) =>
             handleDataChange({
               taskName: grade.taskName,
               completion: grade.completion,
@@ -92,17 +91,36 @@ export default function TaskCardSuccessful({ selectedSubject }) {
             })
           }
         />
-
-        <span
-          className={`successfulness-card-assess ${
-            grade.mark > 0 ? "active" : ""
-          }`}
-        >
-          Оцінено
-        </span>
+        <span className={assessClassName(grade.mark)}>Оцінено</span>
       </li>
     );
   });
 
   return <ul className="successfulness-list">{taskCards}</ul>;
+}
+
+function TaskCompletionButton({ completion, onTaskCompletionButtonClick }) {
+  const TaskCompletionButtonClassName = `successfulness-card-task-done ${
+    completion ? "active" : null
+  }`;
+
+  return (
+    <button
+      className={TaskCompletionButtonClassName}
+      onClick={onTaskCompletionButtonClick}
+    >
+      {completion ? "зроблено" : "не зроблено"}
+    </button>
+  );
+}
+
+function MarkInputField({ mark, onChangeMarkInputField }) {
+  return (
+    <input
+      type="number"
+      placeholder="Введіть оцінку"
+      defaultValue={mark || null}
+      onBlur={onChangeMarkInputField}
+    />
+  );
 }

@@ -31,10 +31,10 @@ function Home() {
     <div className="main">
       <div className="subjects container">
         <RenderSubjectCards />
-        <div>
+        {/* <div>
           <h3>Інвайт-код:</h3>
           <p>{inviteCode}</p>
-        </div>
+        </div> */}
       </div>
     </div>
   );

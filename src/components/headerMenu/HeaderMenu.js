@@ -7,6 +7,7 @@ export default function HeaderMenu() {
   const [isOpen, setIsOpen] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState(null);
   const { logout } = useAuth();
+  let overlayClassName = `overlay ${isOpen ? "active" : ""}`;
 
   useEffect(() => {
     const savedPictureUrl = localStorage.getItem("userPicture");
@@ -15,10 +16,17 @@ export default function HeaderMenu() {
     }
   }, []);
 
-  const setOpenedState = () => {
-    const reverseOpend = !isOpen;
-    setIsOpen(reverseOpend);
-  };
+  function setOpenedState() {
+    setIsOpen(!isOpen);
+  }
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add("menu-open");
+    } else {
+      document.body.classList.remove("menu-open");
+    }
+  }, [isOpen]);
 
   const openInNewTabAndCloseCurrent = (url) => {
     const newTab = window.open(url, "_blank");
@@ -28,14 +36,15 @@ export default function HeaderMenu() {
     window.close();
   };
 
-  const MenuItem = ({ to, children, isExternal }) => (
+  const MenuItem = ({ to, children }) => (
     <li
       onClick={() => {
-        setIsOpen(false);
-        if (isExternal) openInNewTabAndCloseCurrent(to);
+        setOpenedState();
       }}
     >
-      <Link className="menu-item" to={isExternal ? "#" : to}>{children}</Link>
+      <Link className="menu-item" to={to}>
+        {children}
+      </Link>
     </li>
   );
   const userRole = localStorage.getItem("userRole");
@@ -43,7 +52,6 @@ export default function HeaderMenu() {
   return (
     <>
       <button className="bm-open-btn" onClick={() => setOpenedState()}>
-        {/* Іконка меню */}
         <svg
           stroke="white"
           strokeWidth="2"
@@ -56,6 +64,8 @@ export default function HeaderMenu() {
           <line x1="3" y1="18" x2="21" y2="18" />
         </svg>
       </button>
+
+      <div className={overlayClassName} onClick={() => setOpenedState()}></div>
 
       <nav className={`sidebar ${isOpen ? "open" : ""}`}>
         <div className="sidebar-header">
@@ -77,26 +87,21 @@ export default function HeaderMenu() {
           <MenuItem to="#">Новини</MenuItem>
           <MenuItem to="/successfulStudent">Успішність</MenuItem>
           {userRole === "HEADMAN" && (
-            <MenuItem to="/successfulGroup" isExternal={true}>
-              Успішність групи
-            </MenuItem>
+            <MenuItem to="/successfulGroup">Успішність групи</MenuItem>
           )}
         </ul>
       </nav>
 
-      <div
-        className={`overlay ${isOpen ? "active" : ""}`}
-        onClick={() => setOpenedState()}
-      ></div>
-      <div>
-        {avatarUrl && (
-          <img
-            src={avatarUrl}
-            alt="Аватар користувача"
-            className="user-avatar"
-          />
-        )}
-        <button onClick={logout}>Вийти</button>
+      <div className="user-avatar">
+        <button className="user-avatar-btn" onClick={logout}>
+          {avatarUrl && (
+            <img
+              src={avatarUrl}
+              alt="Аватар користувача"
+              className="user-avatar-img"
+            />
+          )}
+        </button>
       </div>
     </>
   );

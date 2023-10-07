@@ -6,11 +6,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-top: 70px;
+  padding-top: var(--header-hight);
 }
 
 .container {
-  width: 1190px;
+  width: 1180px;
 }
 
 .subjects {
@@ -56,8 +56,8 @@
   }
   
   .subjects {
-    margin: 10px;
-    gap: 10px;
+    margin: 20px 10px;
+    gap: 15px;
   }
 
   .subject-card {

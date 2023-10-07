@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
+import DropDownMenu from "../dropDownMenu/DropDownMenu";
 
 export default function ChoseSubjectMenu({
   setSelectedSubject,
@@ -11,7 +12,6 @@ export default function ChoseSubjectMenu({
   const [selected, setSelected] = useState(
     localStorage.getItem("selectedSubject") || currentSubject || ""
   );
-  const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -36,44 +36,19 @@ export default function ChoseSubjectMenu({
   const handleClick = (subject) => {
     setSelected(subject);
     setSelectedSubject(subject);
-    setIsOpen(false);
   };
 
-  useEffect(() => {
-    const handleOutsideClick = (event) => {
-      if (isOpen && !event.target.closest(".dropdown-menu")) {
-        setIsOpen(false);
-      }
-    };
-    document.addEventListener("click", handleOutsideClick);
-    return () => {
-      document.removeEventListener("click", handleOutsideClick);
-    };
-  }, [isOpen]);
-
-  return (
-    <div className="dropdown-menu">
-      <div className="dropdown-menu-btn" onClick={() => setIsOpen(!isOpen)}>
-        <svg width="15" height="15" viewBox="0 0 19 19">
-          <polygon points="0,0 19,0 9.5,19" />
-        </svg>
-        <h2>{selected}</h2>
-        <svg width="15" height="15" viewBox="0 0 19 19">
-          <polygon points="0,0 19,0 9.5,19" />
-        </svg>
-      </div>
-      <div
-        className="dropdown-menu-elements"
-        style={{ display: isOpen ? "flex" : "none" }}
+  const menuItems = subjects.map((subject, index) => {
+    return (
+      <li
+        key={index}
+        className="dropdown-menu-item"
+        onClick={() => handleClick(subject)}
       >
-        <ul>
-          {subjects.map((subject, index) => (
-            <li key={index} onClick={() => handleClick(subject)}>
-              {subject}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  );
+        {subject}
+      </li>
+    );
+  });
+
+  return <DropDownMenu menuTitle={selected} menuItems={menuItems} />;
 }
