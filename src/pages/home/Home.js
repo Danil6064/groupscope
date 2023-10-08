@@ -3,7 +3,7 @@ import RenderSubjectCards from '../../helpers/RenderSubjectCard';
 import './home.css';
 import {apiUrl} from '../../helpers/MainConstants'
 
-function Home() {
+export default function Home() {
   const [inviteCode, setInviteCode] = useState('');
   const jwtToken = localStorage.getItem('jwtToken');
 
@@ -20,6 +20,7 @@ function Home() {
       if (response.ok) {
         const data = await response.json();
         setInviteCode(data.inviteCode);
+        console.log("setInviteCode")
       }
     };
 
@@ -38,5 +39,3 @@ function Home() {
     </div>
   );
 }
-
-export default Home;

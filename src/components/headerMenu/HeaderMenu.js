@@ -36,19 +36,6 @@ export default function HeaderMenu() {
     window.close();
   };
 
-  const MenuItem = ({ to, children }) => (
-    <li
-      onClick={() => {
-        setOpenedState();
-      }}
-    >
-      <Link className="menu-item" to={to}>
-        {children}
-      </Link>
-    </li>
-  );
-  const userRole = localStorage.getItem("userRole");
-
   return (
     <>
       <button className="bm-open-btn" onClick={() => setOpenedState()}>
@@ -82,14 +69,7 @@ export default function HeaderMenu() {
             </svg>
           </button>
         </div>
-        <ul className="menu-list">
-          <MenuItem to="/">Головне меню</MenuItem>
-          {/* <MenuItem to="#">Новини</MenuItem> */}
-          <MenuItem to="/successfulStudent">Успішність</MenuItem>
-          {userRole === "HEADMAN" && (
-            <MenuItem to="/successfulGroup">Успішність групи</MenuItem>
-          )}
-        </ul>
+        <MenuList onMenuItemClick={() => setOpenedState()} />
       </nav>
 
       <div className="user-avatar">
@@ -104,5 +84,39 @@ export default function HeaderMenu() {
         </button>
       </div>
     </>
+  );
+}
+
+function MenuList({ onMenuItemClick }) {
+  const userRole = localStorage.getItem("userRole");
+
+  return (
+    <div className="menu-list">
+      <Link to="/" className="menu-item" onClick={onMenuItemClick}>
+        Головне меню
+      </Link>
+
+      {/* <Link to="#" className="menu-item" onClick={onMenuItemClick}>
+        Новини
+      </Link> */}
+
+      <Link
+        to="/successfulStudent"
+        className="menu-item"
+        onClick={onMenuItemClick}
+      >
+        Успішність
+      </Link>
+
+      {userRole === "HEADMAN" && (
+        <Link
+          to="/successfulGroup"
+          className="menu-item"
+          onClick={onMenuItemClick}
+        >
+          Успішність групи
+        </Link>
+      )}
+    </div>
   );
 }

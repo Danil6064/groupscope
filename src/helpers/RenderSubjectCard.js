@@ -11,7 +11,7 @@ function SubjectCard({ name, id, onClick }) {
     <NavLink
       to={`/subject/${encodeURIComponent(name)}`}
       className="subject-card"
-      onClick={() => onClick(id)}
+      onClick={onClick(id)}
     >
       <h2>{name}</h2>
     </NavLink>
