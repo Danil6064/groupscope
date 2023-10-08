@@ -28,13 +28,13 @@ export default function HeaderMenu() {
     }
   }, [isOpen]);
 
-  const openInNewTabAndCloseCurrent = (url) => {
-    const newTab = window.open(url, "_blank");
-    if (newTab) {
-      newTab.focus();
-    }
-    window.close();
-  };
+  // const openInNewTabAndCloseCurrent = (url) => {
+  //   const newTab = window.open(url, "_blank");
+  //   if (newTab) {
+  //     newTab.focus();
+  //   }
+  //   window.close();
+  // };
 
   return (
     <>
@@ -92,7 +92,7 @@ function MenuList({ onMenuItemClick }) {
 
   return (
     <div className="menu-list">
-      <Link to="/" className="menu-item" onClick={onMenuItemClick}>
+      <Link to="/home" className="menu-item" onClick={onMenuItemClick}>
         Головне меню
       </Link>
 

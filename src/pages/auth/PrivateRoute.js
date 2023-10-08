@@ -8,12 +8,12 @@ function PrivateRoute({ roles, children }) {
   console.log("roles:", roles);
 
   if (!isAuthenticated) {
-    return <Navigate to="/auth" />;
+    return <Navigate to="/" />;
   }
 
   // Перевірка доступу за роллю
   if (roles && roles.length && !roles.includes(userRole)) {
-    return <Navigate to="/" />;
+    return <Navigate to="/home" />;
   }
 
   return children;

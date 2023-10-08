@@ -16,15 +16,15 @@ import Layout from "./components/Layout";
 export default function App() {
   return (
     <BrowserRouter>
-      <AuthProvider>
-        <StudentProvider>
-          <GoogleOAuthProvider clientId="170308750708-atmmob9kjjesg9s4286k76at7ha8mgpt.apps.googleusercontent.com">
+      <GoogleOAuthProvider clientId="170308750708-atmmob9kjjesg9s4286k76at7ha8mgpt.apps.googleusercontent.com">
+        <AuthProvider>
+          {/* <StudentProvider> */}
             <Routes>
               <Route path="/" element={<Layout />}>
-                <Route path="auth" element={<Auth />} />
+                <Route index element={<Auth />} />
                 <Route path="guest" element={<Guest />} />
                 <Route
-                  index
+                  path="home"
                   element={
                     <PrivateRoute roles={["HEADMAN", "STUDENT"]}>
                       <Home />
@@ -57,9 +57,9 @@ export default function App() {
                 />
               </Route>
             </Routes>
-          </GoogleOAuthProvider>
-        </StudentProvider>
-      </AuthProvider>
+          {/* </StudentProvider> */}
+        </AuthProvider>
+      </GoogleOAuthProvider>
     </BrowserRouter>
   );
 }

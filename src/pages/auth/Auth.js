@@ -1,5 +1,5 @@
 import React from "react";
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import { GoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
@@ -86,11 +86,12 @@ export default function Auth() {
         //   window.close();
         // }
 
-        if(learningGroup) {
-                  navigate('/');
-                } else {
-                  navigate('/guest');
-                }
+        if (learningGroup) {
+          navigate("/home");
+        } else {
+          navigate("/guest");
+        }
+
       } else {
         console.error("JWT token not found");
       }
@@ -110,9 +111,9 @@ export default function Auth() {
         // ux_mode="redirect"
         onSuccess={handleGoogleSuccess}
         onFailure={handleGoogleFailure}
+        login_uri="/home"
+        useOneTap={true}
       />
     </div>
   );
 }
-
-
