@@ -1,11 +1,9 @@
 import React from "react";
 import "./header.css";
 import HeaderMenu from "../headerMenu/HeaderMenu.js";
-import { useLocation } from "react-router-dom";
-import { useAuth } from "../../pages/auth/AuthContext";
+import { NavLink, useLocation } from "react-router-dom";
 
 export default function Header() {
-  const { logout } = useAuth();
   const location = useLocation();
   const currentPath = location.pathname;
 
@@ -20,7 +18,9 @@ export default function Header() {
     <header className="header">
       {currentPath !== "/" && currentPath !== "/guest" && <HeaderMenu />}
       <div className="header-title">
-        <h1>{groupName}</h1>
+        <NavLink to={"/home"}>
+          <h1>{groupName}</h1>
+        </NavLink>
       </div>
     </header>
   );

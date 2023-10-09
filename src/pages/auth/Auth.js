@@ -76,16 +76,6 @@ export default function Auth() {
         localStorage.setItem("learningGroup", learningGroup);
         localStorage.setItem("userRole", newRole);
 
-        // if (learningGroup) {
-        //   const newWindow = window.open("/", "_blank");
-        //   if (newWindow) newWindow.opener = null;
-        //   window.close();
-        // } else {
-        //   const newWindow = window.open("/guest", "_blank");
-        //   if (newWindow) newWindow.opener = null;
-        //   window.close();
-        // }
-
         if (learningGroup) {
           navigate("/home");
         } else {

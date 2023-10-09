@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie"; // Додайте цей рядок
-import RenderTaskCard from "./RenderTaskCard";
-import AddTaskPopup from "../components/addTask/AddTaskPopup";
 import { apiUrl } from "../helpers/MainConstants";
 
 function SubjectCard({ name, id, onClick }) {
@@ -95,15 +93,7 @@ export default function RenderSubjectCards() {
           name={subject.name}
           id={subject.id}
           onClick={() => handleSubjectClick(subject.id)}
-        />
-        /*
-          {selectedSubjectId === subject.id && (  
-            <>
-              <RenderTaskCard subjectId={subject.id} />
-              <AddTaskPopup subjectId={subject.id} />
-            </>
-          )}
-          */
+        />        
       ))}
 
       {/* Временный функционал добавление предмета */}

@@ -28,14 +28,6 @@ export default function HeaderMenu() {
     }
   }, [isOpen]);
 
-  // const openInNewTabAndCloseCurrent = (url) => {
-  //   const newTab = window.open(url, "_blank");
-  //   if (newTab) {
-  //     newTab.focus();
-  //   }
-  //   window.close();
-  // };
-
   return (
     <>
       <button className="bm-open-btn" onClick={() => setOpenedState()}>
