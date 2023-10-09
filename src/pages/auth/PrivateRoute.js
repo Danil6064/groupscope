@@ -12,9 +12,9 @@ function PrivateRoute({ roles, children }) {
   }
 
   // Перевірка доступу за роллю
-  if (roles && roles.length && !roles.includes(userRole)) {
-    return <Navigate to="/home" />;
-  }
+  // if (roles && roles.length && !roles.includes(userRole)) {
+  //   return <Navigate to="/home" />;
+  // }
 
   return children;
 }
