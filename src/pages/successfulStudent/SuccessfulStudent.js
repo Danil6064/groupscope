@@ -4,7 +4,7 @@ import ChoseSubjectMenu from '../../components/choseSubject/ChoseSubjectMenu';
 import TaskCardSuccessful from '../../components/taskCard/taskCardSuccessful/TaskCardSuccessful';
 import { useParams } from 'react-router-dom';
 
-function SuccessfulStudent() {
+export default function SuccessfulStudent() {
     const { subjectName } = useParams();
     const [selectedSubject, setSelectedSubject] = useState(localStorage.getItem('selectedSubject') || "");
 
@@ -24,5 +24,3 @@ function SuccessfulStudent() {
         </main>
     );
 }
-
-export default SuccessfulStudent;

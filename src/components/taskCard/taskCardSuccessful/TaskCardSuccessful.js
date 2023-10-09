@@ -22,7 +22,7 @@ export default function TaskCardSuccessful({ selectedSubject }) {
             },
           }
         );
-        console.log("Received data from server:", response.data); // Додано цей рядок
+        console.log("Received data from server:", response.data);
         // setGrades(response.data.map(data => { // TODO for rerendering
 
         // }));
