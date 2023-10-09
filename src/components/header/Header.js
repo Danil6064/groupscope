@@ -10,7 +10,7 @@ export default function Header() {
   const currentPath = location.pathname;
 
   let groupName;
-  if (currentPath === "/auth" || currentPath === "/guest") {
+  if (currentPath === "/" || currentPath === "/guest") {
     groupName = "Group Scope";
   } else {
     groupName = localStorage.getItem("learningGroup");
@@ -18,7 +18,7 @@ export default function Header() {
 
   return (
     <header className="header">
-      {currentPath !== "/auth" && currentPath !== "/guest" && <HeaderMenu />}
+      {currentPath !== "/" && currentPath !== "/guest" && <HeaderMenu />}
       <div className="header-title">
         <h1>{groupName}</h1>
       </div>

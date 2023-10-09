@@ -61,7 +61,7 @@ export default function SuccessfulGroup() {
           currentSubject={selectedSubject}
           redirectTo="/successfulGroup"
         />
-        {isAdaptive? <DesktopTable studentsData={studentsData}/> : null}
+        <DesktopTable studentsData={studentsData}/>
       </div>
     </main>
   );

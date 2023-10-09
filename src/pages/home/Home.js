@@ -1,42 +1,46 @@
-import React, { useState, useEffect } from 'react';
-import RenderSubjectCards from '../../helpers/RenderSubjectCard';
-import './home.css';
-import {apiUrl} from '../../helpers/MainConstants'
+import React, { useState, useEffect } from "react";
+import RenderSubjectCards from "../../helpers/RenderSubjectCard";
+import "./home.css";
+import { apiUrl } from "../../helpers/MainConstants";
 
-function Home() {
-  const [inviteCode, setInviteCode] = useState('');
-  const jwtToken = localStorage.getItem('jwtToken');
+export default function Home() {
+  const [inviteCode, setInviteCode] = useState("");
+  const jwtToken = localStorage.getItem("jwtToken");
 
   useEffect(() => {
     const fetchInviteCode = async () => {
       const requestHeaders = new Headers();
-      requestHeaders.append('Authorization', 'Bearer ' + jwtToken);
+      requestHeaders.append("Authorization", "Bearer " + jwtToken);
 
       const response = await fetch(`${apiUrl}/group`, {
-        method: 'GET',
-        headers: requestHeaders
+        method: "GET",
+        headers: requestHeaders,
       });
 
       if (response.ok) {
         const data = await response.json();
         setInviteCode(data.inviteCode);
+        console.log("setInviteCode");
       }
     };
 
     fetchInviteCode();
   }, []);
 
+  const userRole = localStorage.getItem("userRole");
+
   return (
     <div className="main">
       <div className="subjects container">
         <RenderSubjectCards />
-        <div>
-          <h3>Інвайт-код:</h3>
-          <p>{inviteCode}</p>
-        </div>
+
+        {userRole === "HEADMAN" && (
+          <div>
+            <h3>Інвайт-код:</h3>
+            <p>{inviteCode}</p>
+          </div>
+        )}
       </div>
     </div>
   );
 }
-
-export default Home;

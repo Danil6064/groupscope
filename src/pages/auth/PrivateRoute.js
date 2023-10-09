@@ -1,5 +1,5 @@
 import { useAuth } from './AuthContext';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate} from 'react-router-dom';
 
 function PrivateRoute({ roles, children }) {
   const { isAuthenticated, userRole } = useAuth();
@@ -8,13 +8,13 @@ function PrivateRoute({ roles, children }) {
   console.log("roles:", roles);
 
   if (!isAuthenticated) {
-    return <Navigate to="/auth" />;
+    return <Navigate to="/" />;
   }
 
   // Перевірка доступу за роллю
-  if (roles && roles.length && !roles.includes(userRole)) {
-    return <Navigate to="/" />;
-  }
+  // if (roles && roles.length && !roles.includes(userRole)) {
+  //   return <Navigate to="/home" />;
+  // }
 
   return children;
 }

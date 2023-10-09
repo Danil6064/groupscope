@@ -11,7 +11,7 @@ function SubjectCard({ name, id, onClick }) {
     <NavLink
       to={`/subject/${encodeURIComponent(name)}`}
       className="subject-card"
-      onClick={() => onClick(id)}
+      onClick={onClick(id)}
     >
       <h2>{name}</h2>
     </NavLink>
@@ -130,6 +130,7 @@ export default function RenderSubjectCards() {
               Соціальна психологія та конфліктологія
             </option>
             <option value="Фізичне виховання">Фізичне виховання</option>
+            <option value="Нормативно-правове забезпечення ІБ">Нормативно-правове забезпечення ІБ</option>
           </select>
           <button onClick={handleAddSubjects}>Додати</button>
         </>
