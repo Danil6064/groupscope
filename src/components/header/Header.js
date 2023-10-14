@@ -2,26 +2,21 @@ import React from "react";
 import "./header.css";
 import HeaderMenu from "../headerMenu/HeaderMenu.js";
 import { NavLink, useLocation } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 
 export default function Header() {
-  const location = useLocation();
-  const currentPath = location.pathname;
+  const { auth } = useAuth();
 
-  let groupName;
-  if (currentPath === "/" || currentPath === "/guest") {
-    groupName = "Group Scope";
-  } else {
-    groupName = localStorage.getItem("learningGroup");
-  }
+  const headerTitle = sessionStorage.getItem("currentHeaderTitle") || "Group Scope";
 
   return (
-    <header className="header">
-      {currentPath !== "/" && currentPath !== "/guest" && <HeaderMenu />}
+    <>
+      {auth?.role && <HeaderMenu />}
       <div className="header-title">
         <NavLink to={"/home"}>
-          <h1>{groupName}</h1>
+          <h1>{headerTitle}</h1>
         </NavLink>
       </div>
-    </header>
+    </>
   );
 }

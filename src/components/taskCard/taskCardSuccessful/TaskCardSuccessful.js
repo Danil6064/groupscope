@@ -1,35 +1,28 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { apiUrl } from "../../../helpers/MainConstants";
+import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
+import { privateAxios } from "../../../api/axios";
 
 export default function TaskCardSuccessful({ selectedSubject }) {
   const [grades, setGrades] = useState(Array());
-  const jwtToken = localStorage.getItem("jwtToken");
+  const axiosPrivate = useAxiosPrivate();
 
   const assessClassName = (mark) => {
-    return `successfulness-card-assess ${mark > 0 ? "active" : null}`;
+    return `successfulness-card-assess ${mark > 0 ? "active" : ""}`;
   };
 
   const fetchGrades = async () => {
     console.log("Fetching grades for subject:", selectedSubject);
-    if (selectedSubject && jwtToken) {
-      try {
-        const response = await axios.get(
-          `${apiUrl}/subject/${selectedSubject}/grade/all`,
-          {
-            headers: {
-              Authorization: "Bearer " + jwtToken,
-            },
-          }
-        );
-        console.log("Received data from server:", response.data);
-        // setGrades(response.data.map(data => { // TODO for rerendering
-
-        // }));
-        setGrades(response.data);
-      } catch (error) {
-        console.error("Error fetching student grades", error);
-      }
+    if (selectedSubject) {
+      privateAxios
+        .get(`/api/subject/${selectedSubject}/grade/all`)
+        .then((response) => {
+          setGrades(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   };
 
@@ -44,11 +37,7 @@ export default function TaskCardSuccessful({ selectedSubject }) {
       mark: mark,
     };
     axios
-      .post(url, data, {
-        headers: {
-          Authorization: "Bearer " + jwtToken,
-        },
-      })
+      .post(url, data)
       .then((res) => {
         console.log(res);
         fetchGrades();

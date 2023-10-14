@@ -1,31 +1,26 @@
 // RenderTaskCard.js
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import TaskCard from '../components/taskCard/TaskCard';
-import {apiUrl} from '../helpers/MainConstants'
+import { useState, useEffect } from "react";
+import TaskCard from "../components/taskCard/TaskCard";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
+
 function RenderTaskCard({ subjectName, currentTaskType }) {
   const [taskList, setTaskList] = useState([]);
+  const axiosPrivate = useAxiosPrivate();
+
 
   useEffect(() => {
-    const jwtToken = localStorage.getItem('jwtToken');
-    axios.get(`${apiUrl}/subject/${encodeURIComponent(subjectName)}/task/all`, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Cache-Control': 'no-cache',
-        'Authorization': 'Bearer ' + jwtToken,
-      },
-    })
-      .then((res) => {
-        setTaskList(res.data);
+    axiosPrivate
+      .get(`/api/subject/${encodeURIComponent(subjectName)}/task/all`)
+      .then((responce) => {
+        setTaskList(responce.data);
       })
       .catch((error) => {
         console.log(error);
       });
   }, [subjectName]);
-  
 
-  const filteredTaskList = taskList.filter(task =>
-    currentTaskType === 'ALL' ? true : task.type === currentTaskType
+  const filteredTaskList = taskList.filter((task) =>
+    currentTaskType === "ALL" ? true : task.type === currentTaskType
   );
 
   return (

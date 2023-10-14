@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import RenderTaskCard from "../../helpers/RenderTaskCard";
 import { useParams } from "react-router-dom";
 import "./taskPage.css";
-
+import useAuth from "../../hooks/useAuth";
 import DropDownMenu from "../../components/dropDownMenu/DropDownMenu";
 import AddTaskPopup from "../../components/addTask/AddTaskPopup";
 
@@ -10,32 +10,26 @@ export default function TaskPage () {
   const { subjectName } = useParams();
   const [currentTaskType, setCurrentTaskType] = useState("ALL");
   const [showPopup, setShowPopup] = useState(false);
+  const {auth} = useAuth()
+
+
 
   const handleTaskTypeChange = (type) => {
     setCurrentTaskType(type);
   };
 
-  const handleAddTaskClick = () => {
-    setShowPopup(true);
-  };
-
-  const handleClosePopup = () => {
-    setShowPopup(false);
-  };
-
-  const userRole = localStorage.getItem("userRole");
 
   return (
     <main className="main_taskPage">
       <div className="container_taskPage">
-        {userRole === "HEADMAN" && (
-          <div className="add-study-assignment" onClick={handleAddTaskClick}>
+        {auth.role === "HEADMAN" && (
+          <div className="add-study-assignment" onClick={() => setShowPopup(!showPopup)}>
             <h2>Додати завдання</h2>
           </div>
         )}
 
-        {showPopup && (
-          <AddTaskPopup onClose={handleClosePopup} subjectName={subjectName} />
+        {auth.role === "HEADMAN" && showPopup && (
+          <AddTaskPopup onClose={() => setShowPopup(!showPopup)} subjectName={subjectName} />
         )}
 
         <ChoseTypeTask onTypeChange={handleTaskTypeChange} />
