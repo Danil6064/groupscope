@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
@@ -8,43 +7,44 @@ import axios from "../../api/axios";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 export default function Auth() {
-  const { auth, setAuth } = useAuth();
+  const { setAuth } = useAuth();
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    console.log("Auth", auth);
-    if (auth.accessToken) {
-      axiosPrivate
-        .get("/api/student")
-        .then(function (response) {
-          // console.log("get /api/student:", response);
-          const { name, lastname, role, learningGroup } = response.data;
-          console.log(
-            "User:",
-            name,
-            lastname,
-            "Role:",
-            role,
-            "LearningGroup:",
-            learningGroup
-          );
-          setAuth((prev) => {
-            return { ...prev, name, lastname, role, learningGroup };
-          });
-          learningGroup ? navigate("/home") : navigate("/guest");
-        })
-        
-        .catch(function (error) {
-          console.error(error);
+  
+  const login = () => {
+    // console.log("Auth", auth);
+    // console.log("Token in login",  axiosPrivate.defaults.headers.common["Authorization"])
+
+    axiosPrivate
+      .get("/api/student")
+      .then(function (response) {
+        // console.log("get /api/student:", response);
+        const { name, lastname, role, learningGroup } = response.data;
+        console.log(
+          "User:",
+          name,
+          lastname,
+          "Role:",
+          role,
+          "LearningGroup:",
+          learningGroup
+        );
+        setAuth((prev) => {
+          return { ...prev, name, lastname, role, learningGroup };
         });
-    }
-  }, [auth]);
+        learningGroup ? navigate("/home") : navigate("/guest");
+      })
+
+      .catch(function (error) {
+        console.error(error);
+      });
+  };
 
   const handleOnSuccess = (credentialResponse) => {
     const credential = credentialResponse.credential;
 
-    console.log("Credential: " + credential);
+    // console.log("Credential: " + credential);
 
     const decoded = jwt_decode(credential);
     // console.log("Decoded Google Token:", decoded);
@@ -62,6 +62,17 @@ export default function Auth() {
       .then(function (response) {
         const accessToken = response.data.jwtToken;
         setAuth({ accessToken });
+
+        axiosPrivate.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${accessToken}`;
+        
+        console.log(
+          "Token",
+          axiosPrivate.defaults.headers.common["Authorization"]
+        );
+
+        login();
         // console.log("Response jwt", jwtToken);
       })
       .catch(function (error) {
@@ -80,6 +91,7 @@ function Login({ onLoginSuccess }) {
   return (
     <GoogleLogin
       // ux_mode="redirect"
+      // login_uri=""
       onSuccess={onLoginSuccess}
       onError={() => {
         console.log("Login Failed");

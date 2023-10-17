@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { apiUrl } from "../../../helpers/MainConstants";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
-import { privateAxios } from "../../../api/axios";
 
 export default function TaskCardSuccessful({ selectedSubject }) {
   const [grades, setGrades] = useState(Array());
@@ -15,7 +14,7 @@ export default function TaskCardSuccessful({ selectedSubject }) {
   const fetchGrades = async () => {
     console.log("Fetching grades for subject:", selectedSubject);
     if (selectedSubject) {
-      privateAxios
+      axiosPrivate
         .get(`/api/subject/${selectedSubject}/grade/all`)
         .then((response) => {
           setGrades(response.data);

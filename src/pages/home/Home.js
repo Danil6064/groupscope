@@ -7,7 +7,6 @@ import axios from "axios";
 import Cookies from "js-cookie"; // Додайте цей рядок
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import useAuth from "../../hooks/useAuth";
-import { privateAxios } from "../../api/axios";
 
 export default function Home() {
   const [inviteCode, setInviteCode] = useState("");
@@ -91,43 +90,21 @@ function SubjectCards() {
   //   );
   // };
 
-  const handleAddSubjects = async() => {
-    // privateAxios
-    //   .post("/api/subject/add", { name: selectedSubject })
-    //   .then((response) => console.log("/api/subject/add", response))
-    //   .catch(function (error) {
-    //     console.error(error);
-    //   });
-
-    try {
-      // const jwtToken = localStorage.getItem("jwtToken");
-        const response = await fetch(`${apiUrl}/subject/add`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + auth.accessToken,
-          },
-          body: JSON.stringify({ name: selectedSubject }),
-        });
-        if (!response.ok) {
-          throw new Error(
-            `Server responded with ${response.status}: ${response.statusText}`
-          );
-        }
-      
-      alert("Предмети додано");
-      window.location.reload();
-    } catch (error) {
-      console.error("Помилка при додаванні предметів:", error);
-      alert("Сталася помилка при додаванні предметів.");
-    }
+  const handleAddSubjects = () => {
+    axiosPrivate
+      .post("/api/subject/add", { name: selectedSubject })
+      .then((response) => console.log("/api/subject/add", response))
+      .catch(function (error) {
+        console.error(error);
+      });
   };
 
   const subjectCardList = subjectList.map((subject) => {
     return (
       <NavLink
         key={subject.id}
-        to={`/subject/${encodeURIComponent(subject.name)}`}
+        // to={`/subject/${encodeURIComponent(subject.name)}`}
+        to={`/subject/${subject.name}`}
         className="subject-card"
       >
         <h2>{subject.name}</h2>
