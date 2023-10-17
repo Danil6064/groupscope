@@ -45,7 +45,8 @@ export default function Home() {
 
 function SubjectCards() {
   const [subjectList, setSubjectList] = useState([]);
-  const [selectedSubjects, setSelectedSubjects] = useState([]);
+  // const [selectedSubjects, setSelectedSubjects] = useState([]);
+  const [selectedSubject, setSelectedSubject] = useState();
   const axiosPrivate = useAxiosPrivate();
   const { auth } = useAuth();
 
@@ -72,7 +73,7 @@ function SubjectCards() {
     axiosPrivate
       .get("api/subject/all")
       .then(function (responce) {
-        console.log("api/subject/all", responce);
+        // console.log("api/subject/all", responce);
         setSubjectList(responce.data);
       })
       .catch(function (error) {
@@ -84,47 +85,42 @@ function SubjectCards() {
   //   setSelectedSubjectId(id);
   // };
 
-  const handleSubjectChange = (event) => {
-    setSelectedSubjects(
-      [...event.target.selectedOptions].map((option) => option.value)
-    );
-  };
+  // const handleSubjectChange = (event) => {
+  //   setSelectedSubjects(
+  //     [...event.target.selectedOptions].map((option) => option.value)
+  //   );
+  // };
 
-  const handleAddSubjects = () => {
-    for (const subject of selectedSubjects) {
-    privateAxios
-      .post("/api/subject/add", { name: subject })
-      .then(alert("Предмети додано"))
-      .catch(function (error) {
-        console.error(error);
-      });
+  const handleAddSubjects = async() => {
+    // privateAxios
+    //   .post("/api/subject/add", { name: selectedSubject })
+    //   .then((response) => console.log("/api/subject/add", response))
+    //   .catch(function (error) {
+    //     console.error(error);
+    //   });
+
+    try {
+      // const jwtToken = localStorage.getItem("jwtToken");
+        const response = await fetch(`${apiUrl}/subject/add`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + auth.accessToken,
+          },
+          body: JSON.stringify({ name: selectedSubject }),
+        });
+        if (!response.ok) {
+          throw new Error(
+            `Server responded with ${response.status}: ${response.statusText}`
+          );
+        }
+      
+      alert("Предмети додано");
+      window.location.reload();
+    } catch (error) {
+      console.error("Помилка при додаванні предметів:", error);
+      alert("Сталася помилка при додаванні предметів.");
     }
-
-    // try {
-    //   const jwtToken = localStorage.getItem("jwtToken");
-    //   for (const subject of selectedSubjects) {
-    //     const response = await fetch(`${apiUrl}/subject/add`, {
-    //       method: "POST",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //         Authorization: "Bearer " + jwtToken,
-    //       },
-    //       body: JSON.stringify({ name: subject }),
-    //     });
-
-    //     if (!response.ok) {
-    //       throw new Error(
-    //         `Server responded with ${response.status}: ${response.statusText}`
-    //       );
-    //     }
-    //   }
-
-    //   alert("Предмети додано");
-    //   window.location.reload();
-    // } catch (error) {
-    //   console.error("Помилка при додаванні предметів:", error);
-    //   alert("Сталася помилка при додаванні предметів.");
-    // }
   };
 
   const subjectCardList = subjectList.map((subject) => {
@@ -146,7 +142,7 @@ function SubjectCards() {
       {/* Временный функционал добавление предмета */}
       {auth.role === "HEADMAN" && (
         <>
-          <select multiple={true} onChange={handleSubjectChange}>
+          <select onChange={(e) => setSelectedSubject(e.target.value)}>
             <option value="Бази даних">Бази даних</option>
             <option value="Soft skills">Soft skills</option>
             <option value="WEB-програмування">WEB-програмування</option>
