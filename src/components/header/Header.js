@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import "./header.css";
 import HeaderMenu from "../headerMenu/HeaderMenu.js";
 import { NavLink, useLocation } from "react-router-dom";
@@ -6,8 +6,15 @@ import useAuth from "../../hooks/useAuth";
 
 export default function Header() {
   const { auth } = useAuth();
+  const [headerTitle, setHeaderTitle] = useState("Group Scope");
+  const location = useLocation();
+  console.log("Header:", headerTitle);
 
-  const headerTitle = sessionStorage.getItem("currentHeaderTitle") || "Group Scope";
+  useEffect(() => {
+    setHeaderTitle(
+      sessionStorage.getItem("currentHeaderTitle") || "Group Scope"
+    );
+  }, [location]);
 
   return (
     <>

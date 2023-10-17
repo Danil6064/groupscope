@@ -1,9 +1,6 @@
 import { useState, useEffect } from "react";
-// import RenderSubjectCards from "../../helpers/RenderSubjectCard";
 import "./home.css";
-import { apiUrl } from "../../helpers/MainConstants";
 import { NavLink } from "react-router-dom";
-import axios from "axios";
 import Cookies from "js-cookie"; // Додайте цей рядок
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import useAuth from "../../hooks/useAuth";
@@ -12,6 +9,7 @@ export default function Home() {
   const [inviteCode, setInviteCode] = useState("");
   const { auth } = useAuth();
   const axiosPrivate = useAxiosPrivate();
+  sessionStorage.setItem("currentHeaderTitle", auth.learningGroup);
 
   useEffect(() => {
     axiosPrivate
@@ -99,10 +97,10 @@ function SubjectCards() {
       });
   };
 
-  const subjectCardList = subjectList.map((subject) => {
+  const subjectCardList = subjectList.map((subject, i) => {
     return (
       <NavLink
-        key={subject.id}
+        key={i}
         // to={`/subject/${encodeURIComponent(subject.name)}`}
         to={`/subject/${subject.name}`}
         className="subject-card"

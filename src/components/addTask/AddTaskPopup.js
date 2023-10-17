@@ -1,18 +1,19 @@
-import React, { useState } from 'react';
-import '../../pages/tasksPage/taskPage.css';
-import axios from 'axios';
-import { apiUrl } from '../../helpers/MainConstants';
-function AddTaskPopup({ onClose, subjectName }) {
-  const [taskType, setTaskType] = useState('ПЗ');
+import { useState } from "react";
+import "./addTask.css";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+
+export default function AddTaskPopup({ setOpenState, subjectName }) {
+  const [taskType, setTaskType] = useState("ПЗ");
   const [taskNumber, setTaskNumber] = useState(1);
-  const [dueDate, setDueDate] = useState('');
-  const [taskDescription, setTaskDescription] = useState('');
+  const [dueDate, setDueDate] = useState("");
+  const [taskDescription, setTaskDescription] = useState("");
+  const axiosPrivate = useAxiosPrivate();
 
   const handleSave = () => {
     const taskTypeMap = {
-      "ПЗ": { name: "Практичне Завдання", type: "PRACTICAL" },
-      "ЛБ": { name: "Лабораторна робота", type: "LABORATORY" },
-      "ТЕСТ": { name: "Тест", type: "TEST" }
+      ПЗ: { name: "Практичне Завдання", type: "PRACTICAL" },
+      ЛБ: { name: "Лабораторна робота", type: "LABORATORY" },
+      ТЕСТ: { name: "Тест", type: "TEST" },
     };
 
     const taskName = `${taskTypeMap[taskType].name} №${taskNumber}`;
@@ -21,26 +22,19 @@ function AddTaskPopup({ onClose, subjectName }) {
       name: taskName,
       type: taskTypeMap[taskType].type,
       info: taskDescription,
-      deadline: dueDate.split('-').reverse().join('.')
+      deadline: dueDate.split("-").reverse().join("."),
     };
 
-    const jwtToken = localStorage.getItem('jwtToken');
+    axiosPrivate
+      .post(`/api/subject/${subjectName}/task/add`, requestBody)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
 
-    axios.post(`${apiUrl}/subject/${subjectName}/task/add`, requestBody, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Cache-Control': 'no-cache',
-        'Authorization': 'Bearer ' + jwtToken
-      }
-    })
-    .then(response => {
-      console.log(response.data);
-      onClose();
-      window.location.reload();  // Оновлення сторінки
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    });
+    setOpenState(false);
   };
 
   return (
@@ -63,23 +57,35 @@ function AddTaskPopup({ onClose, subjectName }) {
               <li className="popup__list-item">
                 <h3>Оберіть номер завдання:</h3>
                 <select onChange={(e) => setTaskNumber(e.target.value)}>
-                  {Array.from({ length: 10 }, (_, i) => i + 1).map((number) =>
-                    <option key={number} value={number}>{number}</option>
-                  )}
+                  {Array.from({ length: 10 }, (_, i) => i + 1).map((number) => (
+                    <option key={number} value={number}>
+                      {number}
+                    </option>
+                  ))}
                 </select>
               </li>
               <li className="popup__list-item">
                 <h3>ДАТА ОСТАННЬОЇ ЗДАЧІ:</h3>
-                <input type="date" onChange={(e) => setDueDate(e.target.value)} />
+                <input
+                  type="date"
+                  onChange={(e) => setDueDate(e.target.value)}
+                />
               </li>
               <li className="popup__list-item">
                 <h3>Напишіть завдання:</h3>
               </li>
             </ul>
-            <textarea className="popup__task-input" onChange={(e) => setTaskDescription(e.target.value)}></textarea>
+            <textarea
+              className="popup__task-input"
+              onChange={(e) => setTaskDescription(e.target.value)}
+            ></textarea>
             <div className="popup__btns">
-              <div className="popup__close-btn" onClick={onClose}>Скасувати</div>
-              <div className="popup__save-btn" onClick={handleSave}>Зберегти</div>
+              <div className="popup__close-btn" onClick={() => setOpenState(false)}>
+                Скасувати
+              </div>
+              <div className="popup__save-btn" onClick={handleSave}>
+                Зберегти
+              </div>
             </div>
           </div>
         </div>
@@ -87,5 +93,3 @@ function AddTaskPopup({ onClose, subjectName }) {
     </div>
   );
 }
-
-export default AddTaskPopup;
