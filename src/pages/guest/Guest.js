@@ -1,33 +1,40 @@
-import { useState } from 'react';
-import './guest.css';
-import { useNavigate } from 'react-router-dom';
-import {apiUrl} from '../../helpers/MainConstants'
+import { useState } from "react";
+import "./guest.css";
+import { useNavigate } from "react-router-dom";
+import { apiUrl } from "../../helpers/MainConstants";
+import useAuth from "../../hooks/useAuth";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 function Guest() {
   const [action, setAction] = useState(null);
-  const [groupName, setGroupName] = useState('');
-  const [inviteCode, setInviteCode] = useState('');
-
-  const jwtToken = localStorage.getItem('jwtToken');
+  const [groupName, setGroupName] = useState("");
+  const [inviteCode, setInviteCode] = useState("");
+  const axiosPrivate = useAxiosPrivate();
+  const jwtToken = localStorage.getItem("jwtToken");
 
   const navigate = useNavigate();
 
   const handleCreateGroup = async () => {
+    axiosPrivate
+      .post("api/group/create", { name: groupName })
+      .then(navigate("/"))
+      .catch((error) => console.error(error));
+
     const requestBody = {
-      name: groupName
+      name: groupName,
     };
 
     const response = await fetch(`${apiUrl}/group/create`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + jwtToken
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + jwtToken,
       },
-      body: JSON.stringify(requestBody)
+      body: JSON.stringify(requestBody),
     });
 
     if (response.ok) {
-      navigate('/auth');
+      navigate("/auth");
     } else {
       // Handle the error
     }
@@ -35,20 +42,20 @@ function Guest() {
 
   const handleJoinGroup = async () => {
     const requestBody = {
-      inviteCode: inviteCode
+      inviteCode: inviteCode,
     };
 
     const response = await fetch(`${apiUrl}/group/join`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + jwtToken
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + jwtToken,
       },
-      body: JSON.stringify(requestBody)
+      body: JSON.stringify(requestBody),
     });
 
     if (response.ok) {
-      navigate('/auth');
+      navigate("/auth");
     } else {
       // Handle the error
     }
@@ -58,7 +65,7 @@ function Guest() {
     <div className="main">
       <div className="create-group-form">
         <label>Виберіть групу:</label>
-        <select onChange={e => setGroupName(e.target.value)}>
+        <select onChange={(e) => setGroupName(e.target.value)}>
           <option value="КБІКС-21-1">КБІКС-21-1</option>
           <option value="КБІКС-21-2">КБІКС-21-2</option>
           <option value="КБІКС-21-3">КБІКС-21-3</option>
@@ -71,10 +78,10 @@ function Guest() {
       </div>
       <div className="join-group-form">
         <label>Введіть код групи:</label>
-        <input 
+        <input
           type="text"
           value={inviteCode}
-          onChange={e => setInviteCode(e.target.value)}
+          onChange={(e) => setInviteCode(e.target.value)}
         />
         <button onClick={handleJoinGroup}>Приєднатись</button>
       </div>
@@ -83,12 +90,6 @@ function Guest() {
 }
 
 export default Guest;
-
-
-
-
-
-
 
 // import React, { useState } from 'react';
 // import './guest.css'
@@ -179,7 +180,7 @@ export default Guest;
 //       {action === 'join' && (
 //         <div>
 //           <label>Введіть код групи:</label>
-//           <input 
+//           <input
 //             type="text"
 //             value={inviteCode}
 //             onChange={e => setInviteCode(e.target.value)}

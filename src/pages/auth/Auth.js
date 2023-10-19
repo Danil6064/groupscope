@@ -11,7 +11,6 @@ export default function Auth() {
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
 
-  
   const login = () => {
     // console.log("Auth", auth);
     // console.log("Token in login",  axiosPrivate.defaults.headers.common["Authorization"])
@@ -54,11 +53,15 @@ export default function Auth() {
     sessionStorage.setItem("pictureUrl", decoded.picture);
 
     axios
-      .post("/oauth2", {
-        idToken: credential,
-        learnerName: learnerName,
-        learnerLastname: learnerLastname,
-      })
+      .post(
+        "/oauth2",
+        {
+          idToken: credential,
+          learnerName: learnerName,
+          learnerLastname: learnerLastname,
+        },
+        { withCredentials: true }
+      )
       .then(function (response) {
         const accessToken = response.data.jwtToken;
         setAuth({ accessToken });
@@ -66,10 +69,10 @@ export default function Auth() {
         axiosPrivate.defaults.headers.common[
           "Authorization"
         ] = `Bearer ${accessToken}`;
-        
+
         console.log(
-          "Token",
-          axiosPrivate.defaults.headers.common["Authorization"]
+          "Token"
+          // axiosPrivate.defaults.headers.common["Authorization"]
         );
 
         login();
