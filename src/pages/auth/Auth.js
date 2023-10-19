@@ -70,11 +70,6 @@ export default function Auth() {
           "Authorization"
         ] = `Bearer ${accessToken}`;
 
-        console.log(
-          "Token"
-          // axiosPrivate.defaults.headers.common["Authorization"]
-        );
-
         login();
         // console.log("Response jwt", jwtToken);
       })

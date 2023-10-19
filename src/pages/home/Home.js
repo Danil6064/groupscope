@@ -3,21 +3,24 @@ import "./home.css";
 import { NavLink } from "react-router-dom";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import useAuth from "../../hooks/useAuth";
-import useRefreshToken from "../../hooks/useRefreshToken"; 
 
 export default function Home() {
   const [inviteCode, setInviteCode] = useState("");
+  const [learningGroup, setLearningGroup] = useState("");
   const { auth } = useAuth();
   const axiosPrivate = useAxiosPrivate();
-  sessionStorage.setItem("currentHeaderTitle", auth.learningGroup);
+ 
 
   useEffect(() => {
+    // console.log("HOME USEEFFECT");
+
     axiosPrivate
       .get("/api/group")
       .then(function (responce) {
         const { inviteCode, name } = responce.data;
         setInviteCode(inviteCode);
         sessionStorage.setItem("currentHeaderTitle", name);
+        // console.log("SET HEADER IN HOME")
       })
       .catch(function (error) {
         console.error(error);
@@ -46,9 +49,6 @@ function SubjectCards() {
   const [selectedSubject, setSelectedSubject] = useState();
   const axiosPrivate = useAxiosPrivate();
   const { auth } = useAuth();
-
-  const refresh = useRefreshToken();
-
 
   useEffect(() => {
     // axios
@@ -116,7 +116,6 @@ function SubjectCards() {
   return (
     <>
       {subjectCardList}
-      <button onClick={() => refresh()}>Refresh</button>
 
       {/* Временный функционал добавление предмета */}
       {auth.role === "HEADMAN" && (

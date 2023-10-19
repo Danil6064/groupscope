@@ -8,7 +8,7 @@ export default function Header() {
   const { auth } = useAuth();
   const [headerTitle, setHeaderTitle] = useState("Group Scope");
   const location = useLocation();
-  console.log("Header:", headerTitle);
+  // console.log("Header:", headerTitle);
 
   useEffect(() => {
     setHeaderTitle(

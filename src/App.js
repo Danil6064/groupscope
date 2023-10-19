@@ -9,6 +9,7 @@ import SuccessfulGroup from "./pages/successfulGroup/SuccessfulGroup";
 
 import Layout from "./components/Layout";
 import RequireAuth from "./components/RequireAuth";
+import PersistLogin from "./components/PersistLogin";
 
 export default function App() {
   return (
@@ -18,22 +19,24 @@ export default function App() {
           <Route index element={<Auth />} />
           <Route path="guest" element={<Guest />} />
 
-          <Route
-            element={<RequireAuth allowedRoles={["HEADMAN", "STUDENT"]} />}
-          >
-            <Route path="home" element={<Home />} />
-            <Route path="subject/:subjectName" element={<TaskPage />} />
+          <Route element={<PersistLogin />}>
             <Route
-              path="successfulStudent/:subjectName?"
-              element={<SuccessfulStudent />}
-            />
-          </Route>
+              element={<RequireAuth allowedRoles={["HEADMAN", "STUDENT"]} />}
+            >
+              <Route path="home" element={<Home />} />
+              <Route path="subject/:subjectName" element={<TaskPage />} />
+              <Route
+                path="successfulStudent/:subjectName?"
+                element={<SuccessfulStudent />}
+              />
+            </Route>
 
-          <Route element={<RequireAuth allowedRoles={["HEADMAN"]} />}>
-            <Route
-              path="successfulGroup/:subjectName?"
-              element={<SuccessfulGroup />}
-            />
+            <Route element={<RequireAuth allowedRoles={["HEADMAN"]} />}>
+              <Route
+                path="successfulGroup/:subjectName?"
+                element={<SuccessfulGroup />}
+              />
+            </Route>
           </Route>
         </Route>
 

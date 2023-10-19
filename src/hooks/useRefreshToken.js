@@ -3,22 +3,23 @@ import useAuth from "./useAuth";
 
 export default function useRefreshToken() {
   const { setAuth } = useAuth();
-  const refresh = () => {
-    let newAccessToken;
-    axios
+  const refresh = async () => {
+    await axios
       .get("/refresh", { withCredentials: true })
       .then((response) => {
+        const { jwtToken, role } = response.data;
+
         setAuth((prev) => {
           console.log("Auth:", prev);
           console.log("Refresh:", response.data);
-          return { ...prev, accessToken: response.data.jwtToken };
+          return { ...prev, accessToken: jwtToken, role: role };
         });
-        newAccessToken = response.data.jwtToken;
+
+        // return jwtToken;
       })
       .catch((error) => {
         console.error(error);
       });
-    return newAccessToken;
   };
   return refresh;
 }

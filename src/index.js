@@ -1,5 +1,4 @@
 import { createRoot } from "react-dom/client";
-import reportWebVitals from "./reportWebVitals";
 import "./index.css";
 
 import App from "./App";
@@ -11,4 +10,4 @@ root.render(
     <App />
   </AuthProvider>
 );
-reportWebVitals();
+// reportWebVitals();
