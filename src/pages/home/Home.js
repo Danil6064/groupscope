@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import "./home.css";
 import { NavLink } from "react-router-dom";
-import Cookies from "js-cookie"; // Додайте цей рядок
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import useAuth from "../../hooks/useAuth";
+import useRefreshToken from "../../hooks/useRefreshToken"; 
 
 export default function Home() {
   const [inviteCode, setInviteCode] = useState("");
@@ -46,6 +46,9 @@ function SubjectCards() {
   const [selectedSubject, setSelectedSubject] = useState();
   const axiosPrivate = useAxiosPrivate();
   const { auth } = useAuth();
+
+  const refresh = useRefreshToken();
+
 
   useEffect(() => {
     // axios
@@ -113,6 +116,7 @@ function SubjectCards() {
   return (
     <>
       {subjectCardList}
+      <button onClick={() => refresh()}>Refresh</button>
 
       {/* Временный функционал добавление предмета */}
       {auth.role === "HEADMAN" && (
