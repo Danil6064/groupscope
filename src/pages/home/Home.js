@@ -97,10 +97,10 @@ function SubjectCards() {
       });
   };
 
-  const subjectCardList = subjectList.map((subject, i) => {
+  const subjectCardList = subjectList.map((subject, index) => {
     return (
       <NavLink
-        key={i}
+        key={index}
         // to={`/subject/${encodeURIComponent(subject.name)}`}
         to={`/subject/${subject.name}`}
         className="subject-card"

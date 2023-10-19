@@ -103,7 +103,7 @@ function RenderTaskCard({ subjectName, currentTaskType }) {
 
   useEffect(() => {
     axiosPrivate
-      .get(`/api/subject/${encodeURIComponent(subjectName)}/task/all`)
+      .get(`/api/subject/${subjectName}/task/all`)
       .then((responce) => {
         setTaskList(responce.data);
       })
