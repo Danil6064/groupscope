@@ -1,74 +1,43 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
-import Cookies from "js-cookie";
 import "./successfulGroup.css";
-import ChoseSubjectMenu from "../../components/dropDownMenu/SubjectSelectionMenu";
-import { apiUrl } from "../../helpers/MainConstants";
+import SubjectSelectionMenu from "../../components/dropDownMenu/SubjectSelectionMenu";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 export default function SuccessfulGroup() {
-  const [subjects, setSubjects] = useState([]);
-  const [selectedSubject, setSelectedSubject] = useState(  );
+  const [selectedSubject, setSelectedSubject] = useState();
   const [studentsData, setStudentsData] = useState([]);
-  const isAdaptive = useMediaQuery( {query: "max-width: 1220px"});
+  const axiosPrivate = useAxiosPrivate();
+  const isAdaptive = useMediaQuery({ query: "max-width: 1220px" });
 
   sessionStorage.setItem("currentHeaderTitle", "Успішність групи");
 
-
   useEffect(() => {
-    const fetchSubjects = async () => {
-      const subjectsFromCookies = JSON.parse(
-        Cookies.get("subjectNames") || "[]"
-      );
-      setSubjects(subjectsFromCookies);
-      if (!selectedSubject && subjectsFromCookies.length > 0) {
-        setSelectedSubject(subjectsFromCookies[0]);
-        localStorage.setItem("selectedSubject", subjectsFromCookies[0]);
-      }
-    };
+    axiosPrivate
+      .get(`/api/group/${selectedSubject}/grade/all`)
+      .then((response) => {
+        // console.log(response.data);
+        setStudentsData(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
 
-    fetchSubjects();
   }, [selectedSubject]);
 
-  useEffect(() => {
-    const fetchStudentsData = async () => {
-      const jwtToken = localStorage.getItem("jwtToken");
-      const response = await fetch(
-        `${apiUrl}/group/${selectedSubject}/grade/all`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "Cache-Control": "no-cache",
-            Authorization: "Bearer " + jwtToken,
-          },
-        }
-      );
-      const data = await response.json();
-      setStudentsData(data);
-      console.log("StudentsData: " + response.data);
-    };
-
-    if (selectedSubject) {
-      fetchStudentsData();
-    }
-  }, [selectedSubject]);  
+  // console.log(selectedSubject)
 
   return (
     <main className="main_successfulGroup">
       <div className="container_successfulGroup">
-        <ChoseSubjectMenu
-          subjects={subjects}
-          setSelectedSubject={setSelectedSubject}
-          currentSubject={selectedSubject}
-          redirectTo="/successfulGroup"
-        />
-        <DesktopTable studentsData={studentsData}/>
+        <SubjectSelectionMenu setSubject={setSelectedSubject} />
+        {selectedSubject && <DesktopTable studentsData={studentsData} />}
       </div>
     </main>
   );
 }
 
-function DesktopTable({studentsData}) {
+function DesktopTable({ studentsData }) {
   const abbreviateTaskName = (name) => {
     if (name.includes("Практичне Завдання")) return "ПЗ";
     if (name.includes("Лабораторна робота")) return "ЛБ";
@@ -87,7 +56,7 @@ function DesktopTable({studentsData}) {
     let isOdd = index % 2 === 0;
     return (
       <li
-        key={taskName}
+        key={index}
         className={`table-header-row__task-type ${
           isOdd ? "table__odd-column" : "table__even-column"
         }`}
@@ -97,8 +66,6 @@ function DesktopTable({studentsData}) {
       </li>
     );
   });
-  
-  
 
   const studentRows = studentsData.map((student) => (
     <div className="table__row" key={student.id}>

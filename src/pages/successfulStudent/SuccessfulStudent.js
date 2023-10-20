@@ -28,7 +28,7 @@ function TaskCardSuccessful({ selectedSubject }) {
     return `successfulness-card-assess ${mark > 0 ? "active" : ""}`;
   };
 
-  console.log("Rerender", grades);
+  // console.log("Rerender", grades);
 
   useEffect(() => {
     axiosPrivate
