@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
 import Cookies from "js-cookie";
 import "./successfulGroup.css";
-import ChoseSubjectMenu from "../../components/choseSubject/ChoseSubjectMenu";
+import ChoseSubjectMenu from "../../components/dropDownMenu/SubjectSelectionMenu";
 import { apiUrl } from "../../helpers/MainConstants";
 
 export default function SuccessfulGroup() {

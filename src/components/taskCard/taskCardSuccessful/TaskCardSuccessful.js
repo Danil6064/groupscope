@@ -1,32 +1,26 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { apiUrl } from "../../../helpers/MainConstants";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 
 export default function TaskCardSuccessful({ selectedSubject }) {
-  const [grades, setGrades] = useState(Array());
+  const [grades, setGrades] = useState([]);
   const axiosPrivate = useAxiosPrivate();
 
   const assessClassName = (mark) => {
     return `successfulness-card-assess ${mark > 0 ? "active" : ""}`;
   };
 
-  const fetchGrades = async () => {
-    console.log("Fetching grades for subject:", selectedSubject);
-    if (selectedSubject) {
-      axiosPrivate
-        .get(`/api/subject/${selectedSubject}/grade/all`)
-        .then((response) => {
-          setGrades(response.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  };
+  useEffect(() => {
+    axiosPrivate
+      .get(`/api/subject/${selectedSubject}/grade/all`)
+      .then((response) => {
+        setGrades(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [selectedSubject]);
 
   const handleDataChange = ({ taskName, completion, mark }) => {
-    const url = `${apiUrl}/grade`;
     if (!mark) mark = 0;
     if (mark > 0) completion = true;
     const data = {
@@ -35,22 +29,14 @@ export default function TaskCardSuccessful({ selectedSubject }) {
       completion: completion,
       mark: mark,
     };
-    axios
-      .post(url, data)
-      .then((res) => {
-        console.log(res);
-        fetchGrades();
-      })
-      .catch((err) => console.log(err));
-  };
 
-  useEffect(() => {
-    console.log(
-      "Selected subject changed, triggering fetch grades:",
-      selectedSubject
-    );
-    fetchGrades();
-  }, [selectedSubject]);
+    axiosPrivate
+      .post("/api/grade", data)
+      .then(/*(response) => {console.log(response.data)}*/)
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   const taskCards = grades.map((grade) => {
     return (

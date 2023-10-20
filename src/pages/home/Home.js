@@ -6,10 +6,10 @@ import useAuth from "../../hooks/useAuth";
 
 export default function Home() {
   const [inviteCode, setInviteCode] = useState("");
-  const [learningGroup, setLearningGroup] = useState("");
   const { auth } = useAuth();
   const axiosPrivate = useAxiosPrivate();
- 
+  
+  sessionStorage.setItem("currentHeaderTitle", sessionStorage.getItem("learningGroup"));
 
   useEffect(() => {
     // console.log("HOME USEEFFECT");
@@ -19,7 +19,7 @@ export default function Home() {
       .then(function (responce) {
         const { inviteCode, name } = responce.data;
         setInviteCode(inviteCode);
-        sessionStorage.setItem("currentHeaderTitle", name);
+        
         // console.log("SET HEADER IN HOME")
       })
       .catch(function (error) {

@@ -11,6 +11,8 @@ export default function Auth() {
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
 
+  sessionStorage.setItem("currentHeaderTitle", "GroupScope")
+
   const login = () => {
     // console.log("Auth", auth);
     // console.log("Token in login",  axiosPrivate.defaults.headers.common["Authorization"])
@@ -29,6 +31,7 @@ export default function Auth() {
           "LearningGroup:",
           learningGroup
         );
+        sessionStorage.setItem("learningGroup", learningGroup)
         setAuth((prev) => {
           return { ...prev, name, lastname, role, learningGroup };
         });
