@@ -7,11 +7,12 @@ import { apiUrl } from "../../helpers/MainConstants";
 
 export default function SuccessfulGroup() {
   const [subjects, setSubjects] = useState([]);
-  const [selectedSubject, setSelectedSubject] = useState(
-    localStorage.getItem("selectedSubject") || ""
-  );
+  const [selectedSubject, setSelectedSubject] = useState(  );
   const [studentsData, setStudentsData] = useState([]);
   const isAdaptive = useMediaQuery( {query: "max-width: 1220px"});
+
+  sessionStorage.setItem("currentHeaderTitle", "Успішність групи");
+
 
   useEffect(() => {
     const fetchSubjects = async () => {
