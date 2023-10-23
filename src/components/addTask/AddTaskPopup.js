@@ -11,18 +11,43 @@ export default function TaskPopup({ handleOpenState, taskInfo, isNewTask }) {
   const [taskDescription, setTaskDescription] = useState(taskInfo?.description);
   const axiosPrivate = useAxiosPrivate();
 
-  console.log(taskInfo);
+  console.log(taskType);
+
+  const handleSaveButton = () => {
+    const taskTypeMap = {
+      ПЗ: { name: "Практичне Завдання", type: "PRACTICAL" },
+      ЛБ: { name: "Лабораторна робота", type: "LABORATORY" },
+      ТЕСТ: { name: "Тест", type: "TEST" },
+    };
+    const taskName = `${taskTypeMap[taskType].name} №${taskNumber}`;
+
+    const requestBody = {
+      name: taskName,
+      type: taskTypeMap[taskType].type,
+      info: taskDescription,
+      deadline: taskDeadline.split("-").reverse().join("."),
+    };
+
+    isNewTask
+      ? axiosPrivate
+          .post(`/api/subject/${taskInfo.subjectName}/task/add`, requestBody)
+          .then((response) => {})
+          .catch((error) => {
+            console.error(error);
+          })
+      : alert("Not new");
+  };
+
   const handleDeleteButton = () => {
-    console.log(taskInfo.subjectName);
+    console.log("subjectName", taskInfo.subjectName);
+    console.log("name", taskInfo.name);
     axiosPrivate
-      .delete(`/api/subject/${taskInfo.subjectName}/task/delete`, {
-        name: taskInfo.name,
-      })
-      .then()
+      .delete(`/api/subject/${taskInfo.subjectName}/task/delete`, {name: taskInfo.name})
+      .then((response) => {})
       .catch((error) => console.error(error));
   };
 
-  console.log(taskDeadline);
+  // console.log(taskDeadline); 
   return (
     <div className="popup-overlay">
       <section className="popup">
@@ -88,7 +113,7 @@ export default function TaskPopup({ handleOpenState, taskInfo, isNewTask }) {
                 Видалити
               </button>
             )}
-            <button className="popup__btn" name="save">
+            <button className="popup__btn" onClick={handleSaveButton}>
               Зберегти
             </button>
           </div>
