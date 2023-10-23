@@ -16,6 +16,135 @@
   gap: 20px;
 }
 
+.add-study-assignment {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  background-color: var(--light-bg-color);
+  color: var(--dark-text-color);
+  border: var(--border);
+  border-radius: 30px;
+  min-height: 62px;
+  padding: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.add-study-assignment h2 {
+  word-break: break-word;
+  text-transform: uppercase;
+  text-align: center;
+  font-weight: 300;
+  font-size: 30px;
+  line-height: 36px;
+}
+
+.add-study-assignment:hover {
+  background-color: var(--dark-bg-color);
+  color: var(--light-text-color);
+}
+
+.homework-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.homework-card {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background-color: var(--light-bg-color);
+  color: var(--dark-text-color);
+  border: var(--border);
+  border-radius: 15px;
+  padding: 15px 30px;
+}
+
+.homework-card h3 {
+  word-break: break-word;
+  text-transform: uppercase;
+  font-weight: 300;
+  font-size: 25px;
+  line-height: 30px;
+}
+
+.task-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 30px;
+}
+
+.task-info-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 24px;
+  background-color: var(--light-bg-color);
+  color: var(--dark-text-color);
+  text-decoration: underline;
+  font-size: 20px;
+  font-weight: 300;
+  line-height: normal;
+  word-break: break-word;
+  font-variant: all-small-caps;
+}
+
+.homework-text {
+  font-size: 20px;
+  line-height: 24px;
+  word-break: break-word;
+}
+
+.homework-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.task-navigate-link {
+  flex: 1;
+  word-break: break-word;
+  color: #63aaeb;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+}
+
+.homework-deadline {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 30px;
+  border: var(--thin-border);
+  min-height: 46px;
+  width: 50%;
+  padding: 5px 10px;
+  word-break: break-word;
+  text-align: center;
+  color: var(--dark-text-color);
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+}
+
+.edit-icon {
+  flex: 1;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+
+.edit-btn {
+  cursor: pointer;
+  width: 42px;
+  height: 45px;
+}
+
 @media (max-width: 480px) {
   .main_taskPage {
     padding-top: 50px;
@@ -32,5 +161,28 @@
 
   .add-study-assignment h2 {
     font-size: 20px;
+  }
+
+  .homework-card {
+    gap: 10px;
+    padding: 10px 15px;
+  }
+
+  .homework-card h3 {
+    font-size: 18px;
+  }
+
+  .task-navigate-link {
+    font-size: 15px;
+  }
+
+  .homework-deadline {
+    font-size: 15px;
+    min-height: auto;
+  }
+
+  .edit-btn {
+    width: calc(42px * 0.7);
+    height: calc(45px * 0.7);
   }
 }

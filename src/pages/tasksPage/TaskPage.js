@@ -1,28 +1,31 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { useMediaQuery } from "react-responsive";
+import { ReactComponent as EditIcon } from "../../components/icons/edit.svg";
 import "./taskPage.css";
 import useAuth from "../../hooks/useAuth";
 import DropDownMenu from "../../components/dropDownMenu/DropDownMenu";
 import AddTaskPopup from "../../components/addTask/AddTaskPopup";
-import TaskCard from "../../components/taskCard/TaskCard";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 export default function TaskPage() {
   const { subjectName } = useParams();
   const [currentTaskType, setCurrentTaskType] = useState("ALL");
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
   const { auth } = useAuth();
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const maxSubjectLength = 25;
-  subjectName.length < maxSubjectLength
-    ? sessionStorage.setItem("currentHeaderTitle", subjectName)
-    : sessionStorage.setItem(
-        "currentHeaderTitle",
-        subjectName
+  const headerTitle =
+    subjectName.length < maxSubjectLength
+      ? subjectName
+      : subjectName
           .split(" ")
           .map((word) => word.charAt(0).toUpperCase())
-          .join("")
-      );
+          .join("");
+
+  sessionStorage.setItem("currentHeaderTitle", headerTitle);
+
+  console.log(subjectName);
 
   const handleTaskTypeChange = (type) => {
     setCurrentTaskType(type);
@@ -35,14 +38,15 @@ export default function TaskPage() {
           <>
             <div
               className="add-study-assignment"
-              onClick={() => setIsPopupOpen(!isPopupOpen)}
+              onClick={() => setIsPopupOpen(true)}
             >
               <h2>Додати завдання</h2>
             </div>{" "}
-            {isPopupOpen && (
+            {isPopupOpen && auth.role === "HEADMAN" && (
               <AddTaskPopup
-                setOpenState={setIsPopupOpen}
-                subjectName={subjectName}
+                handleOpenState={() => setIsPopupOpen(!isPopupOpen)}
+                taskInfo={{ subjectName: subjectName }}
+                isNewTask={true}
               />
             )}
           </>
@@ -50,12 +54,10 @@ export default function TaskPage() {
 
         <ChoseTypeTask onTypeChange={handleTaskTypeChange} />
 
-        <ul className="homework-list">
-          <RenderTaskCard
-            subjectName={subjectName}
-            currentTaskType={currentTaskType}
-          />
-        </ul>
+        <RenderTaskCard
+          subjectName={subjectName}
+          currentTaskType={currentTaskType}
+        />
       </div>
     </main>
   );
@@ -106,6 +108,7 @@ function RenderTaskCard({ subjectName, currentTaskType }) {
       .get(`/api/subject/${subjectName}/task/all`)
       .then((responce) => {
         setTaskList(responce.data);
+        console.log(responce.data);
       })
       .catch((error) => {
         console.log(error);
@@ -117,17 +120,83 @@ function RenderTaskCard({ subjectName, currentTaskType }) {
   );
 
   return (
-    <>
-      {filteredTaskList.map((task) => {
+    <ul className="homework-list">
+      {filteredTaskList.map((task, index) => {
         return (
           <TaskCard
-            key={task.id}
+            key={index}
             name={task.name}
             info={task.info}
             deadline={task.deadline}
           />
         );
       })}
-    </>
+    </ul>
+  );
+}
+
+function TaskCard({ name, info, deadline }) {
+  const [showMore, setShowMore] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const { subjectName } = useParams();
+  const isMobile = useMediaQuery({ query: "(max-width: 480px)" });
+
+  function handleMoreClick() {
+    setShowMore(!showMore);
+  }
+
+  const TaskInfoButton = () => {
+    return (
+      <div className="task-info">
+        <button className="task-info-btn" onClick={handleMoreClick}>
+          <svg width="10" height="10" viewBox="0 0 19 19">
+            <polygon points="0,0 19,0 9.5,19" />
+          </svg>
+          <span>{showMore ? "згорнути" : "розгорнути"} опис завдання</span>
+          <svg width="10" height="10" viewBox="0 0 19 19">
+            <polygon points="0,0 19,0 9.5,19" />
+          </svg>
+        </button>
+      </div>
+    );
+  };
+
+  return (
+    <li className="homework-card">
+      <h3>{name}</h3>
+
+      {isMobile ? (
+        <>
+          <TaskInfoButton />
+          {showMore && (
+            <div className="homework-text">
+              <span>{info}</span>
+            </div>
+          )}
+        </>
+      ) : (
+        <div className="homework-text">
+          <span>{info}</span>
+        </div>
+      )}
+
+      <div className="homework-card-footer">
+        <Link className={"task-navigate-link"} to={"#"}>
+          До успішності
+        </Link>
+        <div className="homework-deadline">Дата здачи: {deadline}</div>
+        <div className="edit-icon">
+          <EditIcon className="edit-btn" onClick={() => setIsPopupOpen(true)} />
+        </div>
+      </div>
+
+      {isPopupOpen && (
+        <AddTaskPopup
+          handleOpenState={() => setIsPopupOpen(!isPopupOpen)}
+          taskInfo={{ name: name, description: info, subjectName: subjectName }}
+          isNewTask={false}
+        />
+      )}
+    </li>
   );
 }

@@ -1,8 +1,104 @@
 import { useState } from "react";
-import "./addTask.css";
+import { ReactComponent as CloseIcon } from "../icons/close.svg";
+import { ReactComponent as LinkIcon } from "../icons/link.svg";
+import "./addTaskPopup.css";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
-export default function AddTaskPopup({ setOpenState, subjectName }) {
+export default function TaskPopup({ handleOpenState, taskInfo, isNewTask }) {
+  const [taskType, setTaskType] = useState(taskInfo?.type);
+  const [taskNumber, setTaskNumber] = useState(taskInfo?.number);
+  const [taskDeadline, setTaskDeadline] = useState(taskInfo?.deadline);
+  const [taskDescription, setTaskDescription] = useState(taskInfo?.description);
+  const axiosPrivate = useAxiosPrivate();
+
+  console.log(taskInfo);
+  const handleDeleteButton = () => {
+    console.log(taskInfo.subjectName);
+    axiosPrivate
+      .delete(`/api/subject/${taskInfo.subjectName}/task/delete`, {
+        name: taskInfo.name,
+      })
+      .then()
+      .catch((error) => console.error(error));
+  };
+
+  console.log(taskDeadline);
+  return (
+    <div className="popup-overlay">
+      <section className="popup">
+        <header className="popup__header">
+          <div />
+          <h2>{isNewTask ? "Додаємо нове " : "Редагуємо "}завдання</h2>
+          <CloseIcon className="popup__close-btn" onClick={handleOpenState} />
+        </header>
+
+        <div>
+          <div className="popup__form-item">
+            <label>Оберіть тип завдання:</label>
+            <select
+              defaultValue={taskType}
+              required={isNewTask}
+              onChange={(event) => setTaskType(event.target.value)}
+            >
+              <option value="ПЗ">ПЗ</option>
+              <option value="ЛБ">ЛБ</option>
+              <option value="ТЕСТ">ТЕСТ</option>
+            </select>
+          </div>
+
+          <div className="popup__form-item">
+            <label>Оберіть номер завдання:</label>
+            <select
+              required={isNewTask}
+              defaultValue={taskNumber}
+              onChange={(event) => setTaskNumber(event.target.value)}
+            >
+              {Array.from({ length: 10 }, (_, index) => index + 1).map(
+                (number, index) => (
+                  <option key={index} value={number}>
+                    {number}
+                  </option>
+                )
+              )}
+            </select>
+          </div>
+          <div className="popup__form-item">
+            <label>Дата останьої здачи:</label>
+            <input
+              type="date"
+              required={isNewTask}
+              defaultValue={taskDeadline}
+              onChange={(event) => setTaskDeadline(event.target.value)}
+            />
+          </div>
+          <div className="popup__form-item">
+            <label>Напишіть завдання:</label>
+            <LinkIcon className="popup__link-btn" />
+          </div>
+          <textarea
+            className="popup__task-input"
+            required={isNewTask}
+            defaultValue={taskDescription}
+            onChange={(event) => setTaskDescription(event.target.value)}
+          ></textarea>
+
+          <div className="popup__form-item">
+            {!isNewTask && (
+              <button className="popup__btn" onClick={handleDeleteButton}>
+                Видалити
+              </button>
+            )}
+            <button className="popup__btn" name="save">
+              Зберегти
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function AddTaskPopup0({ setOpenState, subjectName }) {
   const [taskType, setTaskType] = useState("ПЗ");
   const [taskNumber, setTaskNumber] = useState(1);
   const [dueDate, setDueDate] = useState("");
@@ -48,7 +144,7 @@ export default function AddTaskPopup({ setOpenState, subjectName }) {
             <ul className="popup__list">
               <li className="popup__list-item">
                 <h3>Оберіть тип завдання:</h3>
-                <select onChange={(e) => setTaskType(e.target.value)}>
+                <select onChange={(event) => setTaskType(event.target.value)}>
                   <option value="ПЗ">ПЗ</option>
                   <option value="ЛБ">ЛБ</option>
                   <option value="ТЕСТ">ТЕСТ</option>
@@ -57,11 +153,13 @@ export default function AddTaskPopup({ setOpenState, subjectName }) {
               <li className="popup__list-item">
                 <h3>Оберіть номер завдання:</h3>
                 <select onChange={(e) => setTaskNumber(e.target.value)}>
-                  {Array.from({ length: 10 }, (_, i) => i + 1).map((number) => (
-                    <option key={number} value={number}>
-                      {number}
-                    </option>
-                  ))}
+                  {Array.from({ length: 10 }, (_, i) => i + 1).map(
+                    (number, index) => (
+                      <option key={index} value={number}>
+                        {number}
+                      </option>
+                    )
+                  )}
                 </select>
               </li>
               <li className="popup__list-item">
@@ -80,7 +178,10 @@ export default function AddTaskPopup({ setOpenState, subjectName }) {
               onChange={(e) => setTaskDescription(e.target.value)}
             ></textarea>
             <div className="popup__btns">
-              <div className="popup__close-btn" onClick={() => setOpenState(false)}>
+              <div
+                className="popup__close-btn"
+                onClick={() => setOpenState(false)}
+              >
                 Скасувати
               </div>
               <div className="popup__save-btn" onClick={handleSave}>
