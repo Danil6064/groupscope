@@ -54,7 +54,7 @@ export default function TaskPage() {
 
         <ChoseTypeTask onTypeChange={handleTaskTypeChange} />
 
-        <RenderTaskCard
+        <TaskCardList
           subjectName={subjectName}
           currentTaskType={currentTaskType}
         />
@@ -99,7 +99,7 @@ function ChoseTypeTask({ onTypeChange }) {
   return <DropDownMenu menuTitle={selectedTaskType} menuItems={menuElements} />;
 }
 
-function RenderTaskCard({ subjectName, currentTaskType }) {
+function TaskCardList({ subjectName, currentTaskType }) {
   const [taskList, setTaskList] = useState([]);
   const axiosPrivate = useAxiosPrivate();
 
@@ -122,20 +122,13 @@ function RenderTaskCard({ subjectName, currentTaskType }) {
   return (
     <ul className="homework-list">
       {filteredTaskList.map((task, index) => {
-        return (
-          <TaskCard
-            key={index}
-            name={task.name}
-            info={task.info}
-            deadline={task.deadline}
-          />
-        );
+        return <TaskCard key={index} task={task} />;
       })}
     </ul>
   );
 }
 
-function TaskCard({ name, info, deadline }) {
+function TaskCard({ task }) {
   const [showMore, setShowMore] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const { subjectName } = useParams();
@@ -163,20 +156,20 @@ function TaskCard({ name, info, deadline }) {
 
   return (
     <li className="homework-card">
-      <h3>{name}</h3>
+      <h3>{task.name}</h3>
 
       {isMobile ? (
         <>
           <TaskInfoButton />
           {showMore && (
             <div className="homework-text">
-              <span>{info}</span>
+              <span>{task.info}</span>
             </div>
           )}
         </>
       ) : (
         <div className="homework-text">
-          <span>{info}</span>
+          <span>{task.info}</span>
         </div>
       )}
 
@@ -184,7 +177,7 @@ function TaskCard({ name, info, deadline }) {
         <Link className={"task-navigate-link"} to={"#"}>
           До успішності
         </Link>
-        <div className="homework-deadline">Дата здачи: {deadline}</div>
+        <div className="homework-deadline">Дата здачи: {task.deadline}</div>
         <div className="edit-icon">
           <EditIcon className="edit-btn" onClick={() => setIsPopupOpen(true)} />
         </div>
@@ -193,7 +186,12 @@ function TaskCard({ name, info, deadline }) {
       {isPopupOpen && (
         <AddTaskPopup
           handleOpenState={() => setIsPopupOpen(!isPopupOpen)}
-          taskInfo={{ name: name, description: info, subjectName: subjectName }}
+          taskInfo={{
+            type: task.type,
+            description: task.info,
+            subjectName: subjectName,
+            name: task.name,
+          }}
           isNewTask={false}
         />
       )}

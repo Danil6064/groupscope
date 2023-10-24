@@ -9,7 +9,7 @@ export default function HeaderMenu() {
   // const { logout } = useAuth();
 
   useEffect(() => {
-    const savedPictureUrl = sessionStorage.getItem("pictureUrl")
+    const savedPictureUrl = localStorage.getItem("pictureUrl")
     if (savedPictureUrl) {
       setAvatarUrl(savedPictureUrl);
     }

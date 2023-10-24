@@ -16,10 +16,12 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
+
+        <Route element={<PersistLogin />}>
           <Route index element={<Auth />} />
           <Route path="guest" element={<Guest />} />
 
-          <Route element={<PersistLogin />}>
+          
             <Route
               element={<RequireAuth allowedRoles={["HEADMAN", "STUDENT"]} />}
             >

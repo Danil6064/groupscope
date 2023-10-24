@@ -56,12 +56,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.popup__form-item:last-child{
   gap: 10px;
-  margin-top: 25px;
-  justify-content: space-around;
 }
 
 label {
@@ -81,7 +76,7 @@ select {
   padding: 3px 10px;
 }
 
-textarea{
+textarea {
   display: flex;
   resize: none;
   width: 100%;
@@ -101,8 +96,16 @@ textarea{
 
 .popup__btns {
   display: flex;
-  justify-content: space-between;
   gap: 10px;
+  margin-top: 25px;
+}
+
+.popup__btns.center {
+  justify-content: center;
+}
+
+.popup__btns.space-between {
+  justify-content: space-between;
 }
 
 .popup__btn {
@@ -126,7 +129,7 @@ textarea{
 .popup__btn:hover {
   color: var(--light-text-color);
   background-color: var(--dark-bg-color);
-} 
+}
 
 .popup__save-btn {
   display: flex;

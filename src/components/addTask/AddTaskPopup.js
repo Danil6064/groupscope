@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { ReactComponent as CloseIcon } from "../icons/close.svg";
 import { ReactComponent as LinkIcon } from "../icons/link.svg";
+import { ReactComponent as SaveIcon } from "../icons/save.svg";
+import { ReactComponent as DeleteIcon } from "../icons/delete.svg";
 import "./addTaskPopup.css";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
@@ -11,43 +13,91 @@ export default function TaskPopup({ handleOpenState, taskInfo, isNewTask }) {
   const [taskDescription, setTaskDescription] = useState(taskInfo?.description);
   const axiosPrivate = useAxiosPrivate();
 
-  console.log(taskType);
+  const [task, setTask] = useState({
+    type: taskInfo?.type,
+    number: taskInfo?.number,
+    deadline: taskInfo?.deadline,
+    description: taskInfo?.description,
+  });
+
+  console.log("taskType", taskType);
 
   const handleSaveButton = () => {
     const taskTypeMap = {
-      ПЗ: { name: "Практичне Завдання", type: "PRACTICAL" },
-      ЛБ: { name: "Лабораторна робота", type: "LABORATORY" },
-      ТЕСТ: { name: "Тест", type: "TEST" },
+      PRACTICAL: "Практичне завдання",
+      LABORATORY: "Лабораторна робота",
+      TEST: "Тест",
     };
-    const taskName = `${taskTypeMap[taskType].name} №${taskNumber}`;
+    const taskName = `${taskTypeMap[taskType]} №${taskNumber}`;
 
-    const requestBody = {
-      name: taskName,
-      type: taskTypeMap[taskType].type,
-      info: taskDescription,
-      deadline: taskDeadline.split("-").reverse().join("."),
-    };
+    console.log("taskName:", taskName);
+
+    const requestBody = {};
 
     isNewTask
       ? axiosPrivate
-          .post(`/api/subject/${taskInfo.subjectName}/task/add`, requestBody)
-          .then((response) => {})
+          .post(`/api/subject/${taskInfo.subjectName}/task/add`, {
+            name: taskName,
+            type: taskType,
+            info: taskDescription,
+            deadline: taskDeadline.split("-").reverse().join("."),
+          })
+          .then(() => {
+            alert("Task added");
+            handleOpenState();
+          })
           .catch((error) => {
             console.error(error);
           })
-      : alert("Not new");
+      : axiosPrivate
+          .patch(`/api/subject/${taskInfo.subjectName}/task/patch`, {
+            name: taskInfo.name,
+            newName: taskName,
+            type: taskType,
+            info: taskDescription,
+            deadline: taskDeadline.split("-").reverse().join("."),
+          })
+          .then(() => {
+            alert("Task changed");
+            handleOpenState();
+          })
+          .catch((error) => {
+            console.error(error);
+          });
   };
 
   const handleDeleteButton = () => {
     console.log("subjectName", taskInfo.subjectName);
     console.log("name", taskInfo.name);
     axiosPrivate
-      .delete(`/api/subject/${taskInfo.subjectName}/task/delete`, {name: taskInfo.name})
-      .then((response) => {})
+      .delete(`/api/subject/${taskInfo.subjectName}/task/delete`, {
+        data: { name: taskInfo.name },
+      })
+      .then(() => {
+        alert("Task deleted");
+        handleOpenState();
+      })
       .catch((error) => console.error(error));
   };
 
-  // console.log(taskDeadline); 
+  const SaveButton = () => (
+    <button
+      className="popup__btn"
+      onClick={handleSaveButton}
+      // disabled={!taskType || !taskNumber || !taskDeadline || !taskDescription}
+    >
+      <SaveIcon style={{ marginRight: 10 }} />
+      Зберегти
+    </button>
+  );
+  const DeleteButton = () => (
+    <button className="popup__btn" onClick={handleDeleteButton}>
+      <DeleteIcon style={{ marginRight: 10 }} />
+      Видалити
+    </button>
+  );
+
+  // console.log(taskDeadline);
   return (
     <div className="popup-overlay">
       <section className="popup">
@@ -61,20 +111,20 @@ export default function TaskPopup({ handleOpenState, taskInfo, isNewTask }) {
           <div className="popup__form-item">
             <label>Оберіть тип завдання:</label>
             <select
+              // required={isNewTask}
               defaultValue={taskType}
-              required={isNewTask}
               onChange={(event) => setTaskType(event.target.value)}
             >
-              <option value="ПЗ">ПЗ</option>
-              <option value="ЛБ">ЛБ</option>
-              <option value="ТЕСТ">ТЕСТ</option>
+              <option value="PRACTICAL">ПЗ</option>
+              <option value="LABORATORY">ЛБ</option>
+              <option value="TEST">ТЕСТ</option>
             </select>
           </div>
 
           <div className="popup__form-item">
             <label>Оберіть номер завдання:</label>
             <select
-              required={isNewTask}
+              // required={isNewTask}
               defaultValue={taskNumber}
               onChange={(event) => setTaskNumber(event.target.value)}
             >
@@ -107,15 +157,11 @@ export default function TaskPopup({ handleOpenState, taskInfo, isNewTask }) {
             onChange={(event) => setTaskDescription(event.target.value)}
           ></textarea>
 
-          <div className="popup__form-item">
-            {!isNewTask && (
-              <button className="popup__btn" onClick={handleDeleteButton}>
-                Видалити
-              </button>
-            )}
-            <button className="popup__btn" onClick={handleSaveButton}>
-              Зберегти
-            </button>
+          <div
+            className={`popup__btns ${isNewTask ? "center" : "space-between"}`}
+          >
+            {!isNewTask && <DeleteButton />}
+            <SaveButton />
           </div>
         </div>
       </section>

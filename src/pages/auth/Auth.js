@@ -5,13 +5,40 @@ import "./auth.css";
 import useAuth from "../../hooks/useAuth";
 import axios from "../../api/axios";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { useEffect } from "react";
 
 export default function Auth() {
-  const { setAuth } = useAuth();
+  const { auth, setAuth } = useAuth();
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
 
-  sessionStorage.setItem("currentHeaderTitle", "GroupScope")
+  sessionStorage.setItem("currentHeaderTitle", "GroupScope");
+
+  useEffect(() => {
+    axiosPrivate
+      .get("/api/student")
+      .then(function (response) {
+        // console.log("get /api/student:", response);
+        const { name, lastname, role, learningGroup } = response.data;
+        console.log(
+          "User:",
+          name,
+          lastname,
+          "Role:",
+          role,
+          "LearningGroup:",
+          learningGroup
+        );
+        sessionStorage.setItem("learningGroup", learningGroup);
+        setAuth((prev) => {
+          return { ...prev, name, lastname, role, learningGroup };
+        });
+        learningGroup ? navigate("/home") : navigate("/guest");
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
+  }, [auth]);
 
   const login = () => {
     // console.log("Auth", auth);
@@ -31,13 +58,12 @@ export default function Auth() {
           "LearningGroup:",
           learningGroup
         );
-        sessionStorage.setItem("learningGroup", learningGroup)
+        sessionStorage.setItem("learningGroup", learningGroup);
         setAuth((prev) => {
           return { ...prev, name, lastname, role, learningGroup };
         });
         learningGroup ? navigate("/home") : navigate("/guest");
       })
-
       .catch(function (error) {
         console.error(error);
       });
@@ -53,7 +79,7 @@ export default function Auth() {
 
     const learnerName = decoded.given_name;
     const learnerLastname = decoded.family_name;
-    sessionStorage.setItem("pictureUrl", decoded.picture);
+    localStorage.setItem("pictureUrl", decoded.picture);
 
     axios
       .post(
