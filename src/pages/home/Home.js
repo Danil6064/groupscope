@@ -8,8 +8,10 @@ export default function Home() {
   const [inviteCode, setInviteCode] = useState("");
   const { auth } = useAuth();
   const axiosPrivate = useAxiosPrivate();
-  
-  sessionStorage.setItem("currentHeaderTitle", sessionStorage.getItem("learningGroup"));
+  sessionStorage.setItem(
+    "currentHeaderTitle",
+    sessionStorage.getItem("learningGroup")
+  );
 
   useEffect(() => {
     // console.log("HOME USEEFFECT");
@@ -19,7 +21,7 @@ export default function Home() {
       .then(function (responce) {
         const { inviteCode, name } = responce.data;
         setInviteCode(inviteCode);
-        
+
         // console.log("SET HEADER IN HOME")
       })
       .catch(function (error) {
@@ -49,27 +51,9 @@ function SubjectCards() {
   const [selectedSubject, setSelectedSubject] = useState();
   const axiosPrivate = useAxiosPrivate();
   const { auth } = useAuth();
+  console.log(selectedSubject);
 
   useEffect(() => {
-    // axios
-    //   .get(`${apiUrl}/subject/all`, {
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       "Cache-Control": "no-cache",
-    //       Authorization: "Bearer " + jwtToken,
-    //     },
-    //   })
-    //   .then((res) => {
-    //     setSubjectList(res.data);
-    //     // Save subject names to cookies
-    //     const subjectNames = res.data.map((subject) => subject.name);
-    //     Cookies.set("subjectNames", JSON.stringify(subjectNames));
-    //     console.log("Subjects updated and cookies set!");
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
-
     axiosPrivate
       .get("api/subject/all")
       .then(function (responce) {
@@ -80,16 +64,6 @@ function SubjectCards() {
         console.error(error);
       });
   }, []);
-
-  // const handleSubjectClick = (id) => {
-  //   setSelectedSubjectId(id);
-  // };
-
-  // const handleSubjectChange = (event) => {
-  //   setSelectedSubjects(
-  //     [...event.target.selectedOptions].map((option) => option.value)
-  //   );
-  // };
 
   const handleAddSubjects = () => {
     axiosPrivate
@@ -120,31 +94,12 @@ function SubjectCards() {
       {/* Временный функционал добавление предмета */}
       {auth.role === "HEADMAN" && (
         <>
-          <select onChange={(e) => setSelectedSubject(e.target.value)}>
-            <option value="Бази даних">Бази даних</option>
-            <option value="Soft skills">Soft skills</option>
-            <option value="WEB-програмування">WEB-програмування</option>
-            <option value="Захист від технічних розвідок">
-              Захист від технічних розвідок
-            </option>
-            <option value="Інформаційно-комунікаційні системи">
-              Інформаційно-комунікаційні системи
-            </option>
-            <option value="Комплексні системи захисту інформації">
-              Комплексні системи захисту інформації
-            </option>
-            <option value="Нормативно-правове забезпечення інформаційної безпеки">
-              Інформаційно-комунікаційні системи
-            </option>
-            <option value="Психологія управління">Психологія управління</option>
-            <option value="Соціальна психологія та конфліктологія">
-              Соціальна психологія та конфліктологія
-            </option>
-            <option value="Фізичне виховання">Фізичне виховання</option>
-            <option value="Нормативно-правове забезпечення ІБ">
-              Нормативно-правове забезпечення ІБ
-            </option>
-          </select>
+          <input
+            type="text"
+            placeholder="Назва предмета"
+            onChange={(e) => setSelectedSubject(e.target.value)}
+          />
+
           <button onClick={handleAddSubjects}>Додати</button>
         </>
       )}
