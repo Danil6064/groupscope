@@ -19,7 +19,7 @@ export default function Home() {
     axiosPrivate
       .get("/api/group")
       .then(function (responce) {
-        const { inviteCode, name } = responce.data;
+        const { inviteCode } = responce.data;
         setInviteCode(inviteCode);
 
         // console.log("SET HEADER IN HOME")
