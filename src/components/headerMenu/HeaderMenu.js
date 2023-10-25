@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { ReactComponent as BurgerMenuIcon } from "../icons/burgerMenu.svg";
 import "./navigation-menu.css";
 import { Link } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
@@ -32,7 +33,7 @@ export default function HeaderMenu() {
   return (
     <>
       <button className="bm-open-btn" onClick={() => setIsOpen(!isOpen)}>
-        <svg
+        {/* <svg
           stroke="white"
           strokeWidth="2"
           width="36"
@@ -42,7 +43,8 @@ export default function HeaderMenu() {
           <line x1="3" y1="6" x2="21" y2="6" />
           <line x1="3" y1="12" x2="21" y2="12" />
           <line x1="3" y1="18" x2="21" y2="18" />
-        </svg>
+        </svg> */}
+        <BurgerMenuIcon/>
       </button>
 
       <div className={overlayClassName} onClick={() => setIsOpen(!isOpen)}></div>
