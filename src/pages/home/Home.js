@@ -68,7 +68,9 @@ function SubjectCards() {
   const handleAddSubjects = () => {
     axiosPrivate
       .post("/api/subject/add", { name: selectedSubject })
-      .then((response) => console.log("/api/subject/add", response))
+      .then(() => {
+        alert("Додано новий предмет (Треба обновити сторінку)");
+      })
       .catch(function (error) {
         console.error(error);
       });
