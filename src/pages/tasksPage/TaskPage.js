@@ -25,8 +25,6 @@ export default function TaskPage() {
 
   sessionStorage.setItem("currentHeaderTitle", headerTitle);
 
-  console.log(subjectName);
-
   const handleTaskTypeChange = (type) => {
     setCurrentTaskType(type);
   };
@@ -84,10 +82,10 @@ function ChoseTypeTask({ onTypeChange }) {
     (taskType) => taskTypeMap[taskType] !== selectedTaskType
   );
 
-  const menuElements = availableTaskTypes.map((taskType) => {
+  const menuElements = availableTaskTypes.map((taskType, index) => {
     return (
       <li
-        key={taskType}
+        key={index}
         className="dropdown-menu-item"
         onClick={() => handleClick(taskType)}
       >
@@ -100,7 +98,15 @@ function ChoseTypeTask({ onTypeChange }) {
 }
 
 function TaskCardList({ subjectName, currentTaskType }) {
-  const [taskList, setTaskList] = useState([]);
+  const [taskList, setTaskList] = useState([
+    {
+      id: Number(),
+      name: "",
+      type: "",
+      info: "",
+      deadline: "",
+    },
+  ]);
   const axiosPrivate = useAxiosPrivate();
 
   useEffect(() => {
@@ -108,7 +114,7 @@ function TaskCardList({ subjectName, currentTaskType }) {
       .get(`/api/subject/${subjectName}/task/all`)
       .then((responce) => {
         setTaskList(responce.data);
-        console.log(responce.data);
+        // console.log(responce.data);
       })
       .catch((error) => {
         console.log(error);
@@ -134,14 +140,13 @@ function TaskCard({ task }) {
   const { subjectName } = useParams();
   const isMobile = useMediaQuery({ query: "(max-width: 480px)" });
 
-  function handleMoreClick() {
-    setShowMore(!showMore);
-  }
-
   const TaskInfoButton = () => {
     return (
       <div className="task-info">
-        <button className="task-info-btn" onClick={handleMoreClick}>
+        <button
+          className="task-info-btn"
+          onClick={() => setShowMore(!showMore)}
+        >
           <svg width="10" height="10" viewBox="0 0 19 19">
             <polygon points="0,0 19,0 9.5,19" />
           </svg>
@@ -188,6 +193,7 @@ function TaskCard({ task }) {
           handleOpenState={() => setIsPopupOpen(!isPopupOpen)}
           taskInfo={{
             type: task.type,
+            deadline: task.deadline.split(".").reverse().join("-"),
             description: task.info,
             subjectName: subjectName,
             name: task.name,

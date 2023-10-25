@@ -109,49 +109,29 @@ textarea {
 }
 
 .popup__btn {
+  cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  max-width: 250px;
-  min-height: 40px;
-  background-color: var(--light-bg-color);
+  /* width: 100%; */
+  width: 250px;
+  height: 40px;
+  border: var(--border);
   border-radius: 15px;
+  background-color: var(--light-bg-color);
   text-align: center;
   color: var(--dark-bg-color);
   font-size: 20px;
-  line-height: 24px;
-  cursor: pointer;
-  border: var(--border);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  line-height: normal;
+  fill: var(--dark-bg-color);
+  transition: background-color 0.3s ease, color 0.3s ease, fill 0.3s ease;
 }
+
 
 .popup__btn:hover {
   color: var(--light-text-color);
   background-color: var(--dark-bg-color);
-}
-
-.popup__save-btn {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  max-width: 250px;
-  min-height: 40px;
-  background-color: var(--dark-bg-color);
-  border-radius: 15px;
-  text-align: center;
-  color: var(--light-text-color);
-  font-size: 20px;
-  line-height: 24px;
-  cursor: pointer;
-  border: var(--border);
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.popup__save-btn:hover {
-  color: var(--dark-text-color);
-  background-color: var(--light-bg-color);
+  fill: var(--light-bg-color);
 }
 
 @media (max-width: 480px) {
