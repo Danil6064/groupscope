@@ -1,10 +1,9 @@
-import { useState } from "react";
 import { ReactComponent as CloseIcon } from "../icons/close.svg";
 import { ReactComponent as LinkIcon } from "../icons/link.svg";
 import { ReactComponent as SaveIcon } from "../icons/save.svg";
 import { ReactComponent as DeleteIcon } from "../icons/delete.svg";
-import "./addTaskPopup.css";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import "./addTaskPopup.css";
 
 export default function TaskPopup({ handleOpenState, taskInfo, isNewTask }) {
   const axiosPrivate = useAxiosPrivate();
@@ -38,8 +37,7 @@ export default function TaskPopup({ handleOpenState, taskInfo, isNewTask }) {
       TEST: "Тест",
     }[type] += ` №${number}`);
 
-      console.log(event.target.name)
-    console.log(type, number, deadline, description, name);
+    // console.log(type, number, deadline, description, name);
 
     isNewTask
       ? axiosPrivate
@@ -128,8 +126,12 @@ export default function TaskPopup({ handleOpenState, taskInfo, isNewTask }) {
             className={`popup__btns ${isNewTask ? "center" : "space-between"}`}
           >
             {!isNewTask && (
-              <button type="button" className="popup__btn" onClick={handleDeleteButton}>
-                <DeleteIcon  style={{ marginRight: 10 }} />
+              <button
+                type="button"
+                className="popup__btn"
+                onClick={handleDeleteButton}
+              >
+                <DeleteIcon style={{ marginRight: 10 }} />
                 Видалити
               </button>
             )}
