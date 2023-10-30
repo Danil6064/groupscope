@@ -132,11 +132,11 @@ export default function TaskPopup({ handleOpenState, taskInfo, isNewTask }) {
             <input
               className="popup__form-item-input"
               type="number"
-              min={0}
+              min={1}
               max={100}
               name="maxMark"
               required
-              defaultValue={taskInfo?.maxMark}
+              defaultValue={taskInfo?.maxMark || 100}
               placeholder="Оцінка"
             />
           </div>

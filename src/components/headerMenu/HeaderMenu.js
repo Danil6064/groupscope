@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { ReactComponent as BurgerMenuIcon } from "../icons/burgerMenu.svg";
+import { ReactComponent as CloseBurgerMenuIcon } from "../icons/closeBurgerMenu.svg";
 import "./navigation-menu.css";
 import { Link } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
@@ -10,7 +11,7 @@ export default function HeaderMenu() {
   // const { logout } = useAuth();
 
   useEffect(() => {
-    const savedPictureUrl = localStorage.getItem("pictureUrl")
+    const savedPictureUrl = localStorage.getItem("pictureUrl");
     if (savedPictureUrl) {
       setAvatarUrl(savedPictureUrl);
     }
@@ -27,8 +28,6 @@ export default function HeaderMenu() {
       document.body.classList.remove("menu-open");
     }
   }, [isOpen]);
-  
-  let overlayClassName = `overlay ${isOpen ? "active" : ""}`;
 
   return (
     <>
@@ -44,15 +43,18 @@ export default function HeaderMenu() {
           <line x1="3" y1="12" x2="21" y2="12" />
           <line x1="3" y1="18" x2="21" y2="18" />
         </svg> */}
-        <BurgerMenuIcon/>
+        <BurgerMenuIcon />
       </button>
 
-      <div className={overlayClassName} onClick={() => setIsOpen(!isOpen)}></div>
+      <div
+        className={`overlay ${isOpen ? "active" : ""}`}
+        onClick={() => setIsOpen(!isOpen)}
+      ></div>
 
       <nav className={`sidebar ${isOpen ? "open" : ""}`}>
         <div className="sidebar-header">
           <button className="bm-close-btn" onClick={() => setIsOpen(!isOpen)}>
-            <svg
+            {/* <svg
               stroke="white"
               strokeWidth="2"
               width="36"
@@ -61,7 +63,8 @@ export default function HeaderMenu() {
             >
               <line x1="18" y1="6" x2="6" y2="18"></line>
               <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
+            </svg> */}
+            <CloseBurgerMenuIcon/>
           </button>
         </div>
         <MenuList onMenuItemClick={() => setIsOpen(!isOpen)} />
@@ -83,7 +86,7 @@ export default function HeaderMenu() {
 }
 
 function MenuList({ onMenuItemClick }) {
-  const {auth} = useAuth()
+  const { auth } = useAuth();
   return (
     <div className="menu-list">
       <Link to="/home" className="menu-item" onClick={onMenuItemClick}>
