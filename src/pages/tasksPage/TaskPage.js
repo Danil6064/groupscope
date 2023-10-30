@@ -25,9 +25,7 @@ export default function TaskPage() {
 
   sessionStorage.setItem("currentHeaderTitle", headerTitle);
 
-  const handleTaskTypeChange = (type) => {
-    setCurrentTaskType(type);
-  };
+  console.log("rerender");
 
   return (
     <main className="main_taskPage">
@@ -40,7 +38,7 @@ export default function TaskPage() {
             >
               <h2>Додати завдання</h2>
             </div>{" "}
-            {isPopupOpen && auth.role === "HEADMAN" && (
+            {auth.role === "HEADMAN" && isPopupOpen && (
               <AddTaskPopup
                 handleOpenState={() => setIsPopupOpen(!isPopupOpen)}
                 taskInfo={{ subjectName: subjectName }}
@@ -50,7 +48,7 @@ export default function TaskPage() {
           </>
         )}
 
-        <ChoseTypeTask onTypeChange={handleTaskTypeChange} />
+        <ChoseTypeTask onTypeChange={(type) => setCurrentTaskType(type)} />
 
         <TaskCardList
           subjectName={subjectName}
@@ -103,6 +101,7 @@ function TaskCardList({ subjectName, currentTaskType }) {
       id: Number(),
       name: "",
       type: "",
+      maxMark: Number(),
       info: "",
       deadline: "",
     },
@@ -195,6 +194,7 @@ function TaskCard({ task }) {
             type: task.type,
             deadline: task.deadline.split(".").reverse().join("-"),
             description: task.info,
+            maxMark: task.maxMark,
             subjectName: subjectName,
             name: task.name,
           }}

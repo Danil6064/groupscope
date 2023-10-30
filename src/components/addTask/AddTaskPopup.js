@@ -30,6 +30,7 @@ export default function TaskPopup({ handleOpenState, taskInfo, isNewTask }) {
     const number = form.get("number");
     const deadline = form.get("deadline");
     const description = form.get("description");
+    const maxMark = form.get("maxMark");
 
     const name = ({
       PRACTICAL: "Практичне завдання",
@@ -46,6 +47,7 @@ export default function TaskPopup({ handleOpenState, taskInfo, isNewTask }) {
             type: type,
             info: description,
             deadline: deadline.split("-").reverse().join("."),
+            maxMark: maxMark,
           })
           .then(() => {
             alert("Task added");
@@ -61,6 +63,7 @@ export default function TaskPopup({ handleOpenState, taskInfo, isNewTask }) {
             type: type,
             info: description,
             deadline: deadline.split("-").reverse().join("."),
+            maxMark: maxMark,
           })
           .then(() => {
             alert("Task changed");
@@ -84,7 +87,12 @@ export default function TaskPopup({ handleOpenState, taskInfo, isNewTask }) {
         <form onSubmit={handleSubmit}>
           <div className="popup__form-item">
             <label>Оберіть тип завдання:</label>
-            <select name="type" required defaultValue={taskInfo?.type}>
+            <select
+              className="popup__form-item-input"
+              name="type"
+              required
+              defaultValue={taskInfo?.type}
+            >
               <option value="PRACTICAL">ПЗ</option>
               <option value="LABORATORY">ЛБ</option>
               <option value="TEST">ТЕСТ</option>
@@ -93,7 +101,12 @@ export default function TaskPopup({ handleOpenState, taskInfo, isNewTask }) {
 
           <div className="popup__form-item">
             <label>Оберіть номер завдання:</label>
-            <select name="number" required defaultValue={taskInfo?.number}>
+            <select
+              className="popup__form-item-input"
+              name="number"
+              required
+              defaultValue={taskInfo?.number}
+            >
               {Array.from({ length: 10 }, (_, index) => index + 1).map(
                 (number, index) => (
                   <option key={index} value={number}>
@@ -106,12 +119,28 @@ export default function TaskPopup({ handleOpenState, taskInfo, isNewTask }) {
           <div className="popup__form-item">
             <label>Дата останьої здачи:</label>
             <input
+              className="popup__form-item-input"
               type="date"
               name="deadline"
               required
               defaultValue={taskInfo?.deadline}
             />
           </div>
+
+          <div className="popup__form-item">
+            <label>Максимальна оцінка:</label>
+            <input
+              className="popup__form-item-input"
+              type="number"
+              min={0}
+              max={100}
+              name="maxMark"
+              required
+              defaultValue={taskInfo?.maxMark}
+              placeholder="Оцінка"
+            />
+          </div>
+
           <div className="popup__form-item">
             <label>Напишіть завдання:</label>
             <LinkIcon className="popup__link-btn" />
