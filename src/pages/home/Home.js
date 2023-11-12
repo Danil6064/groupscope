@@ -1,8 +1,14 @@
 import { useState, useEffect } from "react";
-import "./home.css";
 import { NavLink } from "react-router-dom";
+import { ReactComponent as TasksDoneIcon } from "../../components/icons/tasksDone.svg";
+import { ReactComponent as TasksUndoneIcon } from "../../components/icons/tasksUndone.svg";
+import { ReactComponent as TasksDeadlineSoonIcon } from "../../components/icons/tasksDeadlineSoon.svg";
+import { ReactComponent as TasksDeadlineExpiredIcon } from "../../components/icons/tasksDeadlineExpired.svg";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import useAuth from "../../hooks/useAuth";
+import "./home.css";
+import { axiosPrivate } from "../../api/axios";
+import { response } from "express";
 
 export default function Home() {
   const [inviteCode, setInviteCode] = useState("");
@@ -14,8 +20,6 @@ export default function Home() {
   );
 
   useEffect(() => {
-    // console.log("HOME USEEFFECT");
-
     axiosPrivate
       .get("/api/group")
       .then(function (responce) {
@@ -47,11 +51,10 @@ export default function Home() {
 
 function SubjectCards() {
   const [subjectList, setSubjectList] = useState([]);
-  // const [selectedSubjects, setSelectedSubjects] = useState([]);
+  const [tasks, setTasks] = useState([{ total: 0, completed: 0 }]);
   const [selectedSubject, setSelectedSubject] = useState();
   const axiosPrivate = useAxiosPrivate();
   const { auth } = useAuth();
-  console.log(selectedSubject);
 
   useEffect(() => {
     axiosPrivate
@@ -80,11 +83,39 @@ function SubjectCards() {
     return (
       <NavLink
         key={index}
-        // to={`/subject/${encodeURIComponent(subject.name)}`}
         to={`/subject/${subject.name}`}
         className="subject-card"
       >
         <h2>{subject.name}</h2>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <div style={{ display: "flex", gap: "10px" }}>
+            <div className="task-information-icon">
+              <TasksDeadlineExpiredIcon />
+              <span>1</span>
+            </div>
+
+            <div className="task-information-icon">
+              <TasksDeadlineSoonIcon /> <span>2</span>
+            </div>
+
+            <div
+              className="task-information-icon"
+              title="Кількість завдань, які потрібно здати"
+            >
+              <TasksUndoneIcon /> <span>7</span>
+            </div>
+          </div>
+
+          <div
+            className="task-information-icon"
+            title="Кількість зроблених завдань, які були оцінені/Загальна кількість завдань за цей предмет"
+          >
+            <TasksDoneIcon />{" "}
+            <span>
+              {subject.tasks.length}/{subject.tasks.length}
+            </span>
+          </div>
+        </div>
       </NavLink>
     );
   });
@@ -108,3 +139,18 @@ function SubjectCards() {
     </>
   );
 }
+
+// function SubjectInfo(subject) {
+//   axiosPrivate = useAxiosPrivate();
+
+//   useEffect(() => {
+//     axiosPrivate
+//       .get(`/api/subject/${subject.name}/grade/all`)
+//       .then((response) => {
+//         console.log(response.data)
+//       })
+//       .catch((error) => {
+//         console.error(error);
+//       });
+//   });
+// }
