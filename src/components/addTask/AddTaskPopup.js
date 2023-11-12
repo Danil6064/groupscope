@@ -1,12 +1,18 @@
+import InsertLinkPopup from "./InsertLinkPopup";
 import { ReactComponent as CloseIcon } from "../icons/close.svg";
 import { ReactComponent as LinkIcon } from "../icons/link.svg";
 import { ReactComponent as SaveIcon } from "../icons/save.svg";
 import { ReactComponent as DeleteIcon } from "../icons/delete.svg";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import "./addTaskPopup.css";
+import { useState } from "react";
+import { Editor, EditorState, editorState } from "draft-js";
 
 export default function TaskPopup({ handleOpenState, taskInfo, isNewTask }) {
+  const [isInsertLinkPopupOpen, setIsInsertLinkPopupOpen] = useState(false);
+  const [editorState, setEditorState] = useState("");
   const axiosPrivate = useAxiosPrivate();
+
   // console.log("taskType", taskInfo?.type);
 
   const handleDeleteButton = () => {
@@ -38,7 +44,7 @@ export default function TaskPopup({ handleOpenState, taskInfo, isNewTask }) {
       TEST: "Тест",
     }[type] += ` №${number}`);
 
-    // console.log(type, number, deadline, description, name);
+    console.log(type, number, deadline, description, name);
 
     isNewTask
       ? axiosPrivate
@@ -143,8 +149,15 @@ export default function TaskPopup({ handleOpenState, taskInfo, isNewTask }) {
 
           <div className="popup__form-item">
             <label>Напишіть завдання:</label>
-            <LinkIcon className="popup__link-btn" />
+            <LinkIcon
+              className="popup__link-btn"
+              onClick={() => setIsInsertLinkPopupOpen(true)}
+            />
+            {isInsertLinkPopupOpen && (
+              <InsertLinkPopup setIsOpen={setIsInsertLinkPopupOpen} />
+            )}
           </div>
+
           <textarea
             name="description"
             required
@@ -174,3 +187,19 @@ export default function TaskPopup({ handleOpenState, taskInfo, isNewTask }) {
     </div>
   );
 }
+
+function TextEditor() {
+  const [editorState, setEditorState] = useState("");
+
+  return (
+    <div
+      name="description"
+      className="text-editor"
+      contentEditable="plaintext-only"
+    >
+      {editorState}
+    </div>
+  );
+}
+
+function TextEditor2() { }

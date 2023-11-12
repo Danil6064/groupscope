@@ -8,22 +8,27 @@ import DropDownMenu from "../../components/dropDownMenu/DropDownMenu";
 import AddTaskPopup from "../../components/addTask/AddTaskPopup";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
+function headerTitleShortcut(subjectName) {
+  const maxSubjectLength = 25;
+  return subjectName.length < maxSubjectLength
+    ? subjectName
+    : subjectName
+        .split(" ")
+        .map((word) => word.charAt(0).toUpperCase())
+        .join("");
+}
+
 export default function TaskPage() {
   const { subjectName } = useParams();
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [currentTaskType, setCurrentTaskType] = useState("ALL");
   const { auth } = useAuth();
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
+ 
 
-  const maxSubjectLength = 25;
-  const headerTitle =
-    subjectName.length < maxSubjectLength
-      ? subjectName
-      : subjectName
-          .split(" ")
-          .map((word) => word.charAt(0).toUpperCase())
-          .join("");
-
-  sessionStorage.setItem("currentHeaderTitle", headerTitle);
+  sessionStorage.setItem(
+    "currentHeaderTitle",
+    headerTitleShortcut(subjectName)
+  );
 
   console.log("rerender");
 
