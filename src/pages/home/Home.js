@@ -7,8 +7,6 @@ import { ReactComponent as TasksDeadlineExpiredIcon } from "../../components/ico
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import useAuth from "../../hooks/useAuth";
 import "./home.css";
-import { axiosPrivate } from "../../api/axios";
-import { response } from "express";
 
 export default function Home() {
   const [inviteCode, setInviteCode] = useState("");
@@ -80,6 +78,7 @@ function SubjectCards() {
   };
 
   const subjectCardList = subjectList.map((subject, index) => {
+
     return (
       <NavLink
         key={index}
@@ -139,18 +138,3 @@ function SubjectCards() {
     </>
   );
 }
-
-// function SubjectInfo(subject) {
-//   axiosPrivate = useAxiosPrivate();
-
-//   useEffect(() => {
-//     axiosPrivate
-//       .get(`/api/subject/${subject.name}/grade/all`)
-//       .then((response) => {
-//         console.log(response.data)
-//       })
-//       .catch((error) => {
-//         console.error(error);
-//       });
-//   });
-// }
