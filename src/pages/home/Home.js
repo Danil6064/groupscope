@@ -50,7 +50,8 @@ export default function Home() {
 function SubjectCards() {
   const [subjectList, setSubjectList] = useState([]);
   const [tasks, setTasks] = useState([{ total: 0, completed: 0 }]);
-  const [selectedSubject, setSelectedSubject] = useState();
+  const [grades, setGrades] = useState([]);
+  const [newSubject, setNewSubject] = useState();
   const axiosPrivate = useAxiosPrivate();
   const { auth } = useAuth();
 
@@ -64,11 +65,21 @@ function SubjectCards() {
       .catch(function (error) {
         console.error(error);
       });
+
+    axiosPrivate
+      .get("/api/student")
+      .then(function (responce) {
+        // console.log("/api/student", responce.data);
+        setGrades(responce.data.grades);
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
   }, []);
 
   const handleAddSubjects = () => {
     axiosPrivate
-      .post("/api/subject/add", { name: selectedSubject })
+      .post("/api/subject/add", { name: newSubject })
       .then(() => {
         alert("Додано новий предмет (Треба обновити сторінку)");
       })
@@ -77,7 +88,34 @@ function SubjectCards() {
       });
   };
 
+  const currentDate = new Date();
   const subjectCardList = subjectList.map((subject, index) => {
+    let total = subject.tasks.length,
+      doneCount = 0,
+      undoneCount = 0,
+      deadlineSoonCount = 0,
+      deadlineExpiredCount = 0;
+
+    grades
+      .filter((grade) => grade.subjectName === subject.name)
+      .map((grade) => {
+        grade.completion ? doneCount++ : undoneCount++;
+      });
+
+    subject.tasks.map((task) => {
+      const [day, month, year] = task.deadline.split(".");
+      // console.log(day, month, year)
+      const targetDate = new Date(year, month - 1, day);
+      const differenceInDays = Math.floor(
+        (targetDate - currentDate) / (1000 * 60 * 60 * 24) + 1
+      );
+      if (differenceInDays < 0) {
+        deadlineExpiredCount++;
+      } else if (0 <= differenceInDays && differenceInDays < 3) {
+        deadlineSoonCount++;
+      }
+      // console.log(subject.name, task.name, differenceInDays);
+    });
 
     return (
       <NavLink
@@ -87,33 +125,41 @@ function SubjectCards() {
       >
         <h2>{subject.name}</h2>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <div style={{ display: "flex", gap: "10px" }}>
-            <div className="task-information-icon">
-              <TasksDeadlineExpiredIcon />
-              <span>1</span>
-            </div>
+          <div style={{ display: "flex", gap: "15px" }}>
+            {deadlineExpiredCount !== 0 && (
+              <div className="task-information-icon">
+                <TasksDeadlineExpiredIcon />
+                <span>{deadlineExpiredCount}</span>
+              </div>
+            )}
 
-            <div className="task-information-icon">
-              <TasksDeadlineSoonIcon /> <span>2</span>
-            </div>
+            {deadlineSoonCount !== 0 && (
+              <div className="task-information-icon">
+                <TasksDeadlineSoonIcon /> <span>{deadlineSoonCount}</span>
+              </div>
+            )}
 
+            {undoneCount !== 0 && (
+              <div
+                className="task-information-icon"
+                title="Кількість завдань, які потрібно здати"
+              >
+                <TasksUndoneIcon /> <span>{undoneCount}</span>
+              </div>
+            )}
+          </div>
+
+          {total !== 0 && (
             <div
               className="task-information-icon"
-              title="Кількість завдань, які потрібно здати"
+              title="Кількість зроблених завдань, які були оцінені/Загальна кількість завдань за цей предмет"
             >
-              <TasksUndoneIcon /> <span>7</span>
+              <TasksDoneIcon />
+              <span>
+                {doneCount}/{total}
+              </span>
             </div>
-          </div>
-
-          <div
-            className="task-information-icon"
-            title="Кількість зроблених завдань, які були оцінені/Загальна кількість завдань за цей предмет"
-          >
-            <TasksDoneIcon />{" "}
-            <span>
-              {subject.tasks.length}/{subject.tasks.length}
-            </span>
-          </div>
+          )}
         </div>
       </NavLink>
     );
@@ -129,7 +175,7 @@ function SubjectCards() {
           <input
             type="text"
             placeholder="Назва предмета"
-            onChange={(e) => setSelectedSubject(e.target.value)}
+            onChange={(e) => setNewSubject(e.target.value)}
           />
 
           <button onClick={handleAddSubjects}>Додати</button>

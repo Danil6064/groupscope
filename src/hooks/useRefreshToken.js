@@ -10,8 +10,8 @@ export default function useRefreshToken() {
         const { jwtToken, role } = response.data;
 
         setAuth((prev) => {
-          console.log("Auth:", prev);
-          console.log("Refresh:", response.data);
+          // console.log("Auth:", prev);
+          // console.log("Refresh:", response.data);
           return { ...prev, accessToken: jwtToken, role: role };
         });
 

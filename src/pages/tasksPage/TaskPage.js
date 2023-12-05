@@ -10,7 +10,7 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 function headerTitleShortcut(subjectName) {
   const maxSubjectLength = 25;
-  return subjectName.length < maxSubjectLength
+  return subjectName.length <= maxSubjectLength
     ? subjectName
     : subjectName
         .split(" ")
@@ -30,7 +30,7 @@ export default function TaskPage() {
     headerTitleShortcut(subjectName)
   );
 
-  console.log("rerender");
+  // console.log("rerender");
 
   return (
     <main className="main_taskPage">

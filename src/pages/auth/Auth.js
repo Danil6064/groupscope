@@ -75,7 +75,7 @@ export default function Auth() {
     // console.log("Credential: " + credential);
 
     const decoded = jwt_decode(credential);
-    // console.log("Decoded Google Token:", decoded);
+    console.log("Decoded Google Token:", decoded);
 
     const learnerName = decoded.given_name;
     const learnerLastname = decoded.family_name;

@@ -1,5 +1,7 @@
-<svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="#F2F2F2"
+<svg width="30" height="30" viewBox="0 0 30 30" fill="none"
     xmlns="http://www.w3.org/2000/svg">
-    <path d="M4 4L32 32" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M4 32L32 4" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <g id="Group">
+        <path id="Vector" d="M1 1L29 29" stroke="#F2F2F2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path id="Vector_2" d="M1 29L29 1" stroke="#F2F2F2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
 </svg>
