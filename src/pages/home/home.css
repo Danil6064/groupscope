@@ -24,7 +24,7 @@
 
 .subject-card {
   padding: 15px;
-  border: var(--card-border);
+  border: var(--border);
   color: var(--dark-text-color);
   fill: var(--dark-bg-color);
   border-radius: 20px;

@@ -127,14 +127,18 @@ function SubjectCards() {
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <div style={{ display: "flex", gap: "15px" }}>
             {deadlineExpiredCount !== 0 && (
-              <div className="task-information-icon">
+              <div
+                className="task-information-icon"
+                title="Кількість завдань, термін здачі яких минув"
+              >
                 <TasksDeadlineExpiredIcon />
                 <span>{deadlineExpiredCount}</span>
               </div>
             )}
 
             {deadlineSoonCount !== 0 && (
-              <div className="task-information-icon">
+              <div className="task-information-icon"
+              title="Кількість завдань, термін здачі яких закінчиться найближчим часом (менше 3 днів)">
                 <TasksDeadlineSoonIcon /> <span>{deadlineSoonCount}</span>
               </div>
             )}
