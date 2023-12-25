@@ -137,8 +137,10 @@ function SubjectCards() {
             )}
 
             {deadlineSoonCount !== 0 && (
-              <div className="task-information-icon"
-              title="Кількість завдань, термін здачі яких закінчиться найближчим часом (менше 3 днів)">
+              <div
+                className="task-information-icon"
+                title="Кількість завдань, термін здачі яких закінчиться найближчим часом (менше 3 днів)"
+              >
                 <TasksDeadlineSoonIcon /> <span>{deadlineSoonCount}</span>
               </div>
             )}

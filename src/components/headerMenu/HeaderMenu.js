@@ -31,18 +31,7 @@ export default function HeaderMenu() {
 
   return (
     <>
-      <button className="bm-open-btn" onClick={() => setIsOpen(!isOpen)}>
-        {/* <svg
-          stroke="white"
-          strokeWidth="2"
-          width="36"
-          height="36"
-          viewBox="0 0 24 24"
-        >
-          <line x1="3" y1="6" x2="21" y2="6" />
-          <line x1="3" y1="12" x2="21" y2="12" />
-          <line x1="3" y1="18" x2="21" y2="18" />
-        </svg> */}
+      <button className="bm-open-btn" onClick={() => setIsOpen(true)}>
         <BurgerMenuIcon />
       </button>
 
@@ -53,21 +42,11 @@ export default function HeaderMenu() {
 
       <nav className={`sidebar ${isOpen ? "open" : ""}`}>
         <div className="sidebar-header">
-          <button className="bm-close-btn" onClick={() => setIsOpen(!isOpen)}>
-            {/* <svg
-              stroke="white"
-              strokeWidth="2"
-              width="36"
-              height="36"
-              viewBox="0 0 24 24"
-            >
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg> */}
-            <CloseBurgerMenuIcon/>
+          <button className="bm-close-btn" onClick={() => setIsOpen(false)}>
+            <CloseBurgerMenuIcon />
           </button>
         </div>
-        <MenuList onMenuItemClick={() => setIsOpen(!isOpen)} />
+        <MenuList onMenuItemClick={() => setIsOpen(false)} />
       </nav>
 
       <div className="user-avatar">
