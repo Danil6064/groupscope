@@ -171,13 +171,6 @@
 .table__gradient-conclusion {
   width: 90px;
   height: 23px;
-  /* background: linear-gradient(
-    90deg,
-    rgba(245, 248, 70, 0.7) 50%,
-    rgba(248, 70, 70, 0.7) 60%
-  ); */
-
-  background: linear-gradient(to right, rgba(255, 0, 0, 0.7), 100%, rgba(250, 255, 0, 0.7));
   border-radius: 50px;
   border: var(--border);
 }
