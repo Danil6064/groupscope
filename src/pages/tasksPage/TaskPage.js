@@ -13,7 +13,7 @@ function headerTitleShortcut(subjectName) {
   return subjectName.length <= maxSubjectLength
     ? subjectName
     : subjectName
-        .split(" ")
+        .split(/[ -]/)
         .map((word) => word.charAt(0).toUpperCase())
         .join("");
 }
