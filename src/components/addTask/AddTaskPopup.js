@@ -1,91 +1,205 @@
-import React, { useState } from 'react';
-import '../../pages/tasksPage/taskPage.css';
-import axios from 'axios';
-import { apiUrl } from '../../helpers/MainConstants';
-function AddTaskPopup({ onClose, subjectName }) {
-  const [taskType, setTaskType] = useState('ПЗ');
-  const [taskNumber, setTaskNumber] = useState(1);
-  const [dueDate, setDueDate] = useState('');
-  const [taskDescription, setTaskDescription] = useState('');
+import InsertLinkPopup from "./InsertLinkPopup";
+import { ReactComponent as CloseIcon } from "../icons/close.svg";
+import { ReactComponent as LinkIcon } from "../icons/link.svg";
+import { ReactComponent as SaveIcon } from "../icons/save.svg";
+import { ReactComponent as DeleteIcon } from "../icons/delete.svg";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import "./addTaskPopup.css";
+import { useState } from "react";
+import { Editor, EditorState, editorState } from "draft-js";
 
-  const handleSave = () => {
-    const taskTypeMap = {
-      "ПЗ": { name: "Практичне Завдання", type: "PRACTICAL" },
-      "ЛБ": { name: "Лабораторна робота", type: "LABORATORY" },
-      "ТЕСТ": { name: "Тест", type: "TEST" }
-    };
+export default function TaskPopup({ handleOpenState, taskInfo, isNewTask }) {
+  const [isInsertLinkPopupOpen, setIsInsertLinkPopupOpen] = useState(false);
+  const [editorState, setEditorState] = useState("");
+  const axiosPrivate = useAxiosPrivate();
 
-    const taskName = `${taskTypeMap[taskType].name} №${taskNumber}`;
+  // console.log("taskType", taskInfo?.type);
 
-    const requestBody = {
-      name: taskName,
-      type: taskTypeMap[taskType].type,
-      info: taskDescription,
-      deadline: dueDate.split('-').reverse().join('.')
-    };
-
-    const jwtToken = localStorage.getItem('jwtToken');
-
-    axios.post(`${apiUrl}/subject/${subjectName}/task/add`, requestBody, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Cache-Control': 'no-cache',
-        'Authorization': 'Bearer ' + jwtToken
-      }
-    })
-    .then(response => {
-      console.log(response.data);
-      onClose();
-      window.location.reload();  // Оновлення сторінки
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    });
+  const handleDeleteButton = () => {
+    // console.log("subjectName", taskInfo.subjectName);
+    // console.log("name", taskInfo.name);
+    axiosPrivate
+      .delete(`/api/subject/${taskInfo.subjectName}/task/delete`, {
+        data: { name: taskInfo.name },
+      })
+      .then(() => {
+        alert("Task deleted");
+        handleOpenState();
+      })
+      .catch((error) => console.error(error));
   };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const form = new FormData(event.target);
+    const type = form.get("type");
+    const number = form.get("number");
+    const deadline = form.get("deadline");
+    const description = form.get("description");
+    const maxMark = form.get("maxMark");
+
+    const name = ({
+      PRACTICAL: "Практичне завдання",
+      LABORATORY: "Лабораторна робота",
+      TEST: "Тест",
+    }[type] += ` №${number}`);
+
+    console.log(type, number, deadline, description, name);
+
+    isNewTask
+      ? axiosPrivate
+          .post(`/api/subject/${taskInfo.subjectName}/task/add`, {
+            name: name,
+            type: type,
+            info: description,
+            deadline: deadline.split("-").reverse().join("."),
+            maxMark: maxMark,
+          })
+          .then(() => {
+            alert("Task added");
+            handleOpenState();
+          })
+          .catch((error) => {
+            console.error(error);
+          })
+      : axiosPrivate
+          .patch(`/api/subject/${taskInfo.subjectName}/task/patch`, {
+            name: taskInfo.name,
+            newName: name,
+            type: type,
+            info: description,
+            deadline: deadline.split("-").reverse().join("."),
+            maxMark: maxMark,
+          })
+          .then(() => {
+            alert("Task changed");
+            handleOpenState();
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+  };
+
+  // console.log(taskDeadline);
   return (
     <div className="popup-overlay">
-      <div className="popup">
-        <div className="popup__content">
-          <div className="popup__header">
-            <h2>Додаємо нове завдання</h2>
+      <section className="popup">
+        <header className="popup__header">
+          <div />
+          <h2>{isNewTask ? "Додаємо нове " : "Редагуємо "}завдання</h2>
+          <CloseIcon className="popup__close-btn" onClick={handleOpenState} />
+        </header>
+
+        <form onSubmit={handleSubmit}>
+          <div className="popup__form-item">
+            <label>Оберіть тип завдання:</label>
+            <select
+              className="popup__form-item-input"
+              name="type"
+              required
+              defaultValue={taskInfo?.type}
+            >
+              <option value="PRACTICAL">ПЗ</option>
+              <option value="LABORATORY">ЛБ</option>
+              <option value="TEST">ТЕСТ</option>
+            </select>
           </div>
-          <div className="popup__body">
-            <ul className="popup__list">
-              <li className="popup__list-item">
-                <h3>Оберіть тип завдання:</h3>
-                <select onChange={(e) => setTaskType(e.target.value)}>
-                  <option value="ПЗ">ПЗ</option>
-                  <option value="ЛБ">ЛБ</option>
-                  <option value="ТЕСТ">ТЕСТ</option>
-                </select>
-              </li>
-              <li className="popup__list-item">
-                <h3>Оберіть номер завдання:</h3>
-                <select onChange={(e) => setTaskNumber(e.target.value)}>
-                  {Array.from({ length: 10 }, (_, i) => i + 1).map((number) =>
-                    <option key={number} value={number}>{number}</option>
-                  )}
-                </select>
-              </li>
-              <li className="popup__list-item">
-                <h3>ДАТА ОСТАННЬОЇ ЗДАЧІ:</h3>
-                <input type="date" onChange={(e) => setDueDate(e.target.value)} />
-              </li>
-              <li className="popup__list-item">
-                <h3>Напишіть завдання:</h3>
-              </li>
-            </ul>
-            <textarea className="popup__task-input" onChange={(e) => setTaskDescription(e.target.value)}></textarea>
-            <div className="popup__btns">
-              <div className="popup__close-btn" onClick={onClose}>Скасувати</div>
-              <div className="popup__save-btn" onClick={handleSave}>Зберегти</div>
-            </div>
+
+          <div className="popup__form-item">
+            <label>Оберіть номер завдання:</label>
+            <select
+              className="popup__form-item-input"
+              name="number"
+              required
+              defaultValue={taskInfo?.number}
+            >
+              {Array.from({ length: 10 }, (_, index) => index + 1).map(
+                (number, index) => (
+                  <option key={index} value={number}>
+                    {number}
+                  </option>
+                )
+              )}
+            </select>
           </div>
-        </div>
-      </div>
+          <div className="popup__form-item">
+            <label>Дата останьої здачи:</label>
+            <input
+              className="popup__form-item-input"
+              type="date"
+              name="deadline"
+              required
+              defaultValue={taskInfo?.deadline}
+            />
+          </div>
+
+          <div className="popup__form-item">
+            <label>Максимальна оцінка:</label>
+            <input
+              className="popup__form-item-input"
+              type="number"
+              min={1}
+              max={100}
+              name="maxMark"
+              required
+              defaultValue={taskInfo?.maxMark || 100}
+              placeholder="Оцінка"
+            />
+          </div>
+
+          <div className="popup__form-item">
+            <label>Напишіть завдання:</label>
+            <LinkIcon
+              className="popup__link-btn"
+              onClick={() => setIsInsertLinkPopupOpen(true)}
+            />
+            {isInsertLinkPopupOpen && (
+              <InsertLinkPopup setIsOpen={setIsInsertLinkPopupOpen} />
+            )}
+          </div>
+
+          <textarea
+            name="description"
+            required
+            defaultValue={taskInfo?.description}
+          ></textarea>
+
+          <div
+            className={`popup__btns ${isNewTask ? "center" : "space-between"}`}
+          >
+            {!isNewTask && (
+              <button
+                type="button"
+                className="popup__btn"
+                onClick={handleDeleteButton}
+              >
+                <DeleteIcon style={{ marginRight: 10 }} />
+                Видалити
+              </button>
+            )}
+            <button type="submit" className="popup__btn">
+              <SaveIcon style={{ marginRight: 10 }} />
+              Зберегти
+            </button>
+          </div>
+        </form>
+      </section>
     </div>
   );
 }
 
-export default AddTaskPopup;
+function TextEditor() {
+  const [editorState, setEditorState] = useState("");
+
+  return (
+    <div
+      name="description"
+      className="text-editor"
+      contentEditable="plaintext-only"
+    >
+      {editorState}
+    </div>
+  );
+}
+
+function TextEditor2() { }

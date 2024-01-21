@@ -1,79 +1,42 @@
-import React, { useState, useEffect } from "react";
-import { useMediaQuery } from "react-responsive";
-import Cookies from "js-cookie";
+import { useState, useEffect } from "react";
+// import { useMediaQuery } from "react-responsive";
 import "./successfulGroup.css";
-import ChoseSubjectMenu from "../../components/choseSubject/ChoseSubjectMenu";
-import { apiUrl } from "../../helpers/MainConstants";
+import SubjectSelectionMenu from "../../components/dropDownMenu/SubjectSelectionMenu";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 export default function SuccessfulGroup() {
-  const [subjects, setSubjects] = useState([]);
-  const [selectedSubject, setSelectedSubject] = useState(
-    localStorage.getItem("selectedSubject") || ""
-  );
+  const [selectedSubject, setSelectedSubject] = useState();
   const [studentsData, setStudentsData] = useState([]);
-  const isAdaptive = useMediaQuery( {query: "max-width: 1220px"});
+  const axiosPrivate = useAxiosPrivate();
+  // const isAdaptive = useMediaQuery({ query: "max-width: 1220px" });
+
+  sessionStorage.setItem("currentHeaderTitle", "Успішність групи");
 
   useEffect(() => {
-    const fetchSubjects = async () => {
-      const subjectsFromCookies = JSON.parse(
-        Cookies.get("subjectNames") || "[]"
-      );
-      setSubjects(subjectsFromCookies);
-      if (!selectedSubject && subjectsFromCookies.length > 0) {
-        setSelectedSubject(subjectsFromCookies[0]);
-        localStorage.setItem("selectedSubject", subjectsFromCookies[0]);
-      }
-    };
-
-    fetchSubjects();
+    axiosPrivate
+      .get(`/api/group/${selectedSubject}/grade/all`)
+      .then((response) => {
+        console.log(response.data);
+        setStudentsData(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }, [selectedSubject]);
 
-  useEffect(() => {
-    const fetchStudentsData = async () => {
-      const jwtToken = localStorage.getItem("jwtToken");
-      const response = await fetch(
-        `${apiUrl}/group/${selectedSubject}/grade/all`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "Cache-Control": "no-cache",
-            Authorization: "Bearer " + jwtToken,
-          },
-        }
-      );
-      const data = await response.json();
-      setStudentsData(data);
-      console.log("StudentsData: " + response.data);
-    };
-
-    if (selectedSubject) {
-      fetchStudentsData();
-    }
-  }, [selectedSubject]);  
+  // console.log(selectedSubject)
 
   return (
     <main className="main_successfulGroup">
       <div className="container_successfulGroup">
-        <ChoseSubjectMenu
-          subjects={subjects}
-          setSelectedSubject={setSelectedSubject}
-          currentSubject={selectedSubject}
-          redirectTo="/successfulGroup"
-        />
-        <DesktopTable studentsData={studentsData}/>
+        <SubjectSelectionMenu setSubject={setSelectedSubject} />
+        {selectedSubject && <DesktopTable studentsData={studentsData} />}
       </div>
     </main>
   );
 }
 
-function DesktopTable({studentsData}) {
-  const abbreviateTaskName = (name) => {
-    if (name.includes("Практичне Завдання")) return "ПЗ";
-    if (name.includes("Лабораторна робота")) return "ЛБ";
-    return name;
-  };
-
+function DesktopTable({ studentsData }) {
   const taskNames = [
     ...new Set(
       studentsData.flatMap((student) =>
@@ -84,62 +47,75 @@ function DesktopTable({studentsData}) {
 
   const headerRow = taskNames.map((taskName, index) => {
     let isOdd = index % 2 === 0;
+
+    taskName = taskName
+      .replace(/Практичне завдання/gi, "ПЗ")
+      .replace(/Лабораторна робота/gi, "ЛБ");
+
+    // console.log("TaskName:" + taskName);
     return (
       <li
-        key={taskName}
+        key={index}
         className={`table-header-row__task-type ${
           isOdd ? "table__odd-column" : "table__even-column"
         }`}
       >
-        <span>{abbreviateTaskName(taskName.split(" №")[0])}</span>
-        <span>№{taskName.split(" №")[1]}</span>
+        <span>{taskName}</span>
       </li>
     );
   });
-  
-  
 
-  const studentRows = studentsData.map((student) => (
-    <div className="table__row" key={student.id}>
-      <div className="table-row__student-name">
-        {student.name + " " + student.lastname}
-      </div>
-      <ul className="table-row__marks">
-        {taskNames.map((task, taskIndex) => {
-          const grade = student.grades.find((g) => g.taskName === task);
-          const columnClass =
-            taskIndex % 2 === 0 ? "table__odd-column" : "table__even-column";
-          return (
-            <li
-              className={`table-row__mark ${columnClass}`}
-              key={task + student.id}
-            >
-              {grade ? (
-                grade.completion ? (
-                  grade.mark ? (
-                    grade.mark
+  const studentRows = studentsData
+    .sort((a, b) => (a.lastname > b.lastname ? 1 : -1))
+    .map((student, index) => (
+      <div className="table__row" key={index}>
+        <div className="table-row__student-name">
+          {`${index + 1}. ${student.lastname} ${student.name}`}
+        </div>
+        <ul className="table-row__marks">
+          {taskNames.map((task, index) => {
+            const grade = student.grades.find((g) => g.taskName === task);
+            const columnClass =
+              index % 2 === 0 ? "table__odd-column" : "table__even-column";
+
+            return (
+              <li className={`table-row__mark ${columnClass}`} key={index}>
+                {grade ? (
+                  grade.completion ? (
+                    grade.mark ? (
+                      grade.mark
+                    ) : (
+                      <div className="table__yellow-circle"></div>
+                    )
                   ) : (
-                    <div className="table__yellow-circle"></div>
+                    <div className="table__red-circle"></div>
                   )
-                ) : (
-                  <div className="table__red-circle"></div>
-                )
-              ) : null}
-            </li>
-          );
-        })}
-        <li
-          className={`table-row__conclusion ${
-            taskNames.length % 2 === 0
-              ? "table__odd-column"
-              : "table__even-column"
-          }`}
-        >
-          <div className="table__gradient-conclusion"></div>
-        </li>
-      </ul>
-    </div>
-  ));
+                ) : null}
+              </li>
+            );
+          })}
+          <li
+            className={`table-row__conclusion ${
+              taskNames.length % 2 === 0
+                ? "table__odd-column"
+                : "table__even-column"
+            }`}
+          >
+            <div
+              className="table__gradient-conclusion"
+              style={{
+                background: `linear-gradient(to right, rgba(250, 255, 0, 0.7), ${
+                  (student.grades.filter((grade) => grade.completion === true)
+                    .length /
+                    student.grades.length) *
+                  100
+                }%, rgba(255, 0, 0, 0.7))`,
+              }}
+            ></div>
+          </li>
+        </ul>
+      </div>
+    ));
 
   return (
     <div className="table">

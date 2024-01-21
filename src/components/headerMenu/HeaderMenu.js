@@ -1,24 +1,25 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { ReactComponent as BurgerMenuIcon } from "../icons/burgerMenu.svg";
+import { ReactComponent as CloseBurgerMenuIcon } from "../icons/closeBurgerMenu.svg";
 import "./navigation-menu.css";
 import { Link } from "react-router-dom";
-import { useAuth } from "../../pages/auth/AuthContext";
+import useAuth from "../../hooks/useAuth";
 
 export default function HeaderMenu() {
   const [isOpen, setIsOpen] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState(null);
-  const { logout } = useAuth();
-  let overlayClassName = `overlay ${isOpen ? "active" : ""}`;
+  // const { logout } = useAuth();
 
   useEffect(() => {
-    const savedPictureUrl = localStorage.getItem("userPicture");
+    const savedPictureUrl = localStorage.getItem("pictureUrl");
     if (savedPictureUrl) {
       setAvatarUrl(savedPictureUrl);
     }
   }, []);
 
-  function setOpenedState() {
-    setIsOpen(!isOpen);
-  }
+  // function setOpenedState() {
+  //   setIsOpen(!isOpen);
+  // }
 
   useEffect(() => {
     if (isOpen) {
@@ -30,42 +31,26 @@ export default function HeaderMenu() {
 
   return (
     <>
-      <button className="bm-open-btn" onClick={() => setOpenedState()}>
-        <svg
-          stroke="white"
-          strokeWidth="2"
-          width="36"
-          height="36"
-          viewBox="0 0 24 24"
-        >
-          <line x1="3" y1="6" x2="21" y2="6" />
-          <line x1="3" y1="12" x2="21" y2="12" />
-          <line x1="3" y1="18" x2="21" y2="18" />
-        </svg>
+      <button className="bm-open-btn" onClick={() => setIsOpen(true)}>
+        <BurgerMenuIcon />
       </button>
 
-      <div className={overlayClassName} onClick={() => setOpenedState()}></div>
+      <div
+        className={`overlay ${isOpen ? "active" : ""}`}
+        onClick={() => setIsOpen(!isOpen)}
+      ></div>
 
       <nav className={`sidebar ${isOpen ? "open" : ""}`}>
         <div className="sidebar-header">
-          <button className="bm-close-btn" onClick={() => setOpenedState()}>
-            <svg
-              stroke="white"
-              strokeWidth="2"
-              width="36"
-              height="36"
-              viewBox="0 0 24 24"
-            >
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
+          <button className="bm-close-btn" onClick={() => setIsOpen(false)}>
+            <CloseBurgerMenuIcon />
           </button>
         </div>
-        <MenuList onMenuItemClick={() => setOpenedState()} />
+        <MenuList onMenuItemClick={() => setIsOpen(false)} />
       </nav>
 
       <div className="user-avatar">
-        <button className="user-avatar-btn" onClick={logout}>
+        <button className="user-avatar-btn" onClick={null}>
           {avatarUrl && (
             <img
               src={avatarUrl}
@@ -80,8 +65,7 @@ export default function HeaderMenu() {
 }
 
 function MenuList({ onMenuItemClick }) {
-  const userRole = localStorage.getItem("userRole");
-
+  const { auth } = useAuth();
   return (
     <div className="menu-list">
       <Link to="/home" className="menu-item" onClick={onMenuItemClick}>
@@ -100,7 +84,7 @@ function MenuList({ onMenuItemClick }) {
         Успішність
       </Link>
 
-      {userRole === "HEADMAN" && (
+      {auth.role === "HEADMAN" && (
         <Link
           to="/successfulGroup"
           className="menu-item"

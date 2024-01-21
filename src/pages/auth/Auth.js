@@ -1,109 +1,129 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "./AuthContext";
 import { GoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
-import { apiUrl, url } from "../../helpers/MainConstants";
 import "./auth.css";
+import useAuth from "../../hooks/useAuth";
+import axios from "../../api/axios";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { useEffect } from "react";
 
 export default function Auth() {
+  const { auth, setAuth } = useAuth();
+  const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
-  const { login } = useAuth();
 
-  const handleGoogleSuccess = async (response) => {
-    try {
-      // console.log(
-      //   "Full Google Sign In response:",
-      //   JSON.stringify(response, null, 2)
-      // );
+  sessionStorage.setItem("currentHeaderTitle", "GroupScope");
 
-      const googleToken = response.credential;
-      // console.log("Received Google Token:", googleToken);
-
-      const decoded = jwt_decode(googleToken);
-      // console.log("Decoded Google Token:", decoded);
-
-      const learnerName = decoded.given_name;
-      const learnerLastname = decoded.family_name;
-      const pictureUrl = decoded.picture;
-      localStorage.setItem("userPicture", pictureUrl);
-
-      const requestOptions = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Cache-Control": "no-cache",
-        },
-        body: JSON.stringify({
-          idToken: googleToken,
-          learnerName: learnerName,
-          learnerLastname: learnerLastname,
-        }),
-      };
-
-      // console.log("Sending request to server with options:", requestOptions);
-
-      let res = await fetch(`${url}/oauth2`, requestOptions);
-      // console.log("Server Response:", res);
-
-      if (!res.ok) {
-        console.error("Server Error Response:", await res.text());
-        return;
-      }
-
-      const data = await res.json();
-      console.log("Received data from server after auth:", data);
-
-      if (data.jwtToken) {
-        const jwtToken = data.jwtToken;
-        localStorage.setItem("jwtToken", jwtToken);
-        login(jwtToken);
-        // console.log("Отриманий JWT токен:", jwtToken);
-
-        res = await fetch(`${apiUrl}/student`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "Cache-Control": "no-cache",
-            Authorization: "Bearer " + jwtToken,
-          },
+  useEffect(() => {
+    axiosPrivate
+      .get("/api/student")
+      .then(function (response) {
+        // console.log("get /api/student:", response);
+        const { name, lastname, role, learningGroup } = response.data;
+        console.log(
+          "User:",
+          name,
+          lastname,
+          "Role:",
+          role,
+          "LearningGroup:",
+          learningGroup
+        );
+        sessionStorage.setItem("learningGroup", learningGroup);
+        setAuth((prev) => {
+          return { ...prev, name, lastname, role, learningGroup };
         });
+        learningGroup ? navigate("/home") : navigate("/guest");
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
+  }, [auth]);
 
-        const studentData = await res.json();
-        // console.log("Received student data:", studentData);
+  const login = () => {
+    // console.log("Auth", auth);
+    // console.log("Token in login",  axiosPrivate.defaults.headers.common["Authorization"])
 
-        const { learningGroup, role: newRole } = studentData;
-        localStorage.setItem("learningGroup", learningGroup);
-        localStorage.setItem("userRole", newRole);
-
-        if (learningGroup) {
-          navigate("/home");
-        } else {
-          navigate("/guest");
-        }
-
-      } else {
-        console.error("JWT token not found");
-      }
-    } catch (error) {
-      console.error("Error while communicating with server:", error);
-    }
+    axiosPrivate
+      .get("/api/student")
+      .then(function (response) {
+        // console.log("get /api/student:", response);
+        const { name, lastname, role, learningGroup } = response.data;
+        console.log(
+          "User:",
+          name,
+          lastname,
+          "Role:",
+          role,
+          "LearningGroup:",
+          learningGroup
+        );
+        sessionStorage.setItem("learningGroup", learningGroup);
+        setAuth((prev) => {
+          return { ...prev, name, lastname, role, learningGroup };
+        });
+        learningGroup ? navigate("/home") : navigate("/guest");
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
   };
 
-  const handleGoogleFailure = (response) => {
-    console.error("Google Sign In was unsuccessful:", response);
+  const handleOnSuccess = (credentialResponse) => {
+    const credential = credentialResponse.credential;
+
+    // console.log("Credential: " + credential);
+
+    const decoded = jwt_decode(credential);
+    console.log("Decoded Google Token:", decoded);
+
+    const learnerName = decoded.given_name;
+    const learnerLastname = decoded.family_name;
+    localStorage.setItem("pictureUrl", decoded.picture);
+
+    axios
+      .post(
+        "/oauth2",
+        {
+          idToken: credential,
+          learnerName: learnerName,
+          learnerLastname: learnerLastname,
+        },
+        { withCredentials: true }
+      )
+      .then(function (response) {
+        const accessToken = response.data.jwtToken;
+        setAuth({ accessToken });
+
+        axiosPrivate.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${accessToken}`;
+
+        login();
+        // console.log("Response jwt", jwtToken);
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
   };
 
   return (
     <div className="auth-container">
-      <GoogleLogin
-        // buttonText="Увійти через Google"
-        // ux_mode="redirect"
-        onSuccess={handleGoogleSuccess}
-        onFailure={handleGoogleFailure}
-        login_uri="/home"
-        useOneTap={true}
-      />
+      <Login onLoginSuccess={handleOnSuccess} />
     </div>
+  );
+}
+
+function Login({ onLoginSuccess }) {
+  return (
+    <GoogleLogin
+      // ux_mode="redirect"
+      // login_uri=""
+      onSuccess={onLoginSuccess}
+      onError={() => {
+        console.log("Login Failed");
+      }}
+      useOneTap
+    />
   );
 }

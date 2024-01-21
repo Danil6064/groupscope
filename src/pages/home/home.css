@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Sofia+Sans:wght@300&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Raleway&display=swap");
 
 .main {
   background-color: var(--light-bg-color);
@@ -23,30 +23,50 @@
 }
 
 .subject-card {
-  padding: 5px;
+  padding: 15px;
   border: var(--border);
   color: var(--dark-text-color);
-  border-radius: 30px;
+  fill: var(--dark-bg-color);
+  border-radius: 20px;
   width: 280px;
   height: 228px;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  justify-content: space-between;
+  flex-direction: column;
+  transition: background-color 0.3s ease, color 0.3s ease, fill 0.3s ease;
 }
 
 .subject-card h2 {
-  text-transform: uppercase;
-  text-align: center;
+  font-family: "Raleway";
+  font-size: 28px;
   font-weight: 300;
-  font-size: 30px;
-  line-height: 36px;
+  font-style: normal;
   word-break: break-word;
+}
+
+.task-information-icons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.task-information-icon {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.task-information-icon span {
+  font-family: Sofia Sans;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
 }
 
 .subject-card:hover {
   background-color: var(--dark-bg-color);
   color: var(--light-text-color);
+  fill: var(--light-bg-color);
 }
 
 @media (max-width: 480px) {
@@ -54,7 +74,7 @@
     align-items: baseline;
     padding-top: 50px;
   }
-  
+
   .subjects {
     margin: 20px 10px;
     gap: 15px;
@@ -62,7 +82,7 @@
 
   .subject-card {
     width: 100%;
-    height: auto;
+    height: 140px;
   }
 
   .subject-card h2 {
