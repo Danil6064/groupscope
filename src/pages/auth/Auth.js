@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
-import "./auth.css";
 import useAuth from "../../hooks/useAuth";
 import axios from "../../api/axios";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useEffect } from "react";
+import "./auth.css";
 
 export default function Auth() {
   const { auth, setAuth } = useAuth();

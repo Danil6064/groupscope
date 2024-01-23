@@ -25,10 +25,6 @@ export default function App() {
             >
               <Route path="subjects" element={<Subjects />} />
               <Route path="subjects/:subjectName" element={<TaskPage />} />
-              <Route
-                path="successfulStudent/:subjectName?"
-                element={<SuccessfulStudent />}
-              />
             </Route>
 
             <Route element={<RequireAuth allowedRoles={["HEADMAN"]} />}>

@@ -72,16 +72,8 @@ function MenuList({ onMenuItemClick }) {
         Головне меню
       </Link>
 
-      {/* <Link to="#" className="menu-item" onClick={onMenuItemClick}>
+      <Link to="#" className="menu-item" onClick={onMenuItemClick}>
         Новини
-      </Link> */}
-
-      <Link
-        to="/successfulStudent"
-        className="menu-item"
-        onClick={onMenuItemClick}
-      >
-        Успішність
       </Link>
 
       {auth.role === "HEADMAN" && (
