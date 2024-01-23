@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Auth from "./pages/auth/Auth";
 import Guest from "./pages/guest/Guest";
-import Subjects from "./pages/subjectsPage/Subjects";
+import Subjects from "./pages/subjects/Subjects";
 import TaskPage from "./pages/tasksPage/TaskPage";
 import SuccessfulStudent from "./pages/successfulStudent/SuccessfulStudent";
 import SuccessfulGroup from "./pages/successfulGroup/SuccessfulGroup";
