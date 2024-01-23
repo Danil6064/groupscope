@@ -4,11 +4,9 @@ import { useNavigate } from "react-router-dom";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 export default function Guest() {
-  const [action, setAction] = useState(null);
   const [groupName, setGroupName] = useState("");
   const [inviteCode, setInviteCode] = useState("");
   const axiosPrivate = useAxiosPrivate();
-  const jwtToken = localStorage.getItem("jwtToken");
 
   const navigate = useNavigate();
 
@@ -16,60 +14,22 @@ export default function Guest() {
     axiosPrivate
       .post("api/group/create", { name: groupName })
       .then(() => {
-        navigate("/home");
+        navigate("/subjects");
       })
       .catch((error) => {
         console.error(error);
       });
-
-    //   const requestBody = {
-    //     name: groupName,
-    //   };
-
-    //   const response = await fetch(`${apiUrl}/group/create`, {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       Authorization: "Bearer " + jwtToken,
-    //     },
-    //     body: JSON.stringify(requestBody),
-    //   });
-
-    //   if (response.ok) {
-    //     navigate("/auth");
-    //   } else {
-    //     // Handle the error
-    //   }
   };
 
   const handleJoinGroup = async () => {
     axiosPrivate
       .post("api/group/join", { inviteCode: inviteCode })
       .then(() => {
-        navigate("/home");
+        navigate("/subjects");
       })
       .catch((error) => {
         console.error(error);
       });
-
-    // const requestBody = {
-    //   inviteCode: inviteCode,
-    // };
-
-    // const response = await fetch(`${apiUrl}/group/join`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     Authorization: "Bearer " + jwtToken,
-    //   },
-    //   body: JSON.stringify(requestBody),
-    // });
-
-    // if (response.ok) {
-    //   navigate("/auth");
-    // } else {
-    //   // Handle the error
-    // }
   };
 
   return (
@@ -83,7 +43,6 @@ export default function Guest() {
           <option value="КБІКС-21-4">КБІКС-21-4</option>
           <option value="КБІКС-21-5">КБІКС-21-5</option>
           <option value="КБІКС-21-6">КБІКС-21-6</option>
-          {/* You can add other group options here */}
         </select>
         <button onClick={handleCreateGroup}>Створити</button>
       </div>
