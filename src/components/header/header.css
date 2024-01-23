@@ -1,3 +1,4 @@
+
 .header {
   position: fixed;
   width: 100%;
@@ -17,10 +18,12 @@
   font-family: Raleway;
   color: var(--light-text-color);
   font-weight: 300;
-  font-size: 40px;
+  font-size: 38px;
+  font-style: normal;
+  line-height: normal;
 }
 
-.user-avatar{
+.user-avatar {
   display: flex;
   position: absolute;
   justify-self: end;
@@ -31,7 +34,7 @@
   background-color: var(--dark-bg-color);
 }
 
-.user-avatar-btn{
+.user-avatar-btn {
   width: 40px;
   height: 40px;
   border-radius: 50%;
