@@ -99,7 +99,7 @@ export default function Auth() {
         //   "Authorization"
         // ] = `Bearer ${accessToken}`;
 
-        login();
+        // login();
         // console.log("Response jwt", jwtToken);
       })
       .catch(function (error) {
