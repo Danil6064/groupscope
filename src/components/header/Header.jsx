@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import "./header.css";
-import HeaderMenu from "../headerMenu/HeaderMenu.js";
+import HeaderMenu from "../headerMenu/HeaderMenu.jsx";
 import { NavLink, useLocation } from "react-router-dom";
-import useAuth from "../../hooks/useAuth";
+import useAuth from "../../hooks/useAuth.js";
 
 export default function Header() {
   const { auth } = useAuth();
@@ -20,7 +20,7 @@ export default function Header() {
     <>
       {auth?.role && <HeaderMenu />}
       <div className="header-title">
-        <NavLink to={"/home"}>
+        <NavLink to={"/subjects"}>
           <h1>{headerTitle}</h1>
         </NavLink>
       </div>
