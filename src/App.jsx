@@ -3,8 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Auth from "./pages/auth/Auth";
 import Guest from "./pages/guest/Guest";
 import Subjects from "./pages/subjects/Subjects";
-import TaskPage from "./pages/tasksPage/TaskPage";
-import SuccessfulStudent from "./pages/successfulStudent/SuccessfulStudent";
+import SelectedSubject from "./pages/selectedSubject/SelectedSubject";
 import SuccessfulGroup from "./pages/successfulGroup/SuccessfulGroup";
 
 import Layout from "./components/Layout";
@@ -24,7 +23,10 @@ export default function App() {
               element={<RequireAuth allowedRoles={["HEADMAN", "STUDENT"]} />}
             >
               <Route path="subjects" element={<Subjects />} />
-              <Route path="subjects/:subjectName" element={<TaskPage />} />
+              <Route
+                path="subjects/:subjectName"
+                element={<SelectedSubject />}
+              />
             </Route>
 
             <Route element={<RequireAuth allowedRoles={["HEADMAN"]} />}>
