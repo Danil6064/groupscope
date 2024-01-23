@@ -6,9 +6,9 @@ import { ReactComponent as TasksDeadlineSoonIcon } from "../../components/icons/
 import { ReactComponent as TasksDeadlineExpiredIcon } from "../../components/icons/tasksDeadlineExpired.svg";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import useAuth from "../../hooks/useAuth";
-import "./home.css";
+import "./subjects.css";
 
-export default function Home() {
+export default function Subjects() {
   const [inviteCode, setInviteCode] = useState("");
   const { auth } = useAuth();
   const axiosPrivate = useAxiosPrivate();
@@ -120,7 +120,7 @@ function SubjectCards() {
     return (
       <NavLink
         key={index}
-        to={`/subject/${subject.name}`}
+        to={`/subjects/${subject.name}`}
         className="subject-card"
       >
         <h2>{subject.name}</h2>

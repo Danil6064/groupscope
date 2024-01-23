@@ -68,7 +68,7 @@ function MenuList({ onMenuItemClick }) {
   const { auth } = useAuth();
   return (
     <div className="menu-list">
-      <Link to="/home" className="menu-item" onClick={onMenuItemClick}>
+      <Link to="/subjects" className="menu-item" onClick={onMenuItemClick}>
         Головне меню
       </Link>
 

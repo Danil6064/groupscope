@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Auth from "./pages/auth/Auth";
 import Guest from "./pages/guest/Guest";
-import Home from "./pages/home/Home";
+import Subjects from "./pages/subjectsPage/Subjects";
 import TaskPage from "./pages/tasksPage/TaskPage";
 import SuccessfulStudent from "./pages/successfulStudent/SuccessfulStudent";
 import SuccessfulGroup from "./pages/successfulGroup/SuccessfulGroup";
@@ -16,17 +16,15 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
+          <Route element={<PersistLogin />}>
+            <Route index element={<Auth />} />
+            <Route path="guest" element={<Guest />} />
 
-        <Route element={<PersistLogin />}>
-          <Route index element={<Auth />} />
-          <Route path="guest" element={<Guest />} />
-
-          
             <Route
               element={<RequireAuth allowedRoles={["HEADMAN", "STUDENT"]} />}
             >
-              <Route path="home" element={<Home />} />
-              <Route path="subject/:subjectName" element={<TaskPage />} />
+              <Route path="subjects" element={<Subjects />} />
+              <Route path="subjects/:subjectName" element={<TaskPage />} />
               <Route
                 path="successfulStudent/:subjectName?"
                 element={<SuccessfulStudent />}
@@ -42,7 +40,7 @@ export default function App() {
           </Route>
         </Route>
 
-        <Route path="*" element={<></>} />
+        <Route path="*" element={<>PageNotFound</>} />
       </Routes>
     </BrowserRouter>
   );

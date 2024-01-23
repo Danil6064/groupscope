@@ -22,5 +22,5 @@ export default function PersistLogin() {
     !auth?.accessToken ? verifyRefreshToken() : setIsLoading(false);
   }, []);
 
-  return <>{isLoading ? <span>Loading</span> : <Outlet/>}</>;
+  return <>{isLoading ? <span>Loading</span> : <Outlet />}</>;
 }

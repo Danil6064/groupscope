@@ -33,7 +33,7 @@ export default function Auth() {
         setAuth((prev) => {
           return { ...prev, name, lastname, role, learningGroup };
         });
-        learningGroup ? navigate("/home") : navigate("/guest");
+        learningGroup ? navigate("/subjects") : navigate("/guest");
       })
       .catch(function (error) {
         console.error(error);
