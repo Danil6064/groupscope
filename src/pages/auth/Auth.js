@@ -41,8 +41,8 @@ export default function Auth() {
   }, [auth]);
 
   const login = () => {
-    // console.log("Auth", auth);
-    // console.log("Token in login",  axiosPrivate.defaults.headers.common["Authorization"])
+    console.log("Auth", auth);
+    console.log("Token in login",  axiosPrivate.defaults.headers.common["Authorization"])
 
     axiosPrivate
       .get("/api/student")
@@ -69,7 +69,7 @@ export default function Auth() {
       });
   };
 
-  const handleOnSuccess = (credentialResponse) => {
+  const handleOnLoginSuccess = (credentialResponse) => {
     const credential = credentialResponse.credential;
 
     // console.log("Credential: " + credential);
@@ -95,9 +95,9 @@ export default function Auth() {
         const accessToken = response.data.jwtToken;
         setAuth({ accessToken });
 
-        axiosPrivate.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${accessToken}`;
+        // axiosPrivate.defaults.headers.common[
+        //   "Authorization"
+        // ] = `Bearer ${accessToken}`;
 
         login();
         // console.log("Response jwt", jwtToken);
@@ -109,21 +109,15 @@ export default function Auth() {
 
   return (
     <div className="auth-container">
-      <Login onLoginSuccess={handleOnSuccess} />
+      <GoogleLogin
+        // ux_mode="redirect"
+        // login_uri=""
+        onSuccess={handleOnLoginSuccess}
+        onError={() => {
+          console.log("Login Failed");
+        }}
+        useOneTap
+      />
     </div>
-  );
-}
-
-function Login({ onLoginSuccess }) {
-  return (
-    <GoogleLogin
-      // ux_mode="redirect"
-      // login_uri=""
-      onSuccess={onLoginSuccess}
-      onError={() => {
-        console.log("Login Failed");
-      }}
-      useOneTap
-    />
   );
 }
