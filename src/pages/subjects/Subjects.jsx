@@ -32,7 +32,7 @@ export default function Subjects() {
   }, []);
 
   return (
-    <div className="main">
+    <div className="main" style={{ alignItems: "center" }}>
       <div className="subjects container">
         <SubjectCards />
 

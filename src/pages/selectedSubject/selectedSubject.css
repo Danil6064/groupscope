@@ -1,0 +1,148 @@
+.subject {
+  margin: 40px 20px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.subject-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  background-color: var(--light-bg-color);
+  color: var(--dark-text-color);
+  border: var(--border);
+  border-radius: 15px;
+  min-height: 60px;
+  padding: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.subject-btn span {
+  display: flex;
+  /* word-break: break-word; */
+  /* text-align: center; */
+  font-size: 28px;
+  /* font-style: normal;
+  font-weight: 300;
+  line-height: normal; */
+}
+
+.subject-btn:hover {
+  background-color: var(--dark-bg-color);
+  color: var(--light-text-color);
+}
+
+.tasks {
+  display: flex;
+  flex-direction: column;
+  gap: 84px;
+}
+
+.task-section {
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+}
+
+.task-section h2 {
+  display: flex;
+  padding: 10px 0px;
+  justify-content: center;
+  /* align-items: center; */
+  border-bottom: var(--border);
+  color: var(--dark-text-color);
+  text-align: center;
+  font-family: Raleway;
+  font-size: 28px;
+}
+
+.subject-task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.task-list-item {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 12px;
+}
+
+.task-card {
+  display: flex;
+
+  width: 100%;
+  flex-grow: 1;
+  height: 55px;
+  /* padding: 16px 16px 15px 16px; */
+  overflow: hidden;
+  border: var(--border);
+  border-radius: 10px;
+}
+
+.task-card h3 {
+  color: var(--dark-text-color);
+  font-family: "Sofia Sans";
+  font-size: 24px;
+}
+
+.task-card__deadline {
+  display: flex;
+  color: var(--dark-text-color);
+  font-family: "Sofia Sans";
+  font-size: 20px;
+}
+
+.task-card__show-more-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  height: 20px;
+  background-color: var(--light-bg-color);
+  border: var(--border);
+  border-top: none;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.left-bar,
+.right-bar {
+  width: 16px;
+  height: 1.5px;
+  background-color: var(--dark-bg-color);
+  transition: transform 0.3s ease;
+}
+
+.task-card__show-more-btn:hover {
+  .left-bar {
+    transform: rotate(15deg);
+  }
+  .right-bar {
+    transform: rotate(-15deg);
+  }
+}
+
+.task-done-cb {
+  width: 32px;
+  height: 32px;
+}
+
+.task-mark-input {
+  text-align: center;
+  width: 140px;
+  height: 32px;
+  color: var(--dark-text-color);
+  font-size: 16px;
+}
+
+.task-mark-input::placeholder {
+  font-family: "Raleway";
+}
+
+.task-mark-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
